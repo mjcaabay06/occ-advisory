@@ -1,0 +1,2 @@
+class AircraftRegistry < ApplicationRecord
+end

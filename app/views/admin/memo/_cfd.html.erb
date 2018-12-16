@@ -1,0 +1,74 @@
+<div class="col-md-12">
+  <div class="page-header">
+    <h3>Central Flight Dispatch</h3>
+  </div>
+  <div class="col-md-8 col-md-offset-2">
+    <form class="form-horizontal">
+      <div class="panel panel-default">
+        <div class="panel-body">
+          <div class="form-group">
+            <div class="col-md-5 text-right">
+              <label class="form-label">A/C R</label>
+            </div>
+            <div class="col-md-4">
+              <input type="text" class="form-control" name="">
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-md-5 text-right">
+              <label class="form-label">Flight Date</label>
+            </div>
+            <div class="col-md-4">
+              <input type="date" class="form-control" name="">
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-md-5 text-right">
+              <label class="form-label">Purpose</label>
+            </div>
+            <div class="col-md-4">
+              <textarea class="form-control"></textarea>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-md-5 text-right">
+              <label class="form-label">Load</label>
+            </div>
+            <div class="col-md-4">
+              <div class="col-md-12">
+                <div class="form-group">
+                  <input type="text" class="form-control" name="" placeholder="Seat No.">
+                </div>
+                <div class="form-group">
+                  <select class="form-control">
+                    <option>Select Specific Cabin</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-md-5 text-right">
+              <label class="form-label">Weather Condition</label>
+            </div>
+            <div class="col-md-4">
+              <textarea class="form-control"></textarea>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-md-5 text-right">
+              <label class="form-label">Remarks</label>
+            </div>
+            <div class="col-md-4">
+              <textarea class="form-control"></textarea>
+            </div>
+          </div>
+
+        </div>
+        <div class="panel-footer text-right">
+          <%= button_tag 'Submit', class: 'btn btn-primary' %>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

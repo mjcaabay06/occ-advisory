@@ -1,7 +1,50 @@
+/*.navbar{
+  border-bottom: 4px solid #8ea9db;
+  background-color: #1d2d61;
+
+  .navbar-nav {
+    & > li {
+      & > a {
+        color: #fff;
+
+        &:hover {
+          background-color: #0f1d49;
+        }
+      }
+    }
+
+    & > .open {
+      & > a {
+        background-color: #0f1d49;
+
+        &:hover, &:focus {
+          background-color: #0f1d49;
+        }
+      }
+    }
+  }
+}*/
+
 .container-fluid {
   &.content {
     margin-top: 51px;
-  }  
+
+    .page-header {
+      /*border-bottom-color: #1d2d61;
+      border-bottom-width: 2px;*/
+
+      h3 {
+        margin: 0;
+        /*color: #1d2d61;*/
+      }
+    }
+  }
+
+  input {
+    &[type='date'] {
+      line-height: initial;
+    }
+  }
 }
 
 .loader-wrapper {
