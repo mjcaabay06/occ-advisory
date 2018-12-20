@@ -1,3 +1,4 @@
 class Memo < ApplicationRecord
-  belongs_to :flight
+  has_one :load
+  accepts_nested_attributes_for :load
 end

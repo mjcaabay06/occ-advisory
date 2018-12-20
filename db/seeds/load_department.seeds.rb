@@ -12,6 +12,7 @@ UserDepartment.create!([
   { description: 'Central Flight Dispatch', status_id: 1, code: 'CFD' },
   { description: 'Airport Terminal', status_id: 1, code: 'Airport Terminal' },
   { description: 'OCC', status_id: 1, code: 'OCC' },
+  { description: 'SP', status_id: 1, code: 'SP' },
 ])
 
 User.create!([
@@ -24,17 +25,4 @@ AircraftRegistry.create!([
   { aircraft_name: 'RP-C3437', },
   { aircraft_name: 'RP-C8784', },
   { aircraft_name: 'RP-C9902', },
-])
-
-Flight.create!([
-  { aircraft_registry_id: 1, flight_number: '288/289', flight_date: '2018-12-24' },
-  { aircraft_registry_id: 1, flight_number: '290/291', flight_date: '2019-01-24' },
-  { aircraft_registry_id: 2, flight_number: '292/293', flight_date: '2018-12-24' },
-  { aircraft_registry_id: 2, flight_number: '294/295', flight_date: '2019-01-24' },
-  { aircraft_registry_id: 3, flight_number: '296/297', flight_date: '2018-12-25' },
-  { aircraft_registry_id: 3, flight_number: '298/299', flight_date: '2019-01-25' },
-  { aircraft_registry_id: 4, flight_number: '300/301', flight_date: '2018-12-25' },
-  { aircraft_registry_id: 4, flight_number: '302/303', flight_date: '2019-01-25' },
-  { aircraft_registry_id: 5, flight_number: '304/305', flight_date: '2018-12-26' },
-  { aircraft_registry_id: 5, flight_number: '306/307', flight_date: '2019-01-26' },
 ])

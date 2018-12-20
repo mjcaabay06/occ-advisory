@@ -12,11 +12,19 @@
   <body>
     <%= render 'layouts/admin_header' %>
     <div class="container-fluid content">
-        <%= yield %>
+      <%= yield %>
     </div>
     <div class="clearfix"></div>
-    <div class="loader-wrapper">
-      <div class="loader"></div>
+    
+    <div class="cs-loader">
+      <div class="cs-loader-inner">
+        <label> ●</label>
+        <label> ●</label>
+        <label> ●</label>
+        <label> ●</label>
+        <label> ●</label>
+        <label> ●</label>
+      </div>
     </div>
   </body>
 </html>
