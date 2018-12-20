@@ -1,9 +1,10 @@
-class CreateFlights < ActiveRecord::Migration[5.2]
+class CreateMemos < ActiveRecord::Migration[5.2]
   def change
-    create_table :flights do |t|
+    create_table :memos do |t|
       t.references :aircraft_registry, foreign_key: true
       t.string :flight_number
       t.date :flight_date
+      t.date :international_flight_date
       t.datetime :monitoring_update
       t.text :route
       t.integer :std
@@ -18,6 +19,9 @@ class CreateFlights < ActiveRecord::Migration[5.2]
       t.time :cargo_boarding
       t.string :aircraft_status
       t.string :cabin_crew_availablity
+      t.text :weather_condition
+      t.text :purpose
+      t.text :remarks
 
       t.timestamps
     end

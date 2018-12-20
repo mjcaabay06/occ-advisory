@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_12_15_190547) do
+ActiveRecord::Schema.define(version: 2018_12_20_060300) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -19,16 +19,24 @@ ActiveRecord::Schema.define(version: 2018_12_15_190547) do
     t.string "aircraft_name"
     t.integer "max_seat"
     t.integer "max_cabin"
-    t.string "aircraft_type"
-    t.string "aircraft_configuration"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
-  create_table "flights", force: :cascade do |t|
+  create_table "loads", force: :cascade do |t|
+    t.integer "seat_number"
+    t.string "specific_cabin"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "memo_id"
+    t.index ["memo_id"], name: "index_loads_on_memo_id"
+  end
+
+  create_table "memos", force: :cascade do |t|
     t.bigint "aircraft_registry_id"
-    t.string "fligh_number"
+    t.string "flight_number"
     t.date "flight_date"
+    t.date "international_flight_date"
     t.datetime "monitoring_update"
     t.text "route"
     t.integer "std"
@@ -43,20 +51,23 @@ ActiveRecord::Schema.define(version: 2018_12_15_190547) do
     t.time "cargo_boarding"
     t.string "aircraft_status"
     t.string "cabin_crew_availablity"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["aircraft_registry_id"], name: "index_flights_on_aircraft_registry_id"
-  end
-
-  create_table "memos", force: :cascade do |t|
-    t.bigint "flight_id"
     t.text "weather_condition"
     t.text "purpose"
     t.text "remarks"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "user_id"
-    t.index ["flight_id"], name: "index_memos_on_flight_id"
+    t.datetime "flight_monitoring"
+    t.string "aircraft_on_ground"
+    t.string "status"
+    t.string "aircraft_inoperative"
+    t.string "seat_block"
+    t.string "no_avi"
+    t.text "restriction"
+    t.string "airconditioning"
+    t.string "aircraft_type"
+    t.integer "aircraft_configuration"
+    t.index ["aircraft_registry_id"], name: "index_memos_on_aircraft_registry_id"
     t.index ["user_id"], name: "index_memos_on_user_id"
   end
 
@@ -104,8 +115,8 @@ ActiveRecord::Schema.define(version: 2018_12_15_190547) do
     t.index ["user_department_id"], name: "index_users_on_user_department_id"
   end
 
-  add_foreign_key "flights", "aircraft_registries"
-  add_foreign_key "memos", "flights"
+  add_foreign_key "loads", "memos"
+  add_foreign_key "memos", "aircraft_registries"
   add_foreign_key "memos", "users"
   add_foreign_key "page_actions", "statuses"
   add_foreign_key "user_departments", "statuses"

@@ -7,10 +7,11 @@ Rails.application.routes.draw do
     resources :home, path: '/' do
       collection do
         get :login, path: '/login'
-        get :new, path: '/new-advisory'
+        get :new, path: '/new-eadvisory'
       end
     end
 
+    get '/memo/check-account' => 'memo#check_account'
     resources :memo
     # get 'login' => 'home#login'
   end
