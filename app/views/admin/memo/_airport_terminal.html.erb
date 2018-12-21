@@ -1,0 +1,143 @@
+<div class="col-md-12">
+  <div class="page-header">
+    <h3>Airport Terminal</h3>
+  </div>
+  <%= render 'message' %>
+  <div class="col-md-8 col-md-offset-2">
+    <%= form_for @memo, url: { controller: 'memo', action: 'create' }, html: { method: :post, class: 'form-horizontal' } do |f| %>
+      <div class="panel panel-default">
+        <div class="panel-body">
+          <div class="form-group">
+            <div class="col-md-5 text-right">
+              <label class="form-label">A/C R</label>
+            </div>
+            <div class="col-md-4">
+              <%= f.select :aircraft_registry_id, options_for_select(AircraftRegistry.all.order(:aircraft_name).collect { |a| [a.aircraft_name, a.id] }), {}, class: 'form-control', required: true %>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="col-md-5 text-right">
+              <label class="form-label">Towing Update</label>
+            </div>
+            <div class="col-md-4">
+              <div class="col-md-12">
+                <div class="form-group">
+                  <div class="input-group">
+                    <%= f.text_field :tow_out, class: 'form-control has-time-picker', required: true, placeholder: 'Tow Out' %>
+                    <span class="input-group-addon">
+                      <span class="glyphicon glyphicon-time"></span>
+                    </span>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <div class="input-group">
+                    <%= f.text_field :tow_in, class: 'form-control has-time-picker', required: true, placeholder: 'Tow In' %>
+                    <span class="input-group-addon">
+                      <span class="glyphicon glyphicon-time"></span>
+                    </span>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <div class="input-group">
+                    <%= f.text_field :block_in, class: 'form-control has-time-picker', required: true, placeholder: 'Block In' %>
+                    <span class="input-group-addon">
+                      <span class="glyphicon glyphicon-time"></span>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="col-md-5 text-right">
+              <label class="form-label">Cause/Purpose</label>
+            </div>
+            <div class="col-md-4">
+              <%= f.text_area :purpose, class: 'form-control', required: true %>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="col-md-5 text-right">
+              <label class="form-label">Boarding of Cockpit Crew</label>
+            </div>
+            <div class="col-md-4">
+              <div class="input-group">
+                <%= f.text_field :cockpit_crew_boarding, class: 'form-control has-time-picker', required: true %>
+                <span class="input-group-addon">
+                  <span class="glyphicon glyphicon-time"></span>
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="col-md-5 text-right">
+              <label class="form-label">Boarding of Cabin Crew</label>
+            </div>
+            <div class="col-md-4">
+              <div class="input-group">
+                <%= f.text_field :cabin_crew_boarding, class: 'form-control has-time-picker', required: true %>
+                <span class="input-group-addon">
+                  <span class="glyphicon glyphicon-time"></span>
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="col-md-5 text-right">
+              <label class="form-label">General Boarding</label>
+            </div>
+            <div class="col-md-4">
+              <div class="input-group">
+                <%= f.text_field :general_boarding, class: 'form-control has-time-picker', required: true %>
+                <span class="input-group-addon">
+                  <span class="glyphicon glyphicon-time"></span>
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="col-md-5 text-right">
+              <label class="form-label">Cargo/Baggage Boarding</label>
+            </div>
+            <div class="col-md-4">
+              <div class="input-group">
+                <%= f.text_field :cargo_boarding, class: 'form-control has-time-picker', required: true %>
+                <span class="input-group-addon">
+                  <span class="glyphicon glyphicon-time"></span>
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="col-md-5 text-right">
+              <label class="form-label">Aircraft Status</label>
+            </div>
+            <div class="col-md-4">
+              <%= f.text_area :aircraft_status, class: 'form-control', required: true %>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="col-md-5 text-right">
+              <label class="form-label">Remarks</label>
+            </div>
+            <div class="col-md-4">
+              <%= f.text_area :remarks, class: 'form-control', required: true %>
+            </div>
+          </div>
+
+        </div>
+        <div class="panel-footer text-right">
+          <%= f.button 'Submit', class: 'btn btn-primary' %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>

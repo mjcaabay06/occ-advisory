@@ -1,0 +1,10 @@
+.content {
+  &-memo {
+    label {
+      &.form-label {
+        margin: 7px 0;
+        font-weight: normal;
+      }
+    }
+  }
+}

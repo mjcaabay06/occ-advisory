@@ -1,89 +1,149 @@
+/*.navbar{
+  border-bottom: 4px solid #8ea9db;
+  background-color: #1d2d61;
+
+  .navbar-nav {
+    & > li {
+      & > a {
+        color: #fff;
+
+        &:hover {
+          background-color: #0f1d49;
+        }
+      }
+    }
+
+    & > .open {
+      & > a {
+        background-color: #0f1d49;
+
+        &:hover, &:focus {
+          background-color: #0f1d49;
+        }
+      }
+    }
+  }
+}*/
+
 .container-fluid {
   &.content {
     margin-top: 51px;
-  }  
+
+    .page-header {
+      /*border-bottom-color: #1d2d61;
+      border-bottom-width: 2px;*/
+
+      h3 {
+        margin: 0;
+        /*color: #1d2d61;*/
+      }
+    }
+  }
+
+  input {
+    &[type='date'], &[type='time'] {
+      line-height: initial;
+    }
+  }
+
+  textarea {
+    resize: none;
+    height: 135px;
+  }
 }
 
-.loader-wrapper {
+.cs-loader {
   position: fixed;
   top: 0;
   left: 0;
-  width: 100%;
   height: 100%;
-  z-index: 1000;
-  background-color: rgba(255,255,255,0.7);
+  width: 100%;
+  background-color: rgba(0,0,0,0.4);
   display: none;
+  z-index: 9999;
+}
 
-  .loader {
-    display: block;
-    position: relative;
-    left: 50%;
-    top: 50%;
-    width: 70px;
-    height: 70px;
-    margin: -75px 0 0 -75px;
-    border-radius: 50%;
-    border: 3px solid transparent;
-    border-top-color: #3498db;
+.cs-loader-inner {
+  transform: translateY(-50%);
+  top: 50%;
+  position: absolute;
+  /*width: calc(100% - 200px);*/
+  width: 100%;
+  color: #FFF;
+  padding: 0 100px;
+  text-align: center;
+}
 
-    -webkit-animation: spin 2s linear infinite;
-    animation: spin 2s linear infinite;
+.cs-loader-inner label {
+  font-size: 20px;
+  opacity: 0;
+  display:inline-block;
+}
 
-    &:before {
-      content: "";
-      position: absolute;
-      top: 5px;
-      left: 5px;
-      right: 5px;
-      bottom: 5px;
-      border-radius: 50%;
-      border: 3px solid transparent;
-      border-top-color: #e74c3c;
-
-      -webkit-animation: spin 3s linear infinite;
-      animation: spin 3s linear infinite;
-    }
-
-    &:after {
-      content: "";
-      position: absolute;
-      top: 15px;
-      left: 15px;
-      right: 15px;
-      bottom: 15px;
-      border-radius: 50%;
-      border: 3px solid transparent;
-      border-top-color: #f9c922;
-
-      -webkit-animation: spin 1.5s linear infinite;
-      animation: spin 1.5s linear infinite;
-    }
-
+@keyframes lol {
+  0% {
+    opacity: 0;
+    transform: translateX(-300px);
   }
-
+  33% {
+    opacity: 1;
+    transform: translateX(0px);
+  }
+  66% {
+    opacity: 1;
+    transform: translateX(0px);
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(300px);
+  }
 }
 
-@-webkit-keyframes spin {
-    0%   { 
-        -webkit-transform: rotate(0deg);
-        -ms-transform: rotate(0deg);
-        transform: rotate(0deg);
-    }
-    100% {
-        -webkit-transform: rotate(360deg);
-        -ms-transform: rotate(360deg);
-        transform: rotate(360deg);
-    }
+@-webkit-keyframes lol {
+  0% {
+    opacity: 0;
+    -webkit-transform: translateX(-300px);
+  }
+  33% {
+    opacity: 1;
+    -webkit-transform: translateX(0px);
+  }
+  66% {
+    opacity: 1;
+    -webkit-transform: translateX(0px);
+  }
+  100% {
+    opacity: 0;
+    -webkit-transform: translateX(300px);
+  }
 }
-@keyframes spin {
-    0%   { 
-        -webkit-transform: rotate(0deg);
-        -ms-transform: rotate(0deg);
-        transform: rotate(0deg);
-    }
-    100% {
-        -webkit-transform: rotate(360deg);
-        -ms-transform: rotate(360deg);
-        transform: rotate(360deg);
-    }
+
+.cs-loader-inner label:nth-child(6) {
+  -webkit-animation: lol 3s infinite ease-in-out;
+  animation: lol 3s infinite ease-in-out;
+}
+
+.cs-loader-inner label:nth-child(5) {
+  -webkit-animation: lol 3s 100ms infinite ease-in-out;
+  animation: lol 3s 100ms infinite ease-in-out;
+}
+
+.cs-loader-inner label:nth-child(4) {
+  -webkit-animation: lol 3s 200ms infinite ease-in-out;
+  animation: lol 3s 200ms infinite ease-in-out;
+}
+
+.cs-loader-inner label:nth-child(3) {
+  -webkit-animation: lol 3s 300ms infinite ease-in-out;
+  animation: lol 3s 300ms infinite ease-in-out;
+}
+
+.cs-loader-inner label:nth-child(2) {
+  -webkit-animation: lol 3s 400ms infinite ease-in-out;
+  animation: lol 3s 400ms infinite ease-in-out;
+}
+
+.cs-loader-inner label:nth-child(1) {
+  -webkit-animation: lol 3s 500ms infinite ease-in-out;
+  animation: lol 3s 500ms infinite ease-in-out;
 }

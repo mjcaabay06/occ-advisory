@@ -1,0 +1,103 @@
+<div class="col-md-12">
+  <div class="page-header">
+    <h3>SP</h3>
+  </div>
+  <%= render 'message' %>
+  <div class="col-md-8 col-md-offset-2">
+    <%= form_for @memo, url: { controller: 'memo', action: 'create' }, html: { method: :post, class: 'form-horizontal' } do |f| %>
+      <div class="panel panel-default">
+        <div class="panel-body">
+          <div class="form-group">
+            <div class="col-md-5 text-right">
+              <label class="form-label">Flight Date</label>
+            </div>
+            <div class="col-md-4">
+              <div class="input-group">
+                <%= f.date_field :flight_date, class: 'form-control', required: true %>
+                <span class="input-group-addon">
+                  <span class="glyphicon glyphicon-calendar"></span>
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="col-md-5 text-right">
+              <label class="form-label">Flight Number</label>
+            </div>
+            <div class="col-md-4">
+              <%= f.text_field :flight_number, class: 'form-control', required: true %>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="col-md-5 text-right">
+              <label class="form-label">Route</label>
+            </div>
+            <div class="col-md-4">
+              <%= f.text_field :route, class: 'form-control', required: true %>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="col-md-5 text-right">
+              <label class="form-label">AC Type</label>
+            </div>
+            <div class="col-md-4">
+              <%= f.text_field :aircraft_type, class: 'form-control', required: true %>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="col-md-5 text-right">
+              <label class="form-label">AC Configuration</label>
+            </div>
+            <div class="col-md-4">
+              <%= f.number_field :aircraft_configuration, class: 'form-control', required: true %>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="col-md-5 text-right">
+              <label class="form-label">STD</label>
+            </div>
+            <div class="col-md-4">
+              <%= f.number_field :std, class: 'form-control', required: true %>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="col-md-5 text-right">
+              <label class="form-label">STA</label>
+            </div>
+            <div class="col-md-4">
+              <%= f.number_field :sta, class: 'form-control', required: true %>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="col-md-5 text-right">
+              <label class="form-label">Frequency</label>
+            </div>
+            <div class="col-md-4">
+              <%= f.number_field :frequency, class: 'form-control', required: true %>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="col-md-5 text-right">
+              <label class="form-label">Remarks</label>
+            </div>
+            <div class="col-md-4">
+              <%= f.text_area :remarks, class: 'form-control', required: true %>
+            </div>
+          </div>
+
+        </div>
+        <div class="panel-footer text-right">
+          <%= f.button 'Submit', class: 'btn btn-primary' %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>
