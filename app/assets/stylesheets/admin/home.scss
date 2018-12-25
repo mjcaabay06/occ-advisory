@@ -1,3 +1,33 @@
-// Place all the styles related to the admin/home controller here.
-// They will automatically be included in application.css.
-// You can use Sass (SCSS) here: http://sass-lang.com/
+.memo {
+  &-lists {
+    .panel-body {
+      height: 350px;
+      padding-top: 0;
+      overflow-y: auto;
+
+      .row {
+        border-bottom: 1px solid #dedede;
+        padding: 12px 7px 12px 12px;
+
+        &:hover{
+          background-color: #fafafa;
+        }
+
+        label {
+          font-weight: normal;
+          margin: 0;
+        }
+
+        button {
+          padding: 0 2px;
+        }
+      }
+    }
+  }
+
+  &-info {
+    .panel-body {
+      height: 350px;
+    }
+  }
+}

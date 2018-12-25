@@ -8,6 +8,8 @@ Rails.application.routes.draw do
       collection do
         get :login, path: '/login'
         get :new, path: '/new-eadvisory'
+        get :memo_filters, path: '/memo-filters'
+        get :memo_info, path: '/memo-info'
       end
     end
 
