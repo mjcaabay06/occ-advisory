@@ -1,0 +1,23 @@
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <div class="row">
+      <div class="col-sm-4">
+        <%= select(nil, :aircraft_registry_id, AircraftRegistry.all.order(:aircraft_name).collect { |a| [a.aircraft_name, a.id] }, {selected: @ac_id, include_blank: 'All AC/R'}, class: 'form-control') %>
+      </div>
+      <div class="col-sm-4">
+        <%= select(nil, :user_department_id, UserDepartment.where.not('id in (1,8)').order(:description).collect { |a| [a.description, a.id] }, {selected: @dept_id, include_blank: 'All Departments'}, class: 'form-control') %>
+      </div>
+      <div class="col-sm-4">
+        <div class="input-group">
+          <%= date_field_tag nil, nil, id: 'created_date', class: 'form-control' %>
+          <span class="input-group-addon">
+            <span class="glyphicon glyphicon-calendar"></span>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="panel-body memo-lists">
+    <%= render 'memo_lists_body' %>
+  </div>
+</div>

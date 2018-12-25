@@ -1,8 +1,6 @@
 class Admin::MemoController < Admin::ApplicationController
   include MemoConcern
 
-  before_action :set_user
-
   MemoCabin = [
     'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'
     ].freeze
@@ -18,7 +16,7 @@ class Admin::MemoController < Admin::ApplicationController
   def create
     params[:memo][:user_id] = @user.id
 
-    @memo = Memo.new(ltp_params)
+    @memo = Memo.new(get_proper_params(@user.user_department.try(:code)))
     if @memo.save
       flash[:notice] = 'Successfully created new memo.'
     else
@@ -38,8 +36,23 @@ class Admin::MemoController < Admin::ApplicationController
   end
 
   private
-    def set_user
-      @user = User.find(1).decorate
+    def get_proper_params dept_code
+      case dept_code.downcase
+      when 'ltp'
+        ltp_params
+      when 'fmd'
+        fmd_params
+      when 'rmd'
+        rmd_params
+      when 'csd'
+        csd_params
+      when 'cfd'
+        cfd_params
+      when 'airport terminal'
+        at_params
+      when 'sp'
+        sp_params
+      end
     end
 
     def ltp_params
