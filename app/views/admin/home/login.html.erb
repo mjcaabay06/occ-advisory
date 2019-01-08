@@ -1,1 +1,49 @@
-LOGIN
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>OCC | Login</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <%= csrf_meta_tags %>
+    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+    <style type="text/css">
+      #form-login{
+        margin-top: 60px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-4 col-md-offset-4">
+          <%= form_for :home, html: { class: 'form-horizontal', id: 'form-login' }, url: "/admin/login-auth" do |f| %>
+            <div class="panel panel-default">
+              <div class="panel-heading text-center">
+                <h3>LOGIN</h3>
+              </div>
+              <div class="panel-body">
+                <div class="col-sm-12">
+                  <% if flash[:status] == false %>
+                    <div class="form-group alert-danger" style="padding: 6px 12px;">
+                      <%= flash[:message] %>
+                    </div>
+                  <% end %>
+                  <div class="form-group">
+                    <%= text_field_tag :email, nil, placeholder: 'Email', class: 'form-control', required: true %>
+                  </div>
+                  <div class="form-group">
+                    <%= password_field_tag :password, nil, placeholder: 'Password', class: 'form-control', required: true %>
+                  </div>
+                  <div class="form-group">
+                    <%= f.button 'Login', class: 'btn btn-primary form-control' %>
+                  </div>  
+                </div>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
