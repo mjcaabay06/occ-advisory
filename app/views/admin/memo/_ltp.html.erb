@@ -6,7 +6,7 @@
           <label class="form-label">Category:</label>
         </div>
         <div class="col-sm-9">
-        <%= mc.select :category_id, Category.where(id: [4,5]).order(:category).collect { |c| [c.category, c.id] }, {}, id: 'select-category', class: 'form-control field', 'data-field': 'category_id', 'data-field': '', onchange: 'select_category(this)' %>
+        <%= mc.select :category_id, Category.where(id: [4,5]).order(:category).collect { |c| [c.category, c.id] }, {}, id: 'select-category', class: 'form-control field', 'data-field': 'category_id', onchange: 'select_category(this)' %>
         </div>
       </div>
     </div>
@@ -21,7 +21,7 @@
           </div>
           <div class="col-sm-9">
             <div class="input-group">
-              <%= mc.date_field :effective_date, class: 'form-control field', 'data-field': 'effective_date', required: true %>
+              <%= mc.text_field :effective_date, class: 'form-control has-date-picker field', 'data-field': 'effective_date', required: true %>
               <span class="input-group-addon">
                 <span class="glyphicon glyphicon-calendar"></span>
               </span>
@@ -92,7 +92,7 @@
           </div>
           <div class="col-sm-9">
             <div class="input-group">
-              <%= mc.date_field :ac_status_datetime, class: 'form-control field', 'data-field': 'ac_status_datetime', required: true %>
+              <%= mc.text_field :ac_status_datetime, class: 'form-control has-date-picker field', 'data-field': 'ac_status_datetime', required: true %>
               <span class="input-group-addon">
                 <span class="glyphicon glyphicon-calendar"></span>
               </span>

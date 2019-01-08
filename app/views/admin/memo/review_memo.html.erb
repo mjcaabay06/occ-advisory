@@ -1,0 +1,44 @@
+<div class="col-md-12">
+  <div class="page-header">
+    <span><b>Issuer:</b> <%= @memo.user.first_name %></span><br>
+    <span><b>Issued Date:</b> <%= @memo.created_at.strftime('%B %-d, %Y') %></span>
+    <span class="pull-right"><b>Memo ID:</b> <%= @memo.memo_code %></h3>
+  </div>
+  <div class="view-memo">
+    <div style="border: 1px solid #000; padding: 8px"><%= @memo.user.user_department.description %></div>
+    <table class="table table-bordered primary-reason">
+      <tr>
+        <td width="10%"><%= ('REASON' unless @memo.reasons.blank?) || ('TIME AND DATE' unless @memo.time_and_date.blank?) %></td>
+        <% unless @memo.reasons.blank? %>
+          <% Reason.where(id: @memo.reasons).each do |r| %>
+            <td width="1%"><%= r.reason %></td>
+          <% end %>
+        <% else %>
+          <td width="1%"><%= @memo.time_and_date.try(:strftime, '%m-%d-%y (%a) %k%Mz') %></td>
+        <% end %>
+        <td></td>
+      </tr>
+      <tr>
+        <td><%= 'REMARKS' unless @memo.remarks.blank? %></td>
+        <% unless @memo.remarks.blank? %>
+          <% Remark.where(id: @memo.remarks).each do |r| %>
+            <td><%= r.remark %></td>
+          <% end %>
+        <% end %>
+      </tr>
+    </table>
+    <%= render partial: 'admin/memo/fields/ltp_fields' %>
+    <small>
+      In coordination with: <%= @incoordination %>
+    </small>
+
+    <% unless @memo.is_viewable %>
+      <div class="pull-right below-btns">
+        <%= link_to 'Edit', "/admin/memo/#{@memo.sid}/edit", class: 'btn btn-primary', id: 'btn-edit', disabled: true %>
+        <%= button_tag 'Send', class: 'btn btn-primary', id: 'btn-send', type: 'button' %>
+      </div>
+    <% end %>
+  </div>
+</div>
+<%= hidden_field_tag 'hidden-sid', @memo.sid %>
+<%= render 'modal_password' %>

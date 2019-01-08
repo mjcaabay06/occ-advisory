@@ -2,14 +2,17 @@ $(document).ready(function(){
   init();
   select_category($("#select-category"));
 
-  var submit_form = false;
-  $("#new_memo").submit(function(e){
-    if (submit_form){
-      return;
-    } else {
-      $("#modal-insert-password").modal('show');
-      e.preventDefault();
-    }
+  // var submit_form = false;
+  // $("#new_memo").submit(function(e){
+  //   if (submit_form){
+  //     return;
+  //   } else {
+  //     $("#modal-insert-password").modal('show');
+  //     e.preventDefault();
+  //   }
+  // });
+  $("#btn-send").on('click', function(){
+    $("#modal-insert-password").modal('show');
   });
 
   $("#btn-check-password").on('click', function(){
@@ -18,8 +21,8 @@ $(document).ready(function(){
     $.get('/admin/memo/check-account?password=' + password)
       .done(function(result){
         if (result == 'valid') {
-          submit_form = true;
-          $("#new_memo").submit();
+          var sid = $('input[name=hidden-sid]').val();
+          window.location.href = '/admin/memo/send-memo/' + sid;
         } else {
           alert('You have entered invalid password.');
         }
@@ -27,22 +30,25 @@ $(document).ready(function(){
       });
   });
 
-  $('select[name=aircraft_registry_id]').on('change', function(){
-    memo_filter();
-  });
+  // $('select[name=aircraft_registry_id]').on('change', function(){
+  //   memo_filter();
+  // });
 
   $('select[name=user_department_id]').on('change', function(){
     memo_filter();
   });
 
-  $('#created_date').on('change', function(){
+  $('#flight_date').on('change', function(){
     memo_filter();
   });
 
-  $("#memo-recipient-select, #memo-recipient-select1, #reason-select, #remarks-select").select2({
-    theme: 'bootstrap'
+  $("#tb-search").on('keyup', function(){
+    memo_filter();
   });
 
+  $("#recipient-select, #incoordinate-select, #reason-select, #remarks-select").select2({
+    theme: 'bootstrap'
+  });
 });
 
 function init() {
@@ -58,22 +64,23 @@ function init() {
 }
 
 function memo_filter() {
-  var ac_id = $('select[name=aircraft_registry_id]').val();
   var dept_id = $('select[name=user_department_id]').val();
-  var created_date = $('#created_date').val();
+  var flight_date = $('#flight_date').val();
+  var txt = $("#tb-search").val();
 
-  $.get('admin/memo-filters', { ac_id: ac_id, dept_id: dept_id, created_date: created_date })
+  $.get('memo/filter', { dept_id: dept_id, flight_date: flight_date, val: txt })
     .done(function(result){
       $(".panel-body.memo-lists").html(result);
     });
 }
 
-function memo_info(id){
-  $.get('admin/memo-info', { id: id })
-  .done(function(result){
-    $(".panel-body.memo-info").html(result.partial);
-    $(".panel-heading.memo-title").html(result.title);
-  });
+function memo_info(sid){
+  // $.get('admin/memo-info', { id: id })
+  // .done(function(result){
+  //   $(".panel-body.memo-info").html(result.partial);
+  //   $(".panel-heading.memo-title").html(result.title);
+  // });
+  window.location.href = '/admin/memo/review-memo/' + sid;
 }
 
 function select_category(id) {

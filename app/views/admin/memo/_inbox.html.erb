@@ -1,0 +1,23 @@
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <div class="row">
+      <div class="col-sm-4">
+        <%= text_field_tag 'tb-search', nil, class: 'form-control', placeholder: 'Search' %>
+      </div>
+      <div class="col-sm-2">
+        <div class="input-group">
+          <%= date_field_tag nil, nil, id: 'flight_date', class: 'form-control' %>
+          <span class="input-group-addon">
+            <span class="glyphicon glyphicon-calendar"></span>
+          </span>
+        </div>
+      </div>
+      <div class="col-sm-2">
+        <%= select(nil, :user_department_id, UserDepartment.where.not('id in (1,8)').order(:description).collect { |a| [a.description, a.id] }, {selected: @dept_id, include_blank: 'All Departments'}, class: 'form-control') %>
+      </div>
+    </div>
+  </div>
+  <div class="panel-body memo-lists">
+    <%= render 'inbox_body' %>
+  </div>
+</div>

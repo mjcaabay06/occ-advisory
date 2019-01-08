@@ -12,26 +12,36 @@
       <ul class="nav navbar-nav">
         <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-            Button 1<span class="caret"></span>
+            Memo<span class="caret"></span>
           </a>
           <ul class="dropdown-menu">
             <li>
-              <a href="#">Sub Button 1</a>
-              <a href="#">Sub Button 2</a>
+              <a href="/admin/memo">Created Memos</a>
+              <a href="/admin/memo/new">New Memo</a>
             </li>
           </ul>
         </li>
-        <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-            Button 2<span class="caret"></span>
+        <li>
+          <a href="/admin/memo/inbox" class="dropdown-toggle">
+            Inbox
           </a>
         </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        <li>
-          <a href="/admin/logout">
-            <small><%= "#{@user.first_name} (#{@user.user_department.code})" %></small>
-            <span class="glyphicon glyphicon-log-in"></span> Logout</a>
+        <li class="dropdown settings">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+            <%= @user.first_name %>
+            (<small><%= @user.user_department.code %></small>)
+            <b class="caret"></b>
+          </a>
+          <ul class="dropdown-menu dropdown-menu-left">
+            <li>
+              <a href="/admin/logout">
+                <span class="glyphicon glyphicon-log-out"></span>
+                &emsp;Logout
+              </a>
+            </li>
+          </ul>
         </li>
       </ul>
     </div>
