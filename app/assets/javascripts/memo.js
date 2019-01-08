@@ -68,7 +68,7 @@ function memo_filter() {
   var flight_date = $('#flight_date').val();
   var txt = $("#tb-search").val();
 
-  $.get('memo/filter', { dept_id: dept_id, flight_date: flight_date, val: txt })
+  $.get('filter', { dept_id: dept_id, flight_date: flight_date, val: txt })
     .done(function(result){
       $(".panel-body.memo-lists").html(result);
     });

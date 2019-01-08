@@ -16,13 +16,13 @@
           </a>
           <ul class="dropdown-menu">
             <li>
-              <a href="/admin/memo">Created Memos</a>
-              <a href="/admin/memo/new">New Memo</a>
+              <a href="#" onclick="redirect('/admin/memo')">Created Memos</a>
+              <a href="#" onclick="redirect('/admin/memo/new')">New Memo</a>
             </li>
           </ul>
         </li>
         <li>
-          <a href="/admin/memo/inbox" class="dropdown-toggle">
+          <a href="#" onclick="redirect('/admin/memo/inbox')">
             Inbox
           </a>
         </li>
@@ -47,3 +47,8 @@
     </div>
   </div>
 </nav>
+<script type="text/javascript">
+  function redirect(url) {
+    window.location.href = url;
+  }
+</script>
