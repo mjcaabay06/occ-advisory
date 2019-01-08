@@ -38,7 +38,13 @@ class Admin::HomeController < Admin::ApplicationController
 
     unless user.blank?
       session[:user_id] = user.id
-      redirect_to '/admin/memo'
+
+      url = '/admin/memo'
+      if user.user_department_id == 8
+        url = '/admin'
+      end
+
+      redirect_to url
     else
       flash[:status] = false
       flash[:message] = alert

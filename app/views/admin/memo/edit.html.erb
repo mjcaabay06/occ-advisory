@@ -5,7 +5,7 @@
     </div>
     <%= render 'message' %>
     <div class="col-md-8 col-md-offset-2">
-      <%= form_for @memo, url: { controller: 'memo', action: 'create' }, html: { method: :post, class: 'form-horizontal' } do |f| %>
+      <%= form_for [:admin, @memo], html: { method: :post, class: 'form-horizontal' } do |f| %>
         <div class="panel panel-default">
           <div class="panel-heading">
             Advisory Header
@@ -61,10 +61,6 @@
             $("#panel-category").append(html);
             init();
             select_category($("#additional-category" + id).find("#select-category"));
-            // $('.has-datetime-picker').datetimepicker();
-            // $('.has-time-picker').datetimepicker({
-            //   format: 'LT'
-            // });
 
             $("#additional-category" + id).find('.field').each(function(){
               var field_name = $(this).data('field');
@@ -80,3 +76,4 @@
     </div>
   </div>
 </div>
+<%= render 'modal_password' %>

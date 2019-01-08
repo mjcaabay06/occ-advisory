@@ -7,6 +7,19 @@ class Admin::MemoController < Admin::ApplicationController
 
   def index
   end
+  
+  def inbox
+    @memos = Memo.filter_inbox(@user.id)
+              .order('created_at desc').decorate
+  end
+
+  def edit
+    @memo = Memo.find_by_sid(params[:id])
+    @heading = check_heading(@memo.user.user_department_id)
+    @remark_ids = check_remarks_ids(@memo.user.user_department_id)
+    @reason_ids = check_reason_ids(@memo.user.user_department_id)
+    # binding.pry
+  end
 
   def new
     @memo = Memo.new
@@ -22,10 +35,11 @@ class Admin::MemoController < Admin::ApplicationController
     @memo = Memo.new(memo_params(@user.user_department.try(:code)))
     if @memo.save
       flash[:notice] = 'Successfully created new memo.'
+      redirect_to "/admin/memo/review-memo/#{@memo.sid}"
     else
       flash[:notice] = 'There was a problem in your application. Please check all fields.'
+      redirect_to new_admin_memo_path
     end
-    redirect_to new_admin_memo_path
   end
 
   def check_account
@@ -36,6 +50,44 @@ class Admin::MemoController < Admin::ApplicationController
       status = :valid
     end
     render json: status
+  end
+
+  def review_memo
+    @memo = Memo.find_by_sid(params[:sid]).decorate
+    @category_ids = @memo.memo_categories.select('distinct(category_id)').order(:category_id).collect{|mc| mc.category_id}
+    @incoordination = User.where(id: @memo.incoordinate_with).collect{ |u| "#{u.first_name}-#{u.user_department.code}" }.join(', ')
+  end
+
+  def send_memo
+    memo = Memo.find_by_sid(params[:sid])
+    memo.update_attributes(is_viewable: true)
+    redirect_to '/admin/memo'
+  end
+
+  def memo_filter
+    memo_ids = Memo.select('distinct(memos.id)').filter_joins
+    is_memo = false
+    unless params[:val].blank?
+      memo_ids = memo_ids.filter_text(params[:val])
+      is_memo = true
+    end
+    unless params[:flight_date].blank?
+      memo_ids = memo_ids.filter_flight_date(params[:flight_date])
+      is_memo = true
+    end
+    unless params[:dept_id].blank?
+      memo_ids = memo_ids.filter_department(params[:dept_id])
+      is_memo = true
+    end
+
+    @memos = Memo.filter_inbox(@user.id)
+    
+    if is_memo
+      @memos = @memos.where(id: memo_ids)
+    end
+
+    @memos = @memos.order('created_at desc').decorate
+    render partial: 'inbox_body'
   end
 
   private

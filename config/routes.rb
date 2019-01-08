@@ -19,7 +19,14 @@ Rails.application.routes.draw do
     # resources :advisory, only: [:new]
 
     get '/memo/check-account' => 'memo#check_account'
-    resources :memo
+    resources :memo do
+      collection do
+        get :review_memo, path: '/review-memo/:sid'
+        get :send_memo, path: '/send-memo/:sid'
+        get :memo_filter, path: '/filter'
+        get :inbox, path: '/inbox'
+      end
+    end
   end
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 end

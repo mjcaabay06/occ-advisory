@@ -20,3 +20,38 @@
     }
   }
 }
+
+.view-memo {
+  margin-bottom: 20px;
+
+  table {
+    border-color: #000;
+
+    & > tbody > tr > td,
+    & > thead > tr > th {
+      border-color: #000;
+    }
+
+    &.category {
+      margin-bottom: 10px;
+      thead {
+        background-color: #939ADD;
+
+        & > tr > th {
+          border-width: 1px;
+          text-align: center;
+        }
+      }
+    }
+
+    &.primary-reason {
+      background-color: #2C1663;
+      color: #fff;
+      margin: 0;
+    }
+  }
+
+  .below-btns {
+    margin-top: 30px;
+  }
+}
