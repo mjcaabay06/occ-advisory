@@ -1,4 +1,4 @@
-class CreateMemos < ActiveRecord::Migration[5.2]
+class CreateMemos1 < ActiveRecord::Migration[5.2]
   def change
     create_table :memos do |t|
       t.string :recipients, array: true, default: []
