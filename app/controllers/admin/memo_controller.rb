@@ -79,7 +79,6 @@ class Admin::MemoController < Admin::ApplicationController
       {:memo_categories_attributes => [
         :category_id, :effective_date, :ac_registry, :flight_number, :ac_status_datetime, :remarks
       ]}
-      # params.require(:memo).permit(:international_flight_date, :aircraft_registry_id, :flight_number, :remarks, :user_id)
     end
 
     def rmd_params
@@ -90,7 +89,10 @@ class Admin::MemoController < Admin::ApplicationController
     end
 
     def csd_params
-      params.require(:memo).permit(:cabin_crew_availablity, :remarks, :user_id)
+      {:memo_categories_attributes => [
+        :ac_registry, :aircraft_type_id, :flight_number, :flight_date,
+        :remarks
+      ]}
     end
 
     def cfd_params
