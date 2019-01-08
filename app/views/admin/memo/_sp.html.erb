@@ -1,103 +1,942 @@
-<div class="col-md-12">
-  <div class="page-header">
-    <h3>SP</h3>
+<%= f.fields_for :memo_categories do |mc|%>
+  <div class="form-group">
+    <div class="col-sm-6">
+      <div class="row">
+        <div class="col-sm-3 text-right">
+          <label class="form-label">Category:</label>
+        </div>
+        <div class="col-sm-9">
+        <%= mc.select :category_id, Category.where(id: [6..12]).order(:category).collect { |c| [c.category, c.id] }, {}, id: 'select-category', class: 'form-control field', 'data-field': 'category_id', onchange: 'select_category(this)' %>
+        </div>
+      </div>
+    </div>
   </div>
-  <%= render 'message' %>
-  <div class="col-md-8 col-md-offset-2">
-    <%= form_for @memo, url: { controller: 'memo', action: 'create' }, html: { method: :post, class: 'form-horizontal' } do |f| %>
-      <div class="panel panel-default">
-        <div class="panel-body">
-          <div class="form-group">
-            <div class="col-md-5 text-right">
-              <label class="form-label">Flight Date</label>
+
+  <div id="category-6" class="hidden div-category">
+    <div class="form-group">
+      <div class="col-sm-6">
+        <div class="row">
+          <div class="col-sm-3 text-right">
+            <label class="form-label">FD</label>
+          </div>
+          <div class="col-sm-9">
+            <div class="input-group">
+              <%= mc.text_field :flight_date, class: 'form-control has-date-picker field', 'data-field': 'flight_date', required: true %>
+              <span class="input-group-addon">
+                <span class="glyphicon glyphicon-calendar"></span>
+              </span>
             </div>
-            <div class="col-md-4">
-              <div class="input-group">
-                <%= f.date_field :flight_date, class: 'form-control', required: true %>
-                <span class="input-group-addon">
-                  <span class="glyphicon glyphicon-calendar"></span>
-                </span>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6">
+        <div class="row">
+          <div class="col-sm-3 text-right">
+            <label class="form-label">FN</label>
+          </div>
+          <div class="col-sm-9">
+            <%= mc.text_field :flight_number, 'data-field': 'flight_number', class: 'form-control field' %>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <div class="col-sm-6">
+        <div class="row">
+          <div class="col-sm-3 text-right">
+            <label class="form-label">Route</label>
+          </div>
+          <div class="col-sm-9">
+            <div class="row">
+              <div class="col-sm-6">
+                <%= mc.text_field :route_origin, 'data-field': 'route_origin', class: 'form-control field', placeholder: 'Origin' %>
+              </div>
+              <div class="col-sm-6">
+                <%= mc.text_field :route_destination, 'data-field': 'route_destination', class: 'form-control field', placeholder: 'Destination' %>
               </div>
             </div>
           </div>
-
-          <div class="form-group">
-            <div class="col-md-5 text-right">
-              <label class="form-label">Flight Number</label>
-            </div>
-            <div class="col-md-4">
-              <%= f.text_field :flight_number, class: 'form-control', required: true %>
-            </div>
-          </div>
-
-          <div class="form-group">
-            <div class="col-md-5 text-right">
-              <label class="form-label">Route</label>
-            </div>
-            <div class="col-md-4">
-              <%= f.text_field :route, class: 'form-control', required: true %>
-            </div>
-          </div>
-
-          <div class="form-group">
-            <div class="col-md-5 text-right">
-              <label class="form-label">AC Type</label>
-            </div>
-            <div class="col-md-4">
-              <%= f.text_field :aircraft_type, class: 'form-control', required: true %>
-            </div>
-          </div>
-
-          <div class="form-group">
-            <div class="col-md-5 text-right">
-              <label class="form-label">AC Configuration</label>
-            </div>
-            <div class="col-md-4">
-              <%= f.number_field :aircraft_configuration, class: 'form-control', required: true %>
-            </div>
-          </div>
-
-          <div class="form-group">
-            <div class="col-md-5 text-right">
-              <label class="form-label">STD</label>
-            </div>
-            <div class="col-md-4">
-              <%= f.number_field :std, class: 'form-control', required: true %>
-            </div>
-          </div>
-
-          <div class="form-group">
-            <div class="col-md-5 text-right">
-              <label class="form-label">STA</label>
-            </div>
-            <div class="col-md-4">
-              <%= f.number_field :sta, class: 'form-control', required: true %>
-            </div>
-          </div>
-
-          <div class="form-group">
-            <div class="col-md-5 text-right">
-              <label class="form-label">Frequency</label>
-            </div>
-            <div class="col-md-4">
-              <%= f.number_field :frequency, class: 'form-control', required: true %>
-            </div>
-          </div>
-
-          <div class="form-group">
-            <div class="col-md-5 text-right">
-              <label class="form-label">Remarks</label>
-            </div>
-            <div class="col-md-4">
-              <%= f.text_area :remarks, class: 'form-control', required: true %>
-            </div>
-          </div>
-
-        </div>
-        <div class="panel-footer text-right">
-          <%= f.button 'Submit', class: 'btn btn-primary' %>
         </div>
       </div>
-    <% end %>
+      <div class="col-sm-6">
+        <div class="row">
+          <div class="col-sm-3 text-right">
+            <label class="form-label">ACR</label>
+          </div>
+          <div class="col-sm-9">
+            <div class="input-group">
+              <span class="input-group-addon">RP-N</span>
+              <%= mc.text_field :ac_registry, 'data-field': 'ac_registry', class: 'form-control field' %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <div class="col-sm-6">
+        <div class="row">
+          <div class="col-sm-3 text-right">
+            <label class="form-label">ACT</label>
+          </div>
+          <div class="col-sm-9">
+            <%= mc.select :aircraft_type_id, AircraftType.all.order(:ac_type).collect { |l| [l.ac_type, l.id] }, {}, 'data-field': 'aircraft_type_id', class: 'form-control field' %>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6">
+        <div class="row">
+          <div class="col-sm-3 text-right">
+            <label class="form-label">ACC</label>
+          </div>
+          <div class="col-sm-9">
+            <%= mc.text_field :ac_configuration, 'data-field': 'ac_configuration', class: 'form-control field' %>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <div class="col-sm-6">
+        <div class="row">
+          <div class="col-sm-3 text-right">
+            <label class="form-label">STD</label>
+          </div>
+          <div class="col-sm-9">
+            <div class="input-group">
+              <%= mc.text_field :std, 'data-field': 'std', class: 'form-control field has-time-picker', required: true %>
+              <span class="input-group-addon">
+                <span class="glyphicon glyphicon-time"></span>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6">
+        <div class="row">
+          <div class="col-sm-3 text-right">
+            <label class="form-label">STA</label>
+          </div>
+          <div class="col-sm-9">
+            <div class="input-group">
+              <%= mc.text_field :sta, 'data-field': 'sta', class: 'form-control field has-time-picker', required: true %>
+              <span class="input-group-addon">
+                <span class="glyphicon glyphicon-time"></span>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <div class="col-sm-6">
+        <div class="row">
+          <div class="col-sm-3 text-right">
+            <label class="form-label">FREQ</label>
+          </div>
+          <div class="col-sm-9">
+            <%= mc.select :frequency_id, Frequency.all.order(:id).collect { |l| [l.frequency, l.id] }, {}, 'data-field': 'frequency_id', class: 'form-control field' %>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6">
+        <div class="row">
+          <div class="col-sm-3 text-right">
+            <label class="form-label">Remarks</label>
+          </div>
+          <div class="col-sm-9">
+            <%= mc.text_area :remarks, 'data-field': 'remarks', class: 'form-control field', required: true %>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
-</div>
+
+  <div id="category-7" class="hidden div-category">
+    <div class="form-group">
+      <div class="col-sm-6">
+        <div class="row">
+          <div class="col-sm-3 text-right">
+            <label class="form-label">FD</label>
+          </div>
+          <div class="col-sm-9">
+            <div class="input-group">
+              <%= mc.text_field :flight_date, class: 'form-control has-date-picker field', 'data-field': 'flight_date', required: true %>
+              <span class="input-group-addon">
+                <span class="glyphicon glyphicon-calendar"></span>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6">
+        <div class="row">
+          <div class="col-sm-3 text-right">
+            <label class="form-label">FN</label>
+          </div>
+          <div class="col-sm-9">
+            <%= mc.text_field :flight_number, 'data-field': 'flight_number', class: 'form-control field' %>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <div class="col-sm-6">
+        <div class="row">
+          <div class="col-sm-3 text-right">
+            <label class="form-label">Route</label>
+          </div>
+          <div class="col-sm-9">
+            <div class="row">
+              <div class="col-sm-6">
+                <%= mc.text_field :route_origin, 'data-field': 'route_origin', class: 'form-control field', placeholder: 'Origin' %>
+              </div>
+              <div class="col-sm-6">
+                <%= mc.text_field :route_destination, 'data-field': 'route_destination', class: 'form-control field', placeholder: 'Destination' %>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6">
+        <div class="row">
+          <div class="col-sm-3 text-right">
+            <label class="form-label">ACR</label>
+          </div>
+          <div class="col-sm-9">
+            <div class="input-group">
+              <span class="input-group-addon">RP-N</span>
+              <%= mc.text_field :ac_registry, 'data-field': 'ac_registry', class: 'form-control field' %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <div class="col-sm-6">
+        <div class="row">
+          <div class="col-sm-3 text-right">
+            <label class="form-label">ACT</label>
+          </div>
+          <div class="col-sm-9">
+            <%= mc.select :aircraft_type_id, AircraftType.all.order(:ac_type).collect { |l| [l.ac_type, l.id] }, {}, 'data-field': 'aircraft_type_id', class: 'form-control field' %>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6">
+        <div class="row">
+          <div class="col-sm-3 text-right">
+            <label class="form-label">ACC</label>
+          </div>
+          <div class="col-sm-9">
+            <%= mc.text_field :ac_configuration, 'data-field': 'ac_configuration', class: 'form-control field' %>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <div class="col-sm-6">
+        <div class="row">
+          <div class="col-sm-3 text-right">
+            <label class="form-label">FREQ</label>
+          </div>
+          <div class="col-sm-9">
+            <%= mc.select :frequency_id, Frequency.all.order(:id).collect { |l| [l.frequency, l.id] }, {}, 'data-field': 'frequency_id', class: 'form-control field' %>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6">
+        <div class="row">
+          <div class="col-sm-3 text-right">
+            <label class="form-label">Remarks</label>
+          </div>
+          <div class="col-sm-9">
+            <%= mc.text_area :remarks, 'data-field': 'remarks', class: 'form-control field', required: true %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="category-8" class="hidden div-category">
+    <div class="form-group">
+      <div class="col-sm-6">
+        <div class="row">
+          <div class="col-sm-3 text-right">
+            <label class="form-label">FD</label>
+          </div>
+          <div class="col-sm-9">
+            <div class="input-group">
+              <%= mc.text_field :flight_date, class: 'form-control has-date-picker field', 'data-field': 'flight_date', required: true %>
+              <span class="input-group-addon">
+                <span class="glyphicon glyphicon-calendar"></span>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6">
+        <div class="row">
+          <div class="col-sm-3 text-right">
+            <label class="form-label">FN</label>
+          </div>
+          <div class="col-sm-9">
+            <%= mc.text_field :flight_number, 'data-field': 'flight_number', class: 'form-control field' %>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <div class="col-sm-6">
+        <div class="row">
+          <div class="col-sm-3 text-right">
+            <label class="form-label">Route</label>
+          </div>
+          <div class="col-sm-9">
+            <div class="row">
+              <div class="col-sm-6">
+                <%= mc.text_field :route_origin, 'data-field': 'route_origin', class: 'form-control field', placeholder: 'Origin' %>
+              </div>
+              <div class="col-sm-6">
+                <%= mc.text_field :route_destination, 'data-field': 'route_destination', class: 'form-control field', placeholder: 'Destination' %>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6">
+        <div class="row">
+          <div class="col-sm-3 text-right">
+            <label class="form-label">ACR</label>
+          </div>
+          <div class="col-sm-9">
+            <div class="input-group">
+              <span class="input-group-addon">RP-N</span>
+              <%= mc.text_field :ac_registry, 'data-field': 'ac_registry', class: 'form-control field' %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <div class="col-sm-6">
+        <div class="row">
+          <div class="col-sm-3 text-right">
+            <label class="form-label">ACT</label>
+          </div>
+          <div class="col-sm-9">
+            <%= mc.select :aircraft_type_id, AircraftType.all.order(:ac_type).collect { |l| [l.ac_type, l.id] }, {}, 'data-field': 'aircraft_type_id', class: 'form-control field' %>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6">
+        <div class="row">
+          <div class="col-sm-3 text-right">
+            <label class="form-label">ACC</label>
+          </div>
+          <div class="col-sm-9">
+            <%= mc.text_field :ac_configuration, 'data-field': 'ac_configuration', class: 'form-control field' %>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <div class="col-sm-6">
+        <div class="row">
+          <div class="col-sm-3 text-right">
+            <label class="form-label">STD</label>
+          </div>
+          <div class="col-sm-9">
+            <div class="input-group">
+              <%= mc.text_field :std, 'data-field': 'std', class: 'form-control field has-time-picker', required: true %>
+              <span class="input-group-addon">
+                <span class="glyphicon glyphicon-time"></span>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6">
+        <div class="row">
+          <div class="col-sm-3 text-right">
+            <label class="form-label">STA</label>
+          </div>
+          <div class="col-sm-9">
+            <div class="input-group">
+              <%= mc.text_field :sta, 'data-field': 'sta', class: 'form-control field has-time-picker', required: true %>
+              <span class="input-group-addon">
+                <span class="glyphicon glyphicon-time"></span>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <div class="col-sm-6">
+        <div class="row">
+          <div class="col-sm-3 text-right">
+            <label class="form-label">FREQ</label>
+          </div>
+          <div class="col-sm-9">
+            <%= mc.select :frequency_id, Frequency.all.order(:id).collect { |l| [l.frequency, l.id] }, {}, 'data-field': 'frequency_id', class: 'form-control field' %>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6">
+        <div class="row">
+          <div class="col-sm-3 text-right">
+            <label class="form-label">Remarks</label>
+          </div>
+          <div class="col-sm-9">
+            <%= mc.text_area :remarks, 'data-field': 'remarks', class: 'form-control field', required: true %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="category-9" class="div-category">
+    <div class="form-group">
+      <div class="col-sm-6">
+        <div class="row">
+          <div class="col-sm-3 text-right">
+            <label class="form-label">FD</label>
+          </div>
+          <div class="col-sm-9">
+            <div class="input-group">
+              <%= mc.text_field :flight_date, class: 'form-control has-date-picker field', 'data-field': 'flight_date', required: true %>
+              <span class="input-group-addon">
+                <span class="glyphicon glyphicon-calendar"></span>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6">
+        <div class="row">
+          <div class="col-sm-3 text-right">
+            <label class="form-label">FN</label>
+          </div>
+          <div class="col-sm-9">
+            <%= mc.text_field :flight_number, 'data-field': 'flight_number', class: 'form-control field' %>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <div class="col-sm-6">
+        <div class="row">
+          <div class="col-sm-3 text-right">
+            <label class="form-label">Route</label>
+          </div>
+          <div class="col-sm-9">
+            <div class="row">
+              <div class="col-sm-6">
+                <%= mc.text_field :route_origin, 'data-field': 'route_origin', class: 'form-control field', placeholder: 'Origin' %>
+              </div>
+              <div class="col-sm-6">
+                <%= mc.text_field :route_destination, 'data-field': 'route_destination', class: 'form-control field', placeholder: 'Destination' %>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6">
+        <div class="row">
+          <div class="col-sm-3 text-right">
+            <label class="form-label">ACR</label>
+          </div>
+          <div class="col-sm-9">
+            <div class="input-group">
+              <span class="input-group-addon">RP-N</span>
+              <%= mc.text_field :ac_registry, 'data-field': 'ac_registry', class: 'form-control field' %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <div class="col-sm-6">
+        <div class="row">
+          <div class="col-sm-3 text-right">
+            <label class="form-label">ACT</label>
+          </div>
+          <div class="col-sm-9">
+            <%= mc.select :aircraft_type_id, AircraftType.all.order(:ac_type).collect { |l| [l.ac_type, l.id] }, {}, 'data-field': 'aircraft_type_id', class: 'form-control field' %>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6">
+        <div class="row">
+          <div class="col-sm-3 text-right">
+            <label class="form-label">ACC</label>
+          </div>
+          <div class="col-sm-9">
+            <%= mc.text_field :ac_configuration, 'data-field': 'ac_configuration', class: 'form-control field' %>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <div class="col-sm-6">
+        <div class="row">
+          <div class="col-sm-3 text-right">
+            <label class="form-label">FREQ</label>
+          </div>
+          <div class="col-sm-9">
+            <%= mc.select :frequency_id, Frequency.all.order(:id).collect { |l| [l.frequency, l.id] }, {}, 'data-field': 'frequency_id', class: 'form-control field' %>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6">
+        <div class="row">
+          <div class="col-sm-3 text-right">
+            <label class="form-label">Remarks</label>
+          </div>
+          <div class="col-sm-9">
+            <%= mc.text_area :remarks, 'data-field': 'remarks', class: 'form-control field', required: true %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="category-10" class="hidden div-category">
+    <div class="form-group">
+      <div class="col-sm-6">
+        <div class="row">
+          <div class="col-sm-3 text-right">
+            <label class="form-label">FD</label>
+          </div>
+          <div class="col-sm-9">
+            <div class="input-group">
+              <%= mc.text_field :flight_date, class: 'form-control has-date-picker field', 'data-field': 'flight_date', required: true %>
+              <span class="input-group-addon">
+                <span class="glyphicon glyphicon-calendar"></span>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6">
+        <div class="row">
+          <div class="col-sm-3 text-right">
+            <label class="form-label">FN</label>
+          </div>
+          <div class="col-sm-9">
+            <%= mc.text_field :flight_number, 'data-field': 'flight_number', class: 'form-control field' %>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <div class="col-sm-6">
+        <div class="row">
+          <div class="col-sm-3 text-right">
+            <label class="form-label">Route</label>
+          </div>
+          <div class="col-sm-9">
+            <div class="row">
+              <div class="col-sm-6">
+                <%= mc.text_field :route_origin, 'data-field': 'route_origin', class: 'form-control field', placeholder: 'Origin' %>
+              </div>
+              <div class="col-sm-6">
+                <%= mc.text_field :route_destination, 'data-field': 'route_destination', class: 'form-control field', placeholder: 'Destination' %>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6">
+        <div class="row">
+          <div class="col-sm-3 text-right">
+            <label class="form-label">ACR</label>
+          </div>
+          <div class="col-sm-9">
+            <div class="input-group">
+              <span class="input-group-addon">RP-N</span>
+              <%= mc.text_field :ac_registry, 'data-field': 'ac_registry', class: 'form-control field' %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <div class="col-sm-6">
+        <div class="row">
+          <div class="col-sm-3 text-right">
+            <label class="form-label">ACT</label>
+          </div>
+          <div class="col-sm-9">
+            <%= mc.select :aircraft_type_id, AircraftType.all.order(:ac_type).collect { |l| [l.ac_type, l.id] }, {}, 'data-field': 'aircraft_type_id', class: 'form-control field' %>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6">
+        <div class="row">
+          <div class="col-sm-3 text-right">
+            <label class="form-label">ACC</label>
+          </div>
+          <div class="col-sm-9">
+            <%= mc.text_field :ac_configuration, 'data-field': 'ac_configuration', class: 'form-control field' %>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <div class="col-sm-6">
+        <div class="row">
+          <div class="col-sm-3 text-right">
+            <label class="form-label">STD</label>
+          </div>
+          <div class="col-sm-9">
+            <div class="input-group">
+              <%= mc.text_field :std, 'data-field': 'std', class: 'form-control field has-time-picker', required: true %>
+              <span class="input-group-addon">
+                <span class="glyphicon glyphicon-time"></span>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6">
+        <div class="row">
+          <div class="col-sm-3 text-right">
+            <label class="form-label">STA</label>
+          </div>
+          <div class="col-sm-9">
+            <div class="input-group">
+              <%= mc.text_field :sta, 'data-field': 'sta', class: 'form-control field has-time-picker', required: true %>
+              <span class="input-group-addon">
+                <span class="glyphicon glyphicon-time"></span>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <div class="col-sm-6">
+        <div class="row">
+          <div class="col-sm-3 text-right">
+            <label class="form-label">FREQ</label>
+          </div>
+          <div class="col-sm-9">
+            <%= mc.select :frequency_id, Frequency.all.order(:id).collect { |l| [l.frequency, l.id] }, {}, 'data-field': 'frequency_id', class: 'form-control field' %>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6">
+        <div class="row">
+          <div class="col-sm-3 text-right">
+            <label class="form-label">Remarks</label>
+          </div>
+          <div class="col-sm-9">
+            <%= mc.text_area :remarks, 'data-field': 'remarks', class: 'form-control field', required: true %>
+          </div>
+        </div>
+      </div>
+    </div>  
+  </div>
+
+  <div id="category-11" class="hidden div-category">
+    <div class="form-group">
+      <div class="col-sm-6">
+        <div class="row">
+          <div class="col-sm-3 text-right">
+            <label class="form-label">FD</label>
+          </div>
+          <div class="col-sm-9">
+            <div class="input-group">
+              <%= mc.text_field :flight_date, class: 'form-control has-date-picker field', 'data-field': 'flight_date', required: true %>
+              <span class="input-group-addon">
+                <span class="glyphicon glyphicon-calendar"></span>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6">
+        <div class="row">
+          <div class="col-sm-3 text-right">
+            <label class="form-label">FN</label>
+          </div>
+          <div class="col-sm-9">
+            <%= mc.text_field :flight_number, 'data-field': 'flight_number', class: 'form-control field' %>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <div class="col-sm-6">
+        <div class="row">
+          <div class="col-sm-3 text-right">
+            <label class="form-label">Route</label>
+          </div>
+          <div class="col-sm-9">
+            <div class="row">
+              <div class="col-sm-6">
+                <%= mc.text_field :route_origin, 'data-field': 'route_origin', class: 'form-control field', placeholder: 'Origin' %>
+              </div>
+              <div class="col-sm-6">
+                <%= mc.text_field :route_destination, 'data-field': 'route_destination', class: 'form-control field', placeholder: 'Destination' %>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6">
+        <div class="row">
+          <div class="col-sm-3 text-right">
+            <label class="form-label">ACR</label>
+          </div>
+          <div class="col-sm-9">
+            <div class="input-group">
+              <span class="input-group-addon">RP-N</span>
+              <%= mc.text_field :ac_registry, 'data-field': 'ac_registry', class: 'form-control field' %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <div class="col-sm-6">
+        <div class="row">
+          <div class="col-sm-3 text-right">
+            <label class="form-label">ACT</label>
+          </div>
+          <div class="col-sm-9">
+            <%= mc.select :aircraft_type_id, AircraftType.all.order(:ac_type).collect { |l| [l.ac_type, l.id] }, {}, 'data-field': 'aircraft_type_id', class: 'form-control field' %>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6">
+        <div class="row">
+          <div class="col-sm-3 text-right">
+            <label class="form-label">ACC</label>
+          </div>
+          <div class="col-sm-9">
+            <%= mc.text_field :ac_configuration, 'data-field': 'ac_configuration', class: 'form-control field' %>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <div class="col-sm-6">
+        <div class="row">
+          <div class="col-sm-3 text-right">
+            <label class="form-label">STD</label>
+          </div>
+          <div class="col-sm-9">
+            <div class="input-group">
+              <%= mc.text_field :std, 'data-field': 'std', class: 'form-control field has-time-picker', required: true %>
+              <span class="input-group-addon">
+                <span class="glyphicon glyphicon-time"></span>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6">
+        <div class="row">
+          <div class="col-sm-3 text-right">
+            <label class="form-label">STA</label>
+          </div>
+          <div class="col-sm-9">
+            <div class="input-group">
+              <%= mc.text_field :sta, 'data-field': 'sta', class: 'form-control field has-time-picker', required: true %>
+              <span class="input-group-addon">
+                <span class="glyphicon glyphicon-time"></span>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <div class="col-sm-6">
+        <div class="row">
+          <div class="col-sm-3 text-right">
+            <label class="form-label">NSTD</label>
+          </div>
+          <div class="col-sm-9">
+            <div class="input-group">
+              <%= mc.text_field :nstd, 'data-field': 'nstd', class: 'form-control field has-time-picker', required: true %>
+              <span class="input-group-addon">
+                <span class="glyphicon glyphicon-time"></span>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6">
+        <div class="row">
+          <div class="col-sm-3 text-right">
+            <label class="form-label">NSTA</label>
+          </div>
+          <div class="col-sm-9">
+            <div class="input-group">
+              <%= mc.text_field :nsta, 'data-field': 'nsta', class: 'form-control field has-time-picker', required: true %>
+              <span class="input-group-addon">
+                <span class="glyphicon glyphicon-time"></span>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <div class="col-sm-6">
+        <div class="row">
+          <div class="col-sm-3 text-right">
+            <label class="form-label">FREQ</label>
+          </div>
+          <div class="col-sm-9">
+            <%= mc.select :frequency_id, Frequency.all.order(:id).collect { |l| [l.frequency, l.id] }, {}, 'data-field': 'frequency_id', class: 'form-control field' %>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6">
+        <div class="row">
+          <div class="col-sm-3 text-right">
+            <label class="form-label">Remarks</label>
+          </div>
+          <div class="col-sm-9">
+            <%= mc.text_area :remarks, 'data-field': 'remarks', class: 'form-control field', required: true %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="category-12" class="hidden div-category">
+    <div class="form-group">
+      <div class="col-sm-6">
+        <div class="row">
+          <div class="col-sm-3 text-right">
+            <label class="form-label">FD</label>
+          </div>
+          <div class="col-sm-9">
+            <div class="input-group">
+              <%= mc.text_field :flight_date, class: 'form-control has-date-picker field', 'data-field': 'flight_date', required: true %>
+              <span class="input-group-addon">
+                <span class="glyphicon glyphicon-calendar"></span>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6">
+        <div class="row">
+          <div class="col-sm-3 text-right">
+            <label class="form-label">FN</label>
+          </div>
+          <div class="col-sm-9">
+            <%= mc.text_field :flight_number, 'data-field': 'flight_number', class: 'form-control field' %>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <div class="col-sm-6">
+        <div class="row">
+          <div class="col-sm-3 text-right">
+            <label class="form-label">Route</label>
+          </div>
+          <div class="col-sm-9">
+            <div class="row">
+              <div class="col-sm-6">
+                <%= mc.text_field :route_origin, 'data-field': 'route_origin', class: 'form-control field', placeholder: 'Origin' %>
+              </div>
+              <div class="col-sm-6">
+                <%= mc.text_field :route_destination, 'data-field': 'route_destination', class: 'form-control field', placeholder: 'Destination' %>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6">
+        <div class="row">
+          <div class="col-sm-3 text-right">
+            <label class="form-label">ACR</label>
+          </div>
+          <div class="col-sm-9">
+            <div class="input-group">
+              <span class="input-group-addon">RP-N</span>
+              <%= mc.text_field :ac_registry, 'data-field': 'ac_registry', class: 'form-control field' %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <div class="col-sm-6">
+        <div class="row">
+          <div class="col-sm-3 text-right">
+            <label class="form-label">ACT</label>
+          </div>
+          <div class="col-sm-9">
+            <%= mc.select :aircraft_type_id, AircraftType.all.order(:ac_type).collect { |l| [l.ac_type, l.id] }, {}, 'data-field': 'aircraft_type_id', class: 'form-control field' %>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6">
+        <div class="row">
+          <div class="col-sm-3 text-right">
+            <label class="form-label">ACC</label>
+          </div>
+          <div class="col-sm-9">
+            <%= mc.text_field :ac_configuration, 'data-field': 'ac_configuration', class: 'form-control field' %>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <div class="col-sm-6">
+        <div class="row">
+          <div class="col-sm-3 text-right">
+            <label class="form-label">FREQ</label>
+          </div>
+          <div class="col-sm-9">
+            <%= mc.select :frequency_id, Frequency.all.order(:id).collect { |l| [l.frequency, l.id] }, {}, 'data-field': 'frequency_id', class: 'form-control field' %>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6">
+        <div class="row">
+          <div class="col-sm-3 text-right">
+            <label class="form-label">Remarks</label>
+          </div>
+          <div class="col-sm-9">
+            <%= mc.text_area :remarks, 'data-field': 'remarks', class: 'form-control field', required: true %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %>

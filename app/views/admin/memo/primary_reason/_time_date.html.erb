@@ -1,0 +1,22 @@
+<div class="panel panel-default">
+  <div class="panel-heading">
+    Time Date
+  </div>
+  <div class="panel-body">
+    <div class="form-group">
+      <div class="col-sm-6">
+        <label class="form-label">Time and Date:</label>
+        <div class="input-group">
+          <%= f.text_field :time_and_date, class: 'form-control has-datetime-picker', required: true %>
+          <span class="input-group-addon">
+            <span class="glyphicon glyphicon-calendar"></span>
+          </span>
+        </div>
+      </div>
+      <div class="col-sm-6">
+        <label class="form-label">Remarks:</label>
+        <%= f.select :remarks, Remark.where(id: @remark_ids).order(:remark).collect { |r| [r.remark, r.id] }, {}, id: 'remarks-select', class: 'form-control', multiple: 'multiple', required: true %>
+      </div>
+    </div>
+  </div>
+</div>

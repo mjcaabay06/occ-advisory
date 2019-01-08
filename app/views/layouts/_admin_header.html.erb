@@ -29,7 +29,9 @@
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
-          <a href="/admin/logout"><span class="glyphicon glyphicon-log-in"></span> Logout</a>
+          <a href="/admin/logout">
+            <small><%= "#{@user.first_name} (#{@user.user_department.code})" %></small>
+            <span class="glyphicon glyphicon-log-in"></span> Logout</a>
         </li>
       </ul>
     </div>

@@ -1,9 +1,9 @@
 <% @memos.each do |memo| %>
   <div class="row">
-    <label><%= memo.memo_title %></label>
+    <label><%= memo.memo_info %></label>
     <label class="pull-right">
       <%= memo.date_send %>
-      <button type="button" class="btn-link btn-memo-info" data-id="<%= memo.id %>"><span class="glyphicon glyphicon-chevron-right"></span></button>
+      <button type="button" class="btn-link" onclick='memo_info(<%= memo.id %>)'><span class="glyphicon glyphicon-chevron-right"></span></button>
     </label>
   </div>
 <% end %>

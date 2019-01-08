@@ -6,5 +6,17 @@
         font-weight: normal;
       }
     }
+
+    .btn-link {
+      padding: 0;
+    }
+
+    .has-input-group {
+      padding-right: 0;
+
+      .input-group-addon {
+        padding: 5px;
+      }
+    }
   }
 }
