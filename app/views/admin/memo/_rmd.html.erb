@@ -1,74 +1,90 @@
-<div class="col-md-12">
-  <div class="page-header">
-    <h3>Revenue Management Department</h3>
-  </div>
-  <%= render 'message' %>
-  <div class="col-md-8 col-md-offset-2">
-    <%= form_for @memo, url: { controller: 'memo', action: 'create' },multipart: true, html: { method: :post, class: 'form-horizontal' } do |f| %>
-      <div class="panel panel-default">
-        <div class="panel-body">
-          <div class="form-group">
-            <div class="col-md-5 text-right">
-              <label class="form-label">A/C R</label>
-            </div>
-            <div class="col-md-4">
-              <%= f.select :aircraft_registry_id, options_for_select(AircraftRegistry.all.order(:aircraft_name).collect { |a| [a.aircraft_name, a.id] }), {}, class: 'form-control', required: true %>
-            </div>
-          </div>
-          <div class="form-group">
-            <div class="col-md-5 text-right">
-              <label class="form-label">Flight Date</label>
-            </div>
-            <div class="col-md-4">
-              <div class="input-group">
-                <%= f.date_field :flight_date, class: 'form-control', required: true %>
-                <span class="input-group-addon">
-                  <span class="glyphicon glyphicon-calendar"></span>
-                </span>
-              </div>
-            </div>
-          </div>
-          <div class="form-group">
-            <div class="col-md-5 text-right">
-              <label class="form-label">Purpose</label>
-            </div>
-            <div class="col-md-4">
-              <%= f.text_area :purpose, class: 'form-control', required: true %>
-            </div>
-          </div>
-
-          <%= f.fields_for :load do |p| %>
-            <div class="form-group">
-              <div class="col-md-5 text-right">
-                <label class="form-label">Load</label>
-              </div>
-              <div class="col-md-4">
-                <div class="col-md-12">
-                    <div class="form-group">
-                      <%= p.number_field :seat_number, class: '', required: true, min: 1, max: 50 %>
-                    </div>
-                    <div class="form-group">
-                      <%= p.select :specific_cabin, options_for_select(Admin::MemoController::MemoCabin.collect{ |a| [a, a] }), { include_blank: 'Select Specific Cabin' }, class: 'form-control', required: true %>
-                    </div>
-                </div>
-              </div>
-            </div>
-          <% end %>
-
-          <div class="form-group">
-            <div class="col-md-5 text-right">
-              <label class="form-label">Remarks</label>
-            </div>
-            <div class="col-md-4">
-              <%= f.text_area :remarks, class: 'form-control', required: true %>
-            </div>
-          </div>
-
+<%= f.fields_for :memo_categories do |mc|%>
+  <div class="form-group">
+    <div class="col-sm-6">
+      <div class="row">
+        <div class="col-sm-3 text-right">
+          <label class="form-label">Effective Date:</label>
         </div>
-        <div class="panel-footer text-right">
-          <%= f.button 'Submit', class: 'btn btn-primary' %>
+        <div class="col-sm-9">
+          <div class="input-group">
+            <%= mc.date_field :effective_date, class: 'form-control field', 'data-field': 'effective_date', required: true %>
+            <span class="input-group-addon">
+              <span class="glyphicon glyphicon-calendar"></span>
+            </span>
+          </div>
         </div>
       </div>
-    <% end %>
+    </div>
   </div>
-</div>
+
+  <div class="form-group">
+    <div class="col-sm-6">
+      <div class="row">
+        <div class="col-sm-3 text-right">
+          <label class="form-label">ACR</label>
+        </div>
+        <div class="col-sm-9">
+          <div class="input-group">
+            <span class="input-group-addon">RP-N</span>
+            <%= mc.text_field :ac_registry, class: 'form-control field', 'data-field': 'ac_registry', required: true %>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-6">
+      <div class="row">
+        <div class="col-sm-3 text-right">
+          <label class="form-label">FN</label>
+        </div>
+        <div class="col-sm-9">
+          <%= mc.text_field :flight_number, class: 'form-control field', 'data-field': 'flight_number', required: true %>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <div class="col-sm-6">
+      <div class="row">
+        <div class="col-sm-3 text-right">
+          <label class="form-label">LOAD</label>
+        </div>
+        <div class="col-sm-9">
+          <div class="row">
+            <div class="col-sm-4 has-input-group">
+              <div class="input-group">
+                <span class="input-group-addon">B:</span>
+                <%= mc.text_field :load_b, class: 'form-control field', 'data-field': 'load_b', required: true %>
+              </div>
+            </div>
+            <div class="col-sm-4 has-input-group">
+              <div class="input-group">
+                <span class="input-group-addon">P:</span>
+                <%= mc.text_field :load_p, class: 'form-control field', 'data-field': 'load_p', required: true %>
+              </div>
+            </div>
+            <div class="col-sm-4 has-input-group">
+              <div class="input-group">
+                <span class="input-group-addon">E:</span>
+                <%= mc.text_field :load_e, class: 'form-control field', 'data-field': 'load_e', required: true %>
+              </div>
+            </div>  
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <div class="col-sm-6">
+      <div class="row">
+        <div class="col-sm-3 text-right">
+          <label class="form-label">Remarks</label>
+        </div>
+        <div class="col-sm-9">
+          <%= mc.text_area :remarks, class: 'form-control field', 'data-field': 'remarks', required: true %>
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %>

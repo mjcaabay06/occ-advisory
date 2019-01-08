@@ -1,82 +1,202 @@
-<div class="col-md-12">
-  <div class="page-header">
-    <h3>Central Flight Dispatch</h3>
-  </div>
-  <%= render 'message' %>
-  <div class="col-md-8 col-md-offset-2">
-    <%= form_for @memo, url: { controller: 'memo', action: 'create' }, html: { method: :post, class: 'form-horizontal' } do |f| %>
-      <div class="panel panel-default">
-        <div class="panel-body">
-          <div class="form-group">
-            <div class="col-md-5 text-right">
-              <label class="form-label">A/C R</label>
-            </div>
-            <div class="col-md-4">
-              <%= f.select :aircraft_registry_id, options_for_select(AircraftRegistry.all.order(:aircraft_name).collect { |a| [a.aircraft_name, a.id] }), {}, class: 'form-control', required: true %>
-            </div>
-          </div>
-          <div class="form-group">
-            <div class="col-md-5 text-right">
-              <label class="form-label">Flight Date</label>
-            </div>
-            <div class="col-md-4">
-              <div class="input-group">
-                <%= f.date_field :flight_date, class: 'form-control', required: true %>
-                <span class="input-group-addon">
-                  <span class="glyphicon glyphicon-calendar"></span>
-                </span>
-              </div>
-            </div>
-          </div>
-          <div class="form-group">
-            <div class="col-md-5 text-right">
-              <label class="form-label">Purpose</label>
-            </div>
-            <div class="col-md-4">
-              <%= f.text_area :purpose, class: 'form-control', required: true %>
-            </div>
-          </div>
-          
-          <%= f.fields_for :load do |p| %>
-            <div class="form-group">
-              <div class="col-md-5 text-right">
-                <label class="form-label">Load</label>
-              </div>
-              <div class="col-md-4">
-                <div class="col-md-12">
-                    <div class="form-group">
-                      <%= p.number_field :seat_number, class: '', required: true, min: 1, max: 50 %>
-                    </div>
-                    <div class="form-group">
-                      <%= p.select :specific_cabin, options_for_select(Admin::MemoController::MemoCabin.collect{ |a| [a, a] }), { include_blank: 'Select Specific Cabin' }, class: 'form-control', required: true %>
-                    </div>
-                </div>
-              </div>
-            </div>
-          <% end %>
-
-          <div class="form-group">
-            <div class="col-md-5 text-right">
-              <label class="form-label">Weather Condition</label>
-            </div>
-            <div class="col-md-4">
-              <%= f.text_area :weather_condition, class: 'form-control', required: true %>
-            </div>
-          </div>
-          <div class="form-group">
-            <div class="col-md-5 text-right">
-              <label class="form-label">Remarks</label>
-            </div>
-            <div class="col-md-4">
-              <%= f.text_area :remarks, class: 'form-control', required: true %>
-            </div>
-          </div>
-
-        </div>
-        <div class="panel-footer text-right">
-          <%= f.button 'Submit', class: 'btn btn-primary' %>
-        </div>
+<%= f.fields_for :memo_categories do |mc|%>
+<div class="form-group">
+  <div class="col-sm-6">
+    <div class="row">
+      <div class="col-sm-3 text-right">
+        <label class="form-label">Category:</label>
       </div>
-    <% end %>
+      <div class="col-sm-9">
+      <%= mc.select :category_id, Category.where(id: [1..3]).order(:category).collect { |c| [c.category, c.id] }, {}, id: 'select-category', class: 'form-control field', 'data-field': 'category_id', onchange: 'select_category(this)' %>
+      </div>
+    </div>
   </div>
 </div>
+
+<div id="category-1" class="hidden div-category">
+  <div class="form-group">
+    <div class="col-sm-6">
+      <div class="row">
+        <div class="col-sm-3 text-right">
+          <label class="form-label">LCTN</label>
+        </div>
+        <div class="col-sm-9">
+          <div class="row">
+            <%= mc.hidden_field :location, id: 'hidden-location', class: 'form-control field', 'data-field': 'location', required: true %>
+            <div class="col-sm-4">
+              <%= select(nil, 'loc-loc', Location.all.order(:location).collect { |l| [l.location, l.location] }, {}, class: 'form-control', onchange: 'flocation(this)' ) %>
+            </div>
+            <div class="col-sm-4">
+              <%= text_field_tag 'loc-f1', nil, class: 'form-control', required: true, onkeyup: 'flocation(this)' %>
+            </div>
+            <div class="col-sm-4 has-input-group">
+              <div class="input-group">
+                <%= text_field_tag 'loc-f2', nil, class: 'form-control', required: true, onkeyup: 'flocation(this)' %>
+                <span class="input-group-addon">nm</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-6">
+      <div class="row">
+        <div class="col-sm-3 text-right">
+          <label class="form-label">MVNT</label>
+        </div>
+        <div class="col-sm-9">
+          <div class="row">
+            <%= mc.hidden_field :movement, id: 'hidden-movement', class: 'form-control field', 'data-field': 'movement', required: true %>
+            <div class="col-sm-4">
+              <%= select(nil, 'mvnt-loc', Location.all.order(:location).collect { |l| [l.location, l.location] }, {}, class: 'form-control', onchange: 'fmovement(this)' ) %>
+            </div>
+            <div class="col-sm-4 has-input-group">
+              <div class="input-group">
+                <%= text_field_tag 'mvnt-f1', nil, class: 'form-control', required: true, onkeyup: 'fmovement(this)' %>
+                <span class="input-group-addon">kts</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <div class="col-sm-6">
+      <div class="row">
+        <div class="col-sm-3 text-right">
+          <label class="form-label">MX WND</label>
+        </div>
+        <div class="col-sm-9">
+          <div class="row">
+            <%= mc.hidden_field :max_wind, id: 'hidden-max-wind', class: 'form-control field', 'data-field': 'max_wind', required: true %>
+            <div class="col-sm-4 has-input-group">
+              <div class="input-group">
+                <%= text_field_tag 'mxwnd-f1', nil, class: 'form-control', required: true, onkeyup: 'fmaxwnd(this)' %>
+                <span class="input-group-addon">kts</span>
+              </div>
+            </div>
+            <div class="col-sm-4">
+              <%= text_field_tag 'mxwnd-f2', nil, class: 'form-control', required: true, onkeyup: 'fmaxwnd(this)' %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-6">
+      <div class="row">
+        <div class="col-sm-3 text-right">
+          <label class="form-label">WTHR FRCST</label>
+        </div>
+        <div class="col-sm-9">
+          <%= mc.text_field :weather_forecast, class: 'form-control field', 'data-field': 'weather_forecast', required: true %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="category-3" class="div-category">
+  <div class="form-group">
+    <div class="col-sm-6">
+      <div class="row">
+        <div class="col-sm-3 text-right">
+          <label class="form-label">ACR</label>
+        </div>
+        <div class="col-sm-9">
+          <div class="input-group">
+            <span class="input-group-addon">RP-N</span>
+            <%= mc.text_field :ac_registry, class: 'form-control field', 'data-field': 'ac_registry', required: true %>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-6">
+      <div class="row">
+        <div class="col-sm-3 text-right">
+          <label class="form-label">Remarks</label>
+        </div>
+        <div class="col-sm-9">
+          <%= mc.text_area :remarks, class: 'form-control field', 'data-field': 'remarks', required: true %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="category-2" class="hidden div-category">
+  <div class="form-group">
+    <div class="col-sm-6">
+      <div class="row">
+        <div class="col-sm-3 text-right">
+          <label class="form-label">ACR</label>
+        </div>
+        <div class="col-sm-9">
+          <div class="input-group">
+            <span class="input-group-addon">RP-N</span>
+            <%= mc.text_field :ac_registry, class: 'form-control field', 'data-field': 'ac_registry', required: true %>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-6">
+      <div class="row">
+        <div class="col-sm-3 text-right">
+          <label class="form-label">Route</label>
+        </div>
+        <div class="col-sm-9">
+          <div class="row">
+            <div class="col-sm-6">
+              <%= mc.text_field :route_origin, class: 'form-control field', 'data-field': 'route_origin', placeholder: 'Origin', required: true %>
+            </div>
+            <div class="col-sm-6">
+              <%= mc.text_field :route_destination, class: 'form-control field', 'data-field': 'route_destination', placeholder: 'Destination', required: true %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <div class="col-sm-6">
+      <div class="row">
+        <div class="col-sm-3 text-right">
+          <label class="form-label">ACL</label>
+        </div>
+        <div class="col-sm-9">
+          <%= mc.text_field :ac_location, class: 'form-control field', 'data-field': 'ac_location', required: true %>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-6">
+      <div class="row">
+        <div class="col-sm-3 text-right">
+          <label class="form-label">Date/Time</label>
+        </div>
+        <div class="col-sm-9">
+          <div class="input-group">
+            <%= mc.text_field :ac_status_datetime, class: 'form-control field has-datetime-picker', 'data-field': 'ac_status_datetime', required: true %>
+            <span class="input-group-addon">
+              <span class="glyphicon glyphicon-calendar"></span>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <div class="col-sm-6">
+      <div class="row">
+        <div class="col-sm-3 text-right">
+          <label class="form-label">Remarks</label>
+        </div>
+        <div class="col-sm-9">
+          <%= mc.text_area :remarks, class: 'form-control field', 'data-field': 'remarks', required: true %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<% end %>

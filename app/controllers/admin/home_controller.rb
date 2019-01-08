@@ -20,6 +20,9 @@ class Admin::HomeController < Admin::ApplicationController
 
   def memo_info
     @memo = Memo.find_by_id(params[:id]).decorate
-    render partial: 'memo_info_body'
+    render json: {
+      partial: render_to_string(partial: 'memo_info_body'),
+      title: @memo.memo_title
+    }
   end
 end

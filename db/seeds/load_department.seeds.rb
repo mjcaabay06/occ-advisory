@@ -3,17 +3,17 @@
 #   { description: 'Inactive' },
 # ])
 
-# UserDepartment.create!([
-#   { description: 'Admin', status_id: 1, code: 'Admin' },
-#   { description: 'Lufthansa Teknik Philippines', status_id: 1, code: 'LTP' },
-#   { description: 'Fleet Maintenance Management Division', status_id: 1, code: 'FMD' },
-#   { description: 'Revenue Management Department', status_id: 1, code: 'RMD' },
-#   { description: 'Cabin Crew Scheduling Department', status_id: 1, code: 'CSD' },
-#   { description: 'Central Flight Dispatch', status_id: 1, code: 'CFD' },
-#   { description: 'Airport Terminal', status_id: 1, code: 'Airport Terminal' },
-#   { description: 'OCC', status_id: 1, code: 'OCC' },
-#   { description: 'SP', status_id: 1, code: 'SP' },
-# ])
+UserDepartment.create!([
+  { description: 'Admin', status_id: 1, code: 'Admin' },
+  { description: 'Aircraft Maintenance and Repair Department', status_id: 1, code: 'LTP' },
+  { description: 'Fleet Maintenance Management Department', status_id: 1, code: 'FMD' },
+  { description: 'Finance Department', status_id: 1, code: 'RMD' },
+  { description: 'Crew Schedule Management Department', status_id: 1, code: 'CSD' },
+  { description: 'Aircraft Routing and Weather Department', status_id: 1, code: 'CFD' },
+  { description: 'Terminal Control Department', status_id: 1, code: 'Airport Terminal' },
+  { description: 'Operations Control Department', status_id: 1, code: 'OCC' },
+  { description: 'Corporate Marketing Planning', status_id: 1, code: 'SP' },
+])
 
 User.create!([
   # { email: 'mj_caabay@yahoo.com', password_digest: Digest::MD5.hexdigest('test000'), first_name: 'marc', last_name: 'caabay', user_department_id: 1, status_id: 1 },

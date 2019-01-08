@@ -14,6 +14,7 @@
 //= require activestorage
 //= require turbolinks
 //= require jquery
+//= require select2
 //= require bootstrap-sprockets
 //= require jquery.validate
 //= require moment

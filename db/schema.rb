@@ -10,64 +10,102 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_12_20_060300) do
+ActiveRecord::Schema.define(version: 2019_01_07_145431) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "aircraft_registries", force: :cascade do |t|
-    t.string "aircraft_name"
-    t.integer "max_seat"
-    t.integer "max_cabin"
+  create_table "aircraft_types", force: :cascade do |t|
+    t.string "ac_type"
+    t.bigint "status_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["status_id"], name: "index_aircraft_types_on_status_id"
   end
 
-  create_table "loads", force: :cascade do |t|
-    t.integer "seat_number"
-    t.string "specific_cabin"
+  create_table "categories", force: :cascade do |t|
+    t.text "category"
+    t.bigint "status_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["status_id"], name: "index_categories_on_status_id"
+  end
+
+  create_table "frequencies", force: :cascade do |t|
+    t.string "frequency"
+    t.bigint "status_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["status_id"], name: "index_frequencies_on_status_id"
+  end
+
+  create_table "locations", force: :cascade do |t|
+    t.text "location"
+    t.bigint "status_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["status_id"], name: "index_locations_on_status_id"
+  end
+
+  create_table "memo_categories", force: :cascade do |t|
     t.bigint "memo_id"
-    t.index ["memo_id"], name: "index_loads_on_memo_id"
-  end
-
-  create_table "memos", force: :cascade do |t|
-    t.bigint "aircraft_registry_id"
-    t.string "flight_number"
-    t.date "flight_date"
-    t.date "international_flight_date"
-    t.datetime "monitoring_update"
-    t.text "route"
-    t.integer "std"
-    t.integer "sta"
-    t.integer "frequency"
-    t.time "tow_in"
     t.time "tow_out"
-    t.time "block_in"
-    t.time "cockpit_crew_boarding"
-    t.time "cabin_crew_boarding"
+    t.time "tow_in"
+    t.time "blocked_in"
+    t.string "ac_registry"
+    t.time "cockpit_crew_boarded"
+    t.time "cabin_crew_boarded"
     t.time "general_boarding"
-    t.time "cargo_boarding"
-    t.string "aircraft_status"
-    t.string "cabin_crew_availablity"
-    t.text "weather_condition"
-    t.text "purpose"
+    t.time "baggage_cargo_loaded"
+    t.time "close_door"
+    t.time "push_back"
+    t.time "air_bourne"
     t.text "remarks"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.bigint "user_id"
-    t.datetime "flight_monitoring"
-    t.string "aircraft_on_ground"
-    t.string "status"
-    t.string "aircraft_inoperative"
-    t.string "seat_block"
+    t.bigint "category_id"
+    t.date "effective_date"
+    t.string "flight_number"
+    t.string "apu_inoperative"
+    t.string "seat_blocks"
     t.string "no_avi"
-    t.text "restriction"
-    t.string "airconditioning"
-    t.string "aircraft_type"
-    t.integer "aircraft_configuration"
-    t.index ["aircraft_registry_id"], name: "index_memos_on_aircraft_registry_id"
+    t.string "restriction"
+    t.string "acu_problem"
+    t.string "ac_on_ground"
+    t.integer "load_b"
+    t.integer "load_p"
+    t.integer "load_e"
+    t.datetime "ac_status_datetime"
+    t.string "location"
+    t.string "movement"
+    t.string "max_wind"
+    t.string "weather_forecast"
+    t.string "route_origin"
+    t.string "route_destination"
+    t.string "ac_location"
+    t.date "flight_date"
+    t.bigint "aircraft_type_id"
+    t.string "ac_configuration"
+    t.time "std"
+    t.time "sta"
+    t.bigint "frequency_id"
+    t.time "nstd"
+    t.time "nsta"
+    t.index ["aircraft_type_id"], name: "index_memo_categories_on_aircraft_type_id"
+    t.index ["category_id"], name: "index_memo_categories_on_category_id"
+    t.index ["frequency_id"], name: "index_memo_categories_on_frequency_id"
+    t.index ["memo_id"], name: "index_memo_categories_on_memo_id"
+  end
+
+  create_table "memos", force: :cascade do |t|
+    t.string "recipients", default: [], array: true
+    t.string "incoordinate_with", default: [], array: true
+    t.string "reasons", default: [], array: true
+    t.string "remarks", default: [], array: true
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "user_id"
+    t.datetime "time_and_date"
     t.index ["user_id"], name: "index_memos_on_user_id"
   end
 
@@ -77,6 +115,22 @@ ActiveRecord::Schema.define(version: 2018_12_20_060300) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["status_id"], name: "index_page_actions_on_status_id"
+  end
+
+  create_table "reasons", force: :cascade do |t|
+    t.text "reason"
+    t.bigint "status_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["status_id"], name: "index_reasons_on_status_id"
+  end
+
+  create_table "remarks", force: :cascade do |t|
+    t.text "remark"
+    t.bigint "status_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["status_id"], name: "index_remarks_on_status_id"
   end
 
   create_table "statuses", force: :cascade do |t|
@@ -115,10 +169,18 @@ ActiveRecord::Schema.define(version: 2018_12_20_060300) do
     t.index ["user_department_id"], name: "index_users_on_user_department_id"
   end
 
-  add_foreign_key "loads", "memos"
-  add_foreign_key "memos", "aircraft_registries"
+  add_foreign_key "aircraft_types", "statuses"
+  add_foreign_key "categories", "statuses"
+  add_foreign_key "frequencies", "statuses"
+  add_foreign_key "locations", "statuses"
+  add_foreign_key "memo_categories", "aircraft_types"
+  add_foreign_key "memo_categories", "categories"
+  add_foreign_key "memo_categories", "frequencies"
+  add_foreign_key "memo_categories", "memos"
   add_foreign_key "memos", "users"
   add_foreign_key "page_actions", "statuses"
+  add_foreign_key "reasons", "statuses"
+  add_foreign_key "remarks", "statuses"
   add_foreign_key "user_departments", "statuses"
   add_foreign_key "user_page_actions", "users"
   add_foreign_key "users", "statuses"

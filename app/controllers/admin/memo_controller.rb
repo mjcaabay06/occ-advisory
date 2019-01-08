@@ -10,13 +10,16 @@ class Admin::MemoController < Admin::ApplicationController
 
   def new
     @memo = Memo.new
-    @memo.build_load
+    @memo.memo_categories.build
+    @heading = check_heading(@user.user_department_id)
+    @remark_ids = check_remarks_ids(@user.user_department_id)
+    @reason_ids = check_reason_ids(@user.user_department_id)
   end
 
   def create
     params[:memo][:user_id] = @user.id
 
-    @memo = Memo.new(get_proper_params(@user.user_department.try(:code)))
+    @memo = Memo.new(memo_params(@user.user_department.try(:code)))
     if @memo.save
       flash[:notice] = 'Successfully created new memo.'
     else
@@ -55,16 +58,35 @@ class Admin::MemoController < Admin::ApplicationController
       end
     end
 
+    def memo_params dept_code
+      params[:memo][:recipients] = params[:memo][:recipients].reject { |c| c.empty? }
+      params[:memo][:incoordinate_with] = params[:memo][:incoordinate_with].reject { |c| c.empty? }
+      params[:memo][:reasons] = params[:memo][:reasons].reject { |c| c.empty? } if params[:memo][:reasons].present?
+      params[:memo][:remarks] = params[:memo][:remarks].reject { |c| c.empty? } if params[:memo][:remarks].present?
+
+      params.require(:memo).permit(
+          :user_id,
+          :time_and_date,
+          get_proper_params(dept_code),
+          :recipients => [],
+          :incoordinate_with => [],
+          :reasons => [], 
+          :remarks => [],
+        )
+    end
+
     def ltp_params
-      params.require(:memo).permit(:international_flight_date, :aircraft_registry_id, :flight_number, :remarks, :user_id)
+      {:memo_categories_attributes => [
+        :category_id, :effective_date, :ac_registry, :flight_number, :ac_status_datetime, :remarks
+      ]}
+      # params.require(:memo).permit(:international_flight_date, :aircraft_registry_id, :flight_number, :remarks, :user_id)
     end
 
     def rmd_params
-      params.require(:memo).permit(:aircraft_registry_id, :flight_date, :purpose, :remarks, :user_id,
-        :load_attributes => [
-          :seat_number,
-          :specific_cabin
-        ])
+      {:memo_categories_attributes => [
+        :effective_date, :ac_registry, :flight_number, :load_b,
+        :load_p, :load_e, :remarks
+      ]}
     end
 
     def csd_params
@@ -72,27 +94,33 @@ class Admin::MemoController < Admin::ApplicationController
     end
 
     def cfd_params
-      params.require(:memo).permit(:aircraft_registry_id, :flight_date, :purpose, :remarks, :user_id, :weather_condition,
-        :load_attributes => [
-          :seat_number,
-          :specific_cabin
-        ])
+      {:memo_categories_attributes => [
+        :category_id, :location, :movement, :max_wind,
+        :weather_forecast, :ac_registry, :remarks, :route_origin, :route_destination,
+        :ac_location, :ac_status_datetime 
+      ]}
     end
 
     def at_params
-      params.require(:memo).permit(:aircraft_registry_id, :tow_out, :tow_in, :block_in, :purpose, :cockpit_crew_boarding, :cabin_crew_boarding, :general_boarding, :cargo_boarding, :aircraft_status, :remarks, :user_id)
+      {:memo_categories_attributes => [
+        :tow_out, :tow_in, :blocked_in, :ac_registry,
+        :cockpit_crew_boarded, :cabin_crew_boarded, :general_boarding,
+        :baggage_cargo_loaded, :close_door, :push_back, :air_bourne, :remarks
+      ]}
     end
 
     def fmd_params
-      spl = params[:memo][:flight_monitoring].split(' ')
-      date = clean_date(spl[0])
-      time = clean_time("#{spl[1]} spl[2]")
-      params[:memo][:flight_monitoring] = "#{date} #{time}".to_datetime
-
-      params.require(:memo).permit(:flight_monitoring, :aircraft_on_ground, :status, :aircraft_inoperative, :seat_block, :no_avi, :restriction, :airconditioning, :remarks, :user_id)
+      {:memo_categories_attributes => [
+        :apu_inoperative, :seat_blocks, :no_avi, :restriction,
+        :acu_problem, :ac_on_ground, :remarks
+      ]}
     end
 
     def sp_params
-      params.require(:memo).permit(:flight_date, :flight_number, :route, :aircraft_type, :aircraft_configuration, :std, :sta, :frequency, :remarks, :user_id)
+      {:memo_categories_attributes => [
+        :flight_date, :flight_number, :route_origin, :route_destination,
+        :ac_registry, :aircraft_type_id, :ac_configuration, :std, :sta, :nstd, :nsta,
+        :frequency_id, :remarks
+      ]}
     end
 end
