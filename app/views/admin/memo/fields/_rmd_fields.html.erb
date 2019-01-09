@@ -1,0 +1,23 @@
+<% cnt = 0 %>
+<table class="table table-bordered category">
+  <thead>
+    <tr>
+      <th>AIRCRAFT REGISTRY</th>
+      <th>EFFECTIVE DATE</th>
+      <th>FLIGHT NUMBER</th>
+      <th>LOAD</th>
+      <th>REMARKS</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @memo.memo_categories.order(:created_at).decorate.each do |mc| %>
+      <tr>
+        <td><%= mc.ac_registry %></td>
+        <td><%= mc.effective_date.try(:strftime, '%m-%d-%y (%a)') %></td>
+        <td><%= mc.flight_number %></td>
+        <td><%= mc.load_bpe %></td>
+        <td><%= mc.remarks %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

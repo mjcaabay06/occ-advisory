@@ -16,7 +16,13 @@ Rails.application.routes.draw do
     #   end
     # end
 
-    # resources :advisory, only: [:new]
+    resources :advisory do
+      collection do
+        get :review_advisory, path: '/review-advisory/:sid'
+        get :send_advisory, path: '/send-advisory/:sid'
+        get :inbox, path: '/inbox'
+      end
+    end
 
     get '/memo/check-account' => 'memo#check_account'
     resources :memo do

@@ -41,7 +41,7 @@ class Admin::HomeController < Admin::ApplicationController
 
       url = '/admin/memo'
       if user.user_department_id == 8
-        url = '/admin'
+        url = '/admin/advisory'
       end
 
       redirect_to url

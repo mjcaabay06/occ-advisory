@@ -18,16 +18,18 @@
         <% end %>
         <td></td>
       </tr>
-      <tr>
-        <td><%= 'REMARKS' unless @memo.remarks.blank? %></td>
-        <% unless @memo.remarks.blank? %>
-          <% Remark.where(id: @memo.remarks).each do |r| %>
-            <td><%= r.remark %></td>
+      <% unless @memo.remarks.blank? %>
+        <tr>
+          <td>REMARKS</td>
+          <% unless @memo.remarks.blank? %>
+            <% Remark.where(id: @memo.remarks).each do |r| %>
+              <td><%= r.remark %></td>
+            <% end %>
           <% end %>
-        <% end %>
-      </tr>
+        </tr>
+      <% end %>
     </table>
-    <%= render partial: 'admin/memo/fields/ltp_fields' %>
+    <%= render partial: "admin/memo/fields/#{@user.department_code}_fields" %>
     <small>
       In coordination with: <%= @incoordination %>
     </small>

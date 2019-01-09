@@ -1,0 +1,37 @@
+<% cnt = 0 %>
+<table class="table table-bordered category">
+  <thead>
+    <tr>
+      <th>CATEGORY</th>
+      <th>AIRCRAFT REGISTRY</th>
+      <th>ROUTE</th>
+      <th>AC LOC</th>
+      <th>DATE/TIME</th>
+      <th>LOCATION</th>
+      <th>MOVEMENT</th>
+      <th>MAX WIND</th>
+      <th>WTHR FRCST</th>
+      <th>REMARKS</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% Category.where(id: @category_ids).order(:category).each do |c| %>
+      <% @memo.memo_categories.where(category_id: c.id).order(:created_at).decorate.each do |mc| %>
+        <tr>
+          <td><%= c.category unless cnt > 0 %></td>
+          <td><%= mc.ac_registry %></td>
+          <td><%= mc.route %></td>
+          <td><%= mc.ac_location %></td>
+          <td><%= mc.ac_status_datetime.try(:strftime, '%m-%d-%y (%a) %k%Mz') %></td>
+          <td><%= mc.location %></td>
+          <td><%= mc.movement %></td>
+          <td><%= mc.max_wind %></td>
+          <td><%= mc.weather_forecast %></td>
+          <td><%= mc.remarks %></td>
+        </tr>
+        <% cnt += 1 %>
+      <% end %>
+      <% cnt = 0 %>
+    <% end %>
+  </tbody>
+</table>

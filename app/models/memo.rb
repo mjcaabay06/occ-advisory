@@ -43,7 +43,7 @@ class Memo < ApplicationRecord
   private
     def set_memo_code
       return unless self.new_record?
-      self.memo_code = "#{self.user.user_department.code.upcase}#{Date.today.strftime('%m')}/#{Memo.last.id + 1}"
+      self.memo_code = "#{self.user.user_department.code.upcase}#{Date.today.strftime('%m')}/#{(Memo.last.try(:id) || 0) + 1}"
       self.sid = Digest::MD5.hexdigest(self.memo_code)
     end
 end
