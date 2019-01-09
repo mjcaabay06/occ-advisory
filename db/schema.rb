@@ -10,10 +10,50 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_01_08_073623) do
+ActiveRecord::Schema.define(version: 2019_01_09_154745) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "advisories", force: :cascade do |t|
+    t.string "recipients", default: [], array: true
+    t.string "incoordinate_with", default: [], array: true
+    t.string "reasons", default: [], array: true
+    t.string "remarks", default: [], array: true
+    t.string "advisory_code"
+    t.string "sid"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "user_id"
+    t.boolean "is_viewable", default: false
+    t.index ["user_id"], name: "index_advisories_on_user_id"
+  end
+
+  create_table "advisory_categories", force: :cascade do |t|
+    t.bigint "advisory_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.date "flight_date"
+    t.string "flight_number"
+    t.string "route_origin"
+    t.string "route_destination"
+    t.string "ac_registry"
+    t.bigint "aircraft_type_id"
+    t.string "ac_configuration"
+    t.text "remarks"
+    t.string "pax"
+    t.time "etd"
+    t.time "eta"
+    t.time "netd"
+    t.time "neta"
+    t.time "duration_of_delay"
+    t.string "departure_terminal"
+    t.string "arrival_terminal"
+    t.bigint "category_id"
+    t.index ["advisory_id"], name: "index_advisory_categories_on_advisory_id"
+    t.index ["aircraft_type_id"], name: "index_advisory_categories_on_aircraft_type_id"
+    t.index ["category_id"], name: "index_advisory_categories_on_category_id"
+  end
 
   create_table "aircraft_types", force: :cascade do |t|
     t.string "ac_type"
@@ -63,7 +103,7 @@ ActiveRecord::Schema.define(version: 2019_01_08_073623) do
     t.text "remarks"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.bigint "category_id"
+    t.integer "category_id"
     t.date "effective_date"
     t.string "flight_number"
     t.string "apu_inoperative"
@@ -172,6 +212,10 @@ ActiveRecord::Schema.define(version: 2019_01_08_073623) do
     t.index ["user_department_id"], name: "index_users_on_user_department_id"
   end
 
+  add_foreign_key "advisories", "users"
+  add_foreign_key "advisory_categories", "advisories"
+  add_foreign_key "advisory_categories", "aircraft_types"
+  add_foreign_key "advisory_categories", "categories"
   add_foreign_key "aircraft_types", "statuses"
   add_foreign_key "categories", "statuses"
   add_foreign_key "frequencies", "statuses"

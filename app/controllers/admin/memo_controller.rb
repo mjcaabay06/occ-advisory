@@ -18,7 +18,6 @@ class Admin::MemoController < Admin::ApplicationController
     @heading = check_heading(@memo.user.user_department_id)
     @remark_ids = check_remarks_ids(@memo.user.user_department_id)
     @reason_ids = check_reason_ids(@memo.user.user_department_id)
-    # binding.pry
   end
 
   def new
@@ -80,7 +79,11 @@ class Admin::MemoController < Admin::ApplicationController
       is_memo = true
     end
 
-    @memos = Memo.filter_inbox(@user.id)
+    if [8].include?(@user.user_department_id)
+      @memos = Memo.all
+    else
+      @memos = Memo.filter_inbox(@user.id)
+    end
     
     if is_memo
       @memos = @memos.where(id: memo_ids)
@@ -172,7 +175,7 @@ class Admin::MemoController < Admin::ApplicationController
 
     def sp_params
       {:memo_categories_attributes => [
-        :flight_date, :flight_number, :route_origin, :route_destination,
+        :category_id, :flight_date, :flight_number, :route_origin, :route_destination,
         :ac_registry, :aircraft_type_id, :ac_configuration, :std, :sta, :nstd, :nsta,
         :frequency_id, :remarks
       ]}

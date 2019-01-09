@@ -1,0 +1,27 @@
+<% cnt = 0 %>
+<table class="table table-bordered category">
+  <thead>
+    <tr>
+      <th>APU INOP</th>
+      <th>SEAT BLKS</th>
+      <th>NO AVI</th>
+      <th>RESTRICTION</th>
+      <th>ACU PROB</th>
+      <th>AOG</th>
+      <th>REMARKS</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @memo.memo_categories.order(:created_at).each do |mc| %>
+      <tr>
+        <td><%= mc.apu_inoperative %></td>
+        <td><%= mc.seat_blocks %></td>
+        <td><%= mc.no_avi %></td>
+        <td><%= mc.restriction %></td>
+        <td><%= mc.acu_problem %></td>
+        <td><%= mc.ac_on_ground %></td>
+        <td><%= mc.remarks %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

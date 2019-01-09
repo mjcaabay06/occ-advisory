@@ -70,6 +70,7 @@
               var field_name = $(this).data('field');
               $(this).attr("name","memo[memo_categories_attributes]["+category_count+"]["+field_name+"]");
             });
+            $('html, body').animate({ scrollTop: $("#additional-category" + id).offset().top }, 50);
           }
 
           function delete_category(id) {

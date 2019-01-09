@@ -1,6 +1,6 @@
 class MemoCategory < ApplicationRecord
   belongs_to :memo
-  belongs_to :category
+  # belongs_to :category
 
   scope :by_category, -> (value) { joins('LEFT JOIN "categories" ON "categories"."id" = "memo_categories"."category_id"').merge(Category.by_category(value)) }
   scope :by_ac_registry, -> (value) { where("ac_registry ilike '%#{value}%'") }

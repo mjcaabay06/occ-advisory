@@ -1,6 +1,7 @@
 $(document).ready(function(){
   init();
   select_category($("#select-category"));
+  select_advisory_category($("#select-adv-category"));
 
   // var submit_form = false;
   // $("#new_memo").submit(function(e){
@@ -17,12 +18,14 @@ $(document).ready(function(){
 
   $("#btn-check-password").on('click', function(){
     var password = $('input[name=check-password]').val();
+    var type = $(this).data('id');
+
     $('.cs-loader').show();
     $.get('/admin/memo/check-account?password=' + password)
       .done(function(result){
         if (result == 'valid') {
           var sid = $('input[name=hidden-sid]').val();
-          window.location.href = '/admin/memo/send-memo/' + sid;
+          window.location.href = '/admin/'+type+'/send-'+type+'/' + sid;
         } else {
           alert('You have entered invalid password.');
         }
@@ -68,7 +71,7 @@ function memo_filter() {
   var flight_date = $('#flight_date').val();
   var txt = $("#tb-search").val();
 
-  $.get('filter', { dept_id: dept_id, flight_date: flight_date, val: txt })
+  $.get('../memo/filter', { dept_id: dept_id, flight_date: flight_date, val: txt })
     .done(function(result){
       $(".panel-body.memo-lists").html(result);
     });
@@ -99,6 +102,23 @@ function select_category(id) {
     enable_fields($('#main-category').find("#category-" + val));
   }
   
+}
+
+function select_advisory_category(elem) {
+  var val = $(elem).val();
+  var id = $(elem).closest('.panel-body').data('id');
+
+  if (id) {
+    $('#additional-category' + id).find('.f').hide();
+    $('#additional-category' + id).find('.f').find("input, select, textarea").attr('disabled','disabled');
+    $('#additional-category' + id).find('.f' + val).show();
+    $('#additional-category' + id).find('.f' + val).find("input, select, textarea").removeAttr('disabled');
+  } else {
+    $('#main-category').find('.f').hide();
+    $('#main-category').find('.f').find("input, select, textarea").attr('disabled','disabled');
+    $('#main-category').find('.f' + val).show();
+    $('#main-category').find('.f' + val).find("input, select, textarea").removeAttr('disabled');
+  }
 }
 
 function enable_fields(elem) {
