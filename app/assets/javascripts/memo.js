@@ -49,7 +49,7 @@ $(document).ready(function(){
     memo_filter();
   });
 
-  $("#recipient-select, #incoordinate-select, #reason-select, #remarks-select").select2({
+  $("#recipient-select, #incoordinate-select, #reason-select, #remarks-select, .frequency-select").select2({
     theme: 'bootstrap'
   });
 
@@ -105,7 +105,7 @@ function adv_info(sid){
 
 function select_category(id) {
   var val = $(id).val();
-  var id = $(id).closest('.panel-body').data('id')
+  var id = $(id).closest('.panel-body').data('id');
 
   if (id) {
     $('#additional-category' + id).find(".div-category").addClass('hidden');
@@ -118,7 +118,9 @@ function select_category(id) {
     $('#main-category').find("#category-" + val).removeClass('hidden');
     enable_fields($('#main-category').find("#category-" + val));
   }
-  
+  $(".frequency-select").select2({
+    theme: 'bootstrap'
+  });
 }
 
 function select_advisory_category(elem) {

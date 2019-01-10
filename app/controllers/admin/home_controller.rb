@@ -39,9 +39,9 @@ class Admin::HomeController < Admin::ApplicationController
     unless user.blank?
       session[:user_id] = user.id
 
-      url = '/admin/memo'
+      url = '/admin/memo/inbox'
       if user.user_department_id == 8
-        url = '/admin/advisory'
+        url = '/admin/advisory/inbox'
       end
 
       redirect_to url

@@ -1,33 +1,41 @@
 <div class="content-memo">
   <div class="col-md-12">
     <div class="page-header">
-      <h3>Operations Control Department</h3>
+      <h3 class="">Operations Control Department</h3>
     </div>
     <%= render 'message' %>
     <div class="col-md-8 col-md-offset-2">
       <%= form_for @advisory, url: { controller: 'advisory', action: 'create' }, html: { method: :post, class: 'form-horizontal' } do |f| %>
         <%= f.hidden_field :memo_id, value: @memo_id %>
-        <div class="panel panel-default">
-          <div class="panel-heading">
-            Advisory Header
-          </div>
-          <div class="panel-body">
-            <div class="form-group">
-              <div class="col-sm-6">
-                <label class="form-label">Recipient:</label>
-                <%= f.select :recipients, options_for_select(UserDepartment.where.not(id: [1]).order(:code).collect { |u| [u[:code], u[:id]] }), {}, id: 'recipient-select', class: 'form-control', multiple: 'multiple', required: true %>
-              </div>
-              <div class="col-sm-6">
-                <label class="form-label">Incoordinate with:</label>
-                <%= f.select :incoordinate_with, options_for_select(User.where.not(id: [@user.id]).order(:email).collect { |u| [u[:email], u[:id]] }), {}, id: 'incoordinate-select', class: 'form-control', multiple: 'multiple', required: true %>
+
+        <% if @adv.blank? %>
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              Advisory Header
+            </div>
+            <div class="panel-body">
+              <div class="form-group">
+                <div class="col-sm-6">
+                  <label class="form-label">Recipient:</label>
+                  <%= f.select :recipients, options_for_select(UserDepartment.where.not(id: [1]).order(:code).collect { |u| [u[:code], u[:id]] }), {}, id: 'recipient-select', class: 'form-control', multiple: 'multiple', required: true %>
+                </div>
+                <div class="col-sm-6">
+                  <label class="form-label">Incoordinate with:</label>
+                  <%= f.select :incoordinate_with, options_for_select(User.where.not(id: [@user.id]).order(:email).collect { |u| [u[:email], u[:id]] }), {}, id: 'incoordinate-select', class: 'form-control', multiple: 'multiple', required: true %>
+                </div>
               </div>
             </div>
           </div>
-        </div>
+        <% else %>
+          <%= f.hidden_field 'adv_sid', value: @adv.first.try(:sid) %>
+          <%= f.hidden_field 'adv_code', value: @adv.first.try(:advisory_code) %>
+          <%= f.hidden_field :recipients, value: @adv.first.try(:recipients) %>
+          <%= f.hidden_field :incoordinate_with, value: @adv.first.try(:incoordinate_with) %>
+        <% end %>
 
         <div class="panel panel-default">
           <div class="panel-heading">
-            Primary Reason
+            <%= 'Additional ' unless @adv.blank? %>Primary Reason
           </div>
           <div class="panel-body">
             <div class="form-group">

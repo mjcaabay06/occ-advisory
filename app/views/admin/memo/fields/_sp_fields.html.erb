@@ -28,7 +28,7 @@
           <td><%= mc.route %></td>
           <td><%= mc.aircraft_type %></td>
           <td><%= mc.ac_configuration %></td>
-          <td><%= mc.frequency %></td>
+          <td><%= (Frequency.where(id: mc.frequencies).collect{|f| f.frequency }).join(', ') unless mc.frequencies.blank? %></td>
           <td><%= mc.std.try(:strftime, '%k%Mz') %></td>
           <td><%= mc.sta.try(:strftime, '%k%Mz') %></td>
           <td><%= mc.nstd.try(:strftime, '%k%Mz') %></td>

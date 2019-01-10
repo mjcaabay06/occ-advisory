@@ -36,7 +36,9 @@
 
     <div class="pull-right below-btns">
       <% unless @memo.is_viewable || @user.user_department_id == 8 %>
-          <%= link_to 'Edit', "/admin/memo/#{@memo.sid}/edit", class: 'btn btn-primary', id: 'btn-edit', disabled: true %>
+        <% if false %>
+          <%= link_to 'Edit', "javascript: window.location.href = '/admin/memo/#{@memo.sid}/edit'", class: 'btn btn-primary', id: 'btn-edit' %>
+        <% end %>
           <%= button_tag 'Send', class: 'btn btn-primary', id: 'btn-send', type: 'button' %>
       <% else %>
         <% if @user.user_department_id == 8 %>

@@ -1,92 +1,99 @@
 <div class="col-md-12">
   <div class="page-header">
-    <span><b>Issuer:</b> <%= @advisory.user.first_name %></span><br>
-    <span><b>Issued Date:</b> <%= @advisory.created_at.strftime('%B %-d, %Y') %></span>
-    <span class="pull-right"><b>Advisory ID:</b> <%= @advisory.advisory_code %></h3>
+    <span><b>Issuer:</b> <%= @advisory.first.user.first_name %></span><br>
+    <span><b>Issued Date:</b> <%= @advisory.first.created_at.strftime('%B %-d, %Y') %></span>
+    <span class="pull-right"><b>Advisory ID:</b> <%= @advisory.first.advisory_code %></h3>
   </div>
   <div class="view-memo">
-    <div style="border: 1px solid #000; padding: 8px"><%= @advisory.user.user_department.description %></div>
-    <table class="table table-bordered primary-reason">
-      <tr>
-        <td width="10%">REASON</td>
-        <% unless @advisory.reasons.blank? %>
-          <% Reason.where(id: @advisory.reasons).each do |r| %>
-            <td width="1%"><%= r.reason %></td>
-          <% end %>
-        <% end %>
-        <td></td>
-      </tr>
-      <tr>
-        <td>REMARKS</td>
-        <% unless @advisory.remarks.blank? %>
-          <% Remark.where(id: @advisory.remarks).each do |r| %>
-            <td><%= r.remark %></td>
-          <% end %>
-        <% end %>
-      </tr>
-    </table>
+    <div style="border: 1px solid #000; padding: 8px"><%= @advisory.first.user.user_department.description %></div>
 
-    <% cnt = 0 %>
-    <table class="table table-bordered category">
-      <thead>
+    <% @advisory.each do |advisory| %>
+      <% category_ids = advisory.advisory_categories.select('distinct(category_id)').order(:category_id).collect{|mc| mc.category_id} %>
+      <table class="table table-bordered primary-reason">
         <tr>
-          <th>CATEGORY</th>
-          <th>AIRCRAFT REGISTRY</th>
-          <th>AIRCRAFT TYPE</th>
-          <th>AIRCRAFT CONFIGURATION</th>
-          <th>FLIGHT DATE</th>
-          <th>FLIGHT NUMBER</th>
-          <th>ROUTE</th>
-          <th>ETD</th>
-          <th>ETA</th>
-          <th>NETD</th>
-          <th>NETA</th>
-          <th>DUR</th>
-          <th>DEP TER</th>
-          <th>ARR TER</th>
-          <th>PAX</th>
-          <th>REMARKS</th>
-        </tr>
-      </thead>
-      <tbody>
-        <% Category.where(id: @category_ids).order(:category).each do |c| %>
-          <% @advisory.advisory_categories.where(category_id: c.id).order(:created_at).decorate.each do |mc| %>
-            <tr>
-              <td><%= c.category unless cnt > 0 %></td>
-              <td><%= mc.ac_registry %></td>
-              <td><%= mc.try(:aircraft_type).try(:ac_type) %></td>
-              <td><%= mc.ac_configuration %></td>
-              <td><%= mc.flight_date.try(:strftime, '%m-%d-%y (%a)') %></td>
-              <td><%= mc.flight_number %></td>
-              <td><%= mc.route %></td>
-              <td><%= mc.etd.try(:strftime, '%k%Mz') %></td>
-              <td><%= mc.eta.try(:strftime, '%k%Mz') %></td>
-              <td><%= mc.netd.try(:strftime, '%k%Mz') %></td>
-              <td><%= mc.neta.try(:strftime, '%k%Mz') %></td>
-              <td><%= mc.duration_of_delay.try(:strftime, '%k%Mz') %></td>
-              <td><%= mc.dep_ter %></td>
-              <td><%= mc.arr_ter %></td>
-              <td><%= mc.pax %></td>
-              <td><%= mc.remarks %></td>
-            </tr>
-            <% cnt += 1 %>
+          <td width="10%">REASON</td>
+          <% unless advisory.reasons.blank? %>
+            <% Reason.where(id: advisory.reasons).each do |r| %>
+              <td width="1%"><%= r.reason %></td>
+            <% end %>
           <% end %>
-          <% cnt = 0 %>
-        <% end %>
-      </tbody>
-    </table>
+          <td></td>
+        </tr>
+        <tr>
+          <td>REMARKS</td>
+          <% unless advisory.remarks.blank? %>
+            <% Remark.where(id: advisory.remarks).each do |r| %>
+              <td><%= r.remark %></td>
+            <% end %>
+          <% end %>
+        </tr>
+      </table>
 
+      <% cnt = 0 %>
+      <table class="table table-bordered category">
+        <thead>
+          <tr>
+            <th>CATEGORY</th>
+            <th>AIRCRAFT REGISTRY</th>
+            <th>AIRCRAFT TYPE</th>
+            <th>AIRCRAFT CONFIGURATION</th>
+            <th>FLIGHT DATE</th>
+            <th>FLIGHT NUMBER</th>
+            <th>ROUTE</th>
+            <th>ETD</th>
+            <th>ETA</th>
+            <th>NETD</th>
+            <th>NETA</th>
+            <th>DUR</th>
+            <th>DEP TER</th>
+            <th>ARR TER</th>
+            <th>PAX</th>
+            <th>REMARKS</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% Category.where(id: category_ids).order(:category).each do |c| %>
+            <% advisory.advisory_categories.where(category_id: c.id).order(:created_at).decorate.each do |mc| %>
+              <tr>
+                <td><%= c.category unless cnt > 0 %></td>
+                <td><%= mc.ac_registry %></td>
+                <td><%= mc.try(:aircraft_type).try(:ac_type) %></td>
+                <td><%= mc.ac_configuration %></td>
+                <td><%= mc.flight_date.try(:strftime, '%m-%d-%y (%a)') %></td>
+                <td><%= mc.flight_number %></td>
+                <td><%= mc.route %></td>
+                <td><%= mc.etd.try(:strftime, '%k%Mz') %></td>
+                <td><%= mc.eta.try(:strftime, '%k%Mz') %></td>
+                <td><%= mc.netd.try(:strftime, '%k%Mz') %></td>
+                <td><%= mc.neta.try(:strftime, '%k%Mz') %></td>
+                <td><%= mc.duration_of_delay.try(:strftime, '%k%Mz') %></td>
+                <td><%= mc.dep_ter %></td>
+                <td><%= mc.arr_ter %></td>
+                <td><%= mc.pax %></td>
+                <td><%= mc.remarks %></td>
+              </tr>
+              <% cnt += 1 %>
+            <% end %>
+            <% cnt = 0 %>
+          <% end %>
+        </tbody>
+      </table>
+    <% end %>
+    <div style="margin-bottom: 10px;"></div>
     <small>
       In coordination with: <%= @incoordination %>
     </small>
 
-    <% unless @advisory.is_viewable %>
+    <% unless @advisory.first.is_viewable %>
       <div class="pull-right below-btns">
-        <%= link_to 'Edit', "/admin/advisory/#{@advisory.sid}/edit", class: 'btn btn-primary', id: 'btn-edit', disabled: true %>
+        <%= link_to 'Add Advisory', "javascript: window.location.href = '/admin/advisory/new?sid=#{@advisory.first.memo.sid}'", class: 'btn btn-primary', id: 'btn-add-avisory' %>
+        <% if false %>
+          <%= link_to 'Edit', "/admin/advisory/#{@advisory.first.sid}/edit", class: 'btn btn-primary', id: 'btn-edit', disabled: true %>
+        <% end  %>
         <%= button_tag 'Send', class: 'btn btn-primary', id: 'btn-send', type: 'button' %>
       </div>
     <% end %>
   </div>
 </div>
-<%= hidden_field_tag 'hidden-sid', @advisory.sid %>
+<%= hidden_field_tag 'hidden-sid', @advisory.first.sid %>
 <%= render 'modal_password' %>
