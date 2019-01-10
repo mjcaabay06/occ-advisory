@@ -38,6 +38,7 @@ class Admin::MemoController < Admin::ApplicationController
       flash[:notice] = 'Successfully created new memo.'
       redirect_to "/admin/memo/review-memo/#{@memo.sid}"
     else
+      puts "-------------#{@memo.errors.full_messages}"
       flash[:notice] = 'There was a problem in your application. Please check all fields.'
       redirect_to new_admin_memo_path
     end
