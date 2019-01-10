@@ -9,6 +9,28 @@ class Advisory < ApplicationRecord
 
   scope :is_viewable, -> { where(is_viewable: true) }
 
+  def self.filter_joins
+    query = <<~HEREDOC.squish
+      inner join users on users.id = advisories.user_id
+      inner join advisory_categories on advisory_categories.advisory_id = advisories.id
+      left join categories on categories.id = advisory_categories.category_id
+    HEREDOC
+    joins(query)
+  end
+
+  def self.filter_text value
+    query = <<~HEREDOC.squish
+      categories.category ilike '%#{value.downcase}%' OR
+      advisory_categories.ac_registry ilike '%#{value}%' OR
+      advisory_categories.flight_number ilike '%#{value}%'
+    HEREDOC
+    where(query) if value.present?
+  end
+
+  def self.filter_flight_date value
+    where("advisory_categories.flight_date = '#{value}'")
+  end
+
   private
     def set_advisory_code
       return unless self.new_record?

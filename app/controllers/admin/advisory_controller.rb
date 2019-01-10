@@ -38,6 +38,27 @@ class Admin::AdvisoryController < Admin::ApplicationController
     redirect_to '/admin/advisory'
   end
 
+  def created_filter
+    adv_ids = Advisory.select('distinct(advisories.id)').filter_joins
+    is_adv = false
+    unless params[:val].blank?
+      adv_ids = adv_ids.filter_text(params[:val])
+      is_adv = true
+    end
+    unless params[:flight_date].blank?
+      adv_ids = adv_ids.filter_flight_date(params[:flight_date])
+      is_adv = true
+    end
+
+    @advisory = Advisory.where(user_id: @user.id)
+    if is_adv
+      @advisory = @advisory.where(id: adv_ids)
+    end
+
+    @advisory = @advisory.order('sent_date desc, created_at desc').decorate
+    render partial: 'admin/advisory/created/body'
+  end
+
   private
     def advisory_params
       params[:advisory][:recipients] = params[:advisory][:recipients].reject { |c| c.empty? }

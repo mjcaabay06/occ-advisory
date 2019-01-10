@@ -2,11 +2,11 @@
   <div class="panel-heading">
     <div class="row">
       <div class="col-sm-4">
-        <%= text_field_tag 'tb-created-search', nil, class: 'form-control', placeholder: 'Search', 'data-dept': 'advisory' %>
+        <%= text_field_tag 'tb-created-search', nil, class: 'form-control', placeholder: 'Search', 'data-dept': 'memo' %>
       </div>
       <div class="col-sm-2">
         <div class="input-group">
-          <%= date_field_tag nil, nil, id: 'created-flight-date', class: 'form-control', 'data-dept': 'advisory' %>
+          <%= date_field_tag nil, nil, id: 'created-flight-date', class: 'form-control', 'data-dept': 'memo' %>
           <span class="input-group-addon">
             <span class="glyphicon glyphicon-calendar"></span>
           </span>
@@ -15,6 +15,6 @@
     </div>
   </div>
   <div class="panel-body memo-lists">
-    <%= render partial: 'admin/advisory/created/body' %>
+    <%= render partial: 'admin/memo/created/body' %>
   </div>
 </div>

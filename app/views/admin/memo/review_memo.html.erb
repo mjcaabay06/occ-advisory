@@ -39,7 +39,9 @@
           <%= link_to 'Edit', "/admin/memo/#{@memo.sid}/edit", class: 'btn btn-primary', id: 'btn-edit', disabled: true %>
           <%= button_tag 'Send', class: 'btn btn-primary', id: 'btn-send', type: 'button' %>
       <% else %>
-        <%= link_to 'Create Advisory', "javascript: window.location.href = '/admin/advisory/new?sid=#{@memo.sid}'", class: 'btn btn-primary' %>
+        <% if @user.user_department_id == 8 %>
+          <%= link_to 'Create Advisory', "javascript: window.location.href = '/admin/advisory/new?sid=#{@memo.sid}'", class: 'btn btn-primary' %>
+        <% end %>
       <% end %>
     </div>
   </div>

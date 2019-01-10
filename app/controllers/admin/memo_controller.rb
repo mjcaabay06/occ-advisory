@@ -6,6 +6,7 @@ class Admin::MemoController < Admin::ApplicationController
     ].freeze
 
   def index
+    @memos = Memo.where(user_id: @user.id).order('sent_date desc, created_at desc').decorate
   end
   
   def inbox
@@ -93,6 +94,27 @@ class Admin::MemoController < Admin::ApplicationController
 
     @memos = @memos.order('sent_date desc, created_at desc').decorate
     render partial: 'inbox_body'
+  end
+
+  def created_filter
+    memo_ids = Memo.select('distinct(memos.id)').filter_joins
+    is_memo = false
+    unless params[:val].blank?
+      memo_ids = memo_ids.filter_text(params[:val])
+      is_memo = true
+    end
+    unless params[:flight_date].blank?
+      memo_ids = memo_ids.filter_flight_date(params[:flight_date])
+      is_memo = true
+    end
+
+    @memos = Memo.where(user_id: @user.id)
+    if is_memo
+      @memos = @memos.where(id: memo_ids)
+    end
+
+    @memos = @memos.order('sent_date desc, created_at desc').decorate
+    render partial: 'admin/memo/created/body'
   end
 
   private

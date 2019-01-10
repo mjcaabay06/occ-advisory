@@ -52,6 +52,15 @@ $(document).ready(function(){
   $("#recipient-select, #incoordinate-select, #reason-select, #remarks-select").select2({
     theme: 'bootstrap'
   });
+
+  $('#created-flight-date').on('change', function(){
+    created_filter($(this).data('dept'));
+  });
+
+  $("#tb-created-search").on('keyup', function(){
+    created_filter($(this).data('dept'));
+  });
+
 });
 
 function init() {
@@ -72,6 +81,15 @@ function memo_filter() {
   var txt = $("#tb-search").val();
 
   $.get('../memo/filter', { dept_id: dept_id, flight_date: flight_date, val: txt })
+    .done(function(result){
+      $(".panel-body.memo-lists").html(result);
+    });
+}
+
+function created_filter(dept){
+  var flight_date = $('#created-flight-date').val();
+  var txt = $("#tb-created-search").val();
+  $.get('../admin/'+dept+'/created-filter', { flight_date: flight_date, val: txt })
     .done(function(result){
       $(".panel-body.memo-lists").html(result);
     });

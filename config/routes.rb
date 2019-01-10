@@ -21,6 +21,7 @@ Rails.application.routes.draw do
         get :review_advisory, path: '/review-advisory/:sid'
         get :send_advisory, path: '/send-advisory/:sid'
         get :inbox, path: '/inbox'
+        get :created_filter, path: '/created-filter'
       end
     end
 
@@ -30,6 +31,7 @@ Rails.application.routes.draw do
         get :review_memo, path: '/review-memo/:sid'
         get :send_memo, path: '/send-memo/:sid'
         get :memo_filter, path: '/filter'
+        get :created_filter, path: '/created-filter'
         get :inbox, path: '/inbox'
       end
     end
