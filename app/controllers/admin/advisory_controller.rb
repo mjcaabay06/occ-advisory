@@ -11,12 +11,22 @@ class Admin::AdvisoryController < Admin::ApplicationController
     @advisory = Advisory.new
     @advisory.advisory_categories.build
     @memo_id = Memo.find_by_sid(params[:sid]).try(:id)
+
+    unless @memo_id.blank?
+      @adv = Advisory.by_user(@user.id)
+            .by_memo(@memo_id)
+    end
   end
 
   def create
     params[:advisory][:user_id] = @user.id
 
     @advisory = Advisory.new(advisory_params)
+    if params[:advisory][:adv_sid].present?
+      @advisory.sid = params[:advisory][:adv_sid]
+      @advisory.advisory_code = params[:advisory][:adv_code]
+    end
+
     if @advisory.save
       flash[:notice] = 'Successfully created new advisory.'
       redirect_to "/admin/advisory/review-advisory/#{@advisory.sid}"
@@ -27,9 +37,9 @@ class Admin::AdvisoryController < Admin::ApplicationController
   end
 
   def review_advisory
-    @advisory = Advisory.find_by_sid(params[:sid]).decorate
-    @category_ids = @advisory.advisory_categories.select('distinct(category_id)').order(:category_id).collect{|mc| mc.category_id}
-    @incoordination = User.where(id: @advisory.incoordinate_with).collect{ |u| "#{u.first_name}-#{u.user_department.code}" }.join(', ')
+    @advisory = Advisory.where(sid: params[:sid]).order(:created_at).decorate
+    # @category_ids = @advisory.advisory_categories.select('distinct(category_id)').order(:category_id).collect{|mc| mc.category_id}
+    @incoordination = User.where(id: @advisory.first.incoordinate_with).collect{ |u| "#{u.first_name}-#{u.user_department.code}" }.join(', ')
   end
 
   def send_advisory
@@ -61,8 +71,8 @@ class Admin::AdvisoryController < Admin::ApplicationController
 
   private
     def advisory_params
-      params[:advisory][:recipients] = params[:advisory][:recipients].reject { |c| c.empty? }
-      params[:advisory][:incoordinate_with] = params[:advisory][:incoordinate_with].reject { |c| c.empty? }
+      params[:advisory][:recipients] = params[:advisory][:recipients].try(:reject) { |c| c.empty? }
+      params[:advisory][:incoordinate_with] = params[:advisory][:incoordinate_with].try(:reject) { |c| c.empty? }
       params[:advisory][:reasons] = params[:advisory][:reasons].reject { |c| c.empty? } if params[:advisory][:reasons].present?
       params[:advisory][:remarks] = params[:advisory][:remarks].reject { |c| c.empty? } if params[:advisory][:remarks].present?
 

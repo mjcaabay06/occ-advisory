@@ -1,0 +1,198 @@
+<div class="form-group">
+  <div class="col-sm-6">
+    <div class="row">
+      <div class="col-sm-3 text-right">
+        <label class="form-label">Category:</label>
+      </div>
+      <div class="col-sm-9">
+      <%= select("memo[memo_categories_attributes][#{cnt}]","category_id", Category.where(id: [6..12]).order(:category).collect { |c| [c.category, c.id] }, { selected: (mc.nil? ? nil : mc.category_id) }, id: 'select-category', class: 'form-control field', 'data-field': 'category_id', onchange: 'select_category(this)') %>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="form-group">
+  <div class="col-sm-6 mb-15">
+    <div class="row">
+      <div class="col-sm-3 text-right">
+        <label class="form-label">FD</label>
+      </div>
+      <div class="col-sm-9">
+        <div class="input-group">
+          <input class="form-control has-date-picker field" data-field="flight_date" required="required" type="text" name="memo[memo_categories_attributes][<%= cnt %>][flight_date]" id="memo_memo_categories_attributes_<%= cnt %>_flight_date" value="<%= (mc.nil? ? nil : mc.flight_date) %>">
+          <span class="input-group-addon">
+            <span class="glyphicon glyphicon-calendar"></span>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-sm-6 mb-15">
+    <div class="row">
+      <div class="col-sm-3 text-right">
+        <label class="form-label">FN</label>
+      </div>
+      <div class="col-sm-9">
+        <input data-field="flight_number" class="form-control field" type="text" name="memo[memo_categories_attributes][<%= cnt %>][flight_number]" id="memo_memo_categories_attributes_<%= cnt %>_flight_number" value="<%= (mc.nil? ? nil : mc.flight_number) %>">
+      </div>
+    </div>
+  </div>
+
+  <div class="col-sm-6 mb-15">
+    <div class="row">
+      <div class="col-sm-3 text-right">
+        <label class="form-label">Route</label>
+      </div>
+      <div class="col-sm-9">
+        <div class="row">
+          <div class="col-sm-6">
+            <input data-field="route_origin" class="form-control field" placeholder="Origin" type="text" name="memo[memo_categories_attributes][<%= cnt %>][route_origin]" id="memo_memo_categories_attributes_<%= cnt %>_route_origin" value="<%= (mc.nil? ? nil : mc.route_origin) %>">
+          </div>
+          <div class="col-sm-6">
+            <input data-field="route_destination" class="form-control field" placeholder="Destination" type="text" name="memo[memo_categories_attributes][<%= cnt %>][route_destination]" id="memo_memo_categories_attributes_<%= cnt %>_route_destination" value="<%= (mc.nil? ? nil : mc.route_destination) %>">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-sm-6 mb-15">
+    <div class="row">
+      <div class="col-sm-3 text-right">
+        <label class="form-label">ACR</label>
+      </div>
+      <div class="col-sm-9">
+        <div class="input-group">
+          <span class="input-group-addon">RP-N</span>
+          <input data-field="ac_registry" class="form-control field" type="text" name="memo[memo_categories_attributes][<%= cnt %>][ac_registry]" id="memo_memo_categories_attributes_<%= cnt %>_ac_registry" value="<%= (mc.nil? ? nil : mc.ac_registry) %>">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-sm-6 mb-15">
+    <div class="row">
+      <div class="col-sm-3 text-right">
+        <label class="form-label">ACT</label>
+      </div>
+      <div class="col-sm-9">
+        <%= select("memo[memo_categories_attributes][#{cnt}]","aircraft_type_id", AircraftType.all.order(:ac_type).collect { |l| [l.ac_type, l.id] }, { selected: (mc.nil? ? nil : mc.aircraft_type_id) }, 'data-field': 'aircraft_type_id', class: 'form-control field') %>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-sm-6 mb-15">
+    <div class="row">
+      <div class="col-sm-3 text-right">
+        <label class="form-label">ACC</label>
+      </div>
+      <div class="col-sm-9">
+        <input data-field="ac_configuration" class="form-control field" type="text" name="memo[memo_categories_attributes][<%= cnt %>][ac_configuration]" id="memo_memo_categories_attributes_<%= cnt %>_ac_configuration" value="<%= (mc.nil? ? nil : mc.ac_configuration) %>">
+      </div>
+    </div>
+  </div>
+
+  <div class="col-sm-6">
+    <div class="row">
+      <div class="col-sm-3 text-right">
+        <label class="form-label">FREQ</label>
+      </div>
+      <div class="col-sm-9">
+        <%= select("memo[memo_categories_attributes][#{cnt}]","frequencies", Frequency.all.order(:id).collect { |l| [l.frequency, l.id] }, { selected: (mc.nil? ? nil : mc.frequencies) },'data-field': 'frequencies', class: 'form-control field frequency-select', multiple: 'multiple', required: true) %>
+      </div>
+    </div>
+  </div>
+
+  <% unless mc.nil? %>
+    <% unless mc.std.blank? %>
+    <div class="col-sm-6 mb-15">
+      <div class="row">
+        <div class="col-sm-3 text-right">
+          <label class="form-label">STD</label>
+        </div>
+        <div class="col-sm-9">
+          <div class="input-group">
+            <input data-field="std" class="form-control field has-time-picker" required="required" type="text" name="memo[memo_categories_attributes][<%= cnt %>][std]" id="memo_memo_categories_attributes_<%= cnt %>_std" value="<%= (mc.nil? ? nil : mc.std) %>">
+            <span class="input-group-addon">
+              <span class="glyphicon glyphicon-time"></span>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <% end %>
+  <% end %>
+
+  <% unless mc.nil? %>
+    <% unless mc.sta.blank? %>
+    <div class="col-sm-6 mb-15">
+      <div class="row">
+        <div class="col-sm-3 text-right">
+          <label class="form-label">STA</label>
+        </div>
+        <div class="col-sm-9">
+          <div class="input-group">
+            <input data-field="sta" class="form-control field has-time-picker" required="required" type="text" name="memo[memo_categories_attributes][<%= cnt %>][sta]" id="memo_memo_categories_attributes_<%= cnt %>_sta" value="<%= (mc.nil? ? nil : mc.sta) %>">
+            <span class="input-group-addon">
+              <span class="glyphicon glyphicon-time"></span>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <% end %>
+  <% end %>
+
+  <% unless mc.nil? %>
+    <% unless mc.nstd.blank? %>
+    <div class="col-sm-6v">
+      <div class="row">
+        <div class="col-sm-3 text-right">
+          <label class="form-label">NSTD</label>
+        </div>
+        <div class="col-sm-9">
+          <div class="input-group">
+            <input data-field="nstd" class="form-control field has-time-picker" required="required" type="text" name="memo[memo_categories_attributes][<%= cnt %>][nstd]" id="memo_memo_categories_attributes_<%= cnt %>_nstd" value="<%= (mc.nil? ? nil : mc.nstd) %>">
+            <span class="input-group-addon">
+              <span class="glyphicon glyphicon-time"></span>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <% end %>
+  <% end %>
+
+  <% unless mc.nil? %>
+    <% unless mc.nsta.blank? %>
+    <div class="col-sm-6 mb-15">
+      <div class="row">
+        <div class="col-sm-3 text-right">
+          <label class="form-label">NSTA</label>
+        </div>
+        <div class="col-sm-9">
+          <div class="input-group">
+            <input data-field="nsta" class="form-control field has-time-picker" required="required" type="text" name="memo[memo_categories_attributes][<%= cnt %>][nsta]" id="memo_memo_categories_attributes_<%= cnt %>_nsta" value="<%= (mc.nil? ? nil : mc.nsta) %>">
+            <span class="input-group-addon">
+              <span class="glyphicon glyphicon-time"></span>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <% end %>
+  <% end %>
+
+  <div class="col-sm-6 mb-15">
+    <div class="row">
+      <div class="col-sm-3 text-right">
+        <label class="form-label">Remarks</label>
+      </div>
+      <div class="col-sm-9">
+        <textarea data-field="remarks" class="form-control field" required="required" name="memo[memo_categories_attributes][<%= cnt %>][remarks]" id="memo_memo_categories_attributes_<%= cnt %>_remarks"><%= (mc.nil? ? nil : mc.remarks) %></textarea>
+      </div>
+    </div>
+  </div>
+
+
+</div>

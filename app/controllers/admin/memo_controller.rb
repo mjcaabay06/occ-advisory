@@ -22,6 +22,20 @@ class Admin::MemoController < Admin::ApplicationController
     @reason_ids = check_reason_ids(@memo.user.user_department_id)
   end
 
+  def update
+    @memo = Memo.find_by_sid(params[:id])
+    params[:memo][:user_id] = @user.id
+
+    if @memo.update_attributes(memo_params(@user.user_department.try(:code)))
+      flash[:notice] = 'Successfully updated memo.'
+      redirect_to "/admin/memo/review-memo/#{@memo.sid}"
+    else
+      puts "-------------#{@memo.errors.full_messages}"
+      flash[:notice] = 'There was a problem in your application. Please check all fields.'
+      redirect_to edit_admin_memo_path
+    end
+  end
+
   def new
     @memo = Memo.new
     @memo.memo_categories.build
@@ -202,7 +216,7 @@ class Admin::MemoController < Admin::ApplicationController
       {:memo_categories_attributes => [
         :category_id, :flight_date, :flight_number, :route_origin, :route_destination,
         :ac_registry, :aircraft_type_id, :ac_configuration, :std, :sta, :nstd, :nsta,
-        :frequency_id, :remarks
+        :remarks, :frequencies => []
       ]}
     end
 end

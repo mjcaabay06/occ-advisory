@@ -8,6 +8,8 @@ class Advisory < ApplicationRecord
   accepts_nested_attributes_for :advisory_categories
 
   scope :is_viewable, -> { where(is_viewable: true) }
+  scope :by_user, -> (value) { where(user_id: value) }
+  scope :by_memo, -> (value) { where(memo_id: value) }
 
   def self.filter_joins
     query = <<~HEREDOC.squish
@@ -34,6 +36,7 @@ class Advisory < ApplicationRecord
   private
     def set_advisory_code
       return unless self.new_record?
+      return if self.sid.present?
       self.advisory_code = "#{self.user.user_department.code.upcase}#{Date.today.strftime('%m')}/#{(Advisory.last.try(:id) || 0) + 1}"
       self.sid = Digest::MD5.hexdigest(self.advisory_code)
     end

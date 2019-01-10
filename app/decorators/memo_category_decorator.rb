@@ -10,7 +10,7 @@ class MemoCategoryDecorator < Draper::Decorator
   end
 
   def frequency
-    Frequency.find(frequency_id).try(:frequency)
+    Frequency.where(id: frequencies).try(:frequency)
   end
 
   def route

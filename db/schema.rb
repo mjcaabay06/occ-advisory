@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_01_10_031058) do
+ActiveRecord::Schema.define(version: 2019_01_10_121634) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -106,7 +106,7 @@ ActiveRecord::Schema.define(version: 2019_01_10_031058) do
     t.text "remarks"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.bigint "category_id"
+    t.integer "category_id"
     t.date "effective_date"
     t.string "flight_number"
     t.string "apu_inoperative"
@@ -131,12 +131,11 @@ ActiveRecord::Schema.define(version: 2019_01_10_031058) do
     t.string "ac_configuration"
     t.time "std"
     t.time "sta"
-    t.bigint "frequency_id"
     t.time "nstd"
     t.time "nsta"
+    t.string "frequencies", default: [], array: true
     t.index ["aircraft_type_id"], name: "index_memo_categories_on_aircraft_type_id"
     t.index ["category_id"], name: "index_memo_categories_on_category_id"
-    t.index ["frequency_id"], name: "index_memo_categories_on_frequency_id"
     t.index ["memo_id"], name: "index_memo_categories_on_memo_id"
   end
 
@@ -227,7 +226,6 @@ ActiveRecord::Schema.define(version: 2019_01_10_031058) do
   add_foreign_key "locations", "statuses"
   add_foreign_key "memo_categories", "aircraft_types"
   add_foreign_key "memo_categories", "categories"
-  add_foreign_key "memo_categories", "frequencies"
   add_foreign_key "memo_categories", "memos"
   add_foreign_key "memos", "users"
   add_foreign_key "page_actions", "statuses"
