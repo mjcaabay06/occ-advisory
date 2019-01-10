@@ -3,8 +3,11 @@ class Advisory < ApplicationRecord
 
   has_many :advisory_categories, dependent: :destroy
   belongs_to :user
+  belongs_to :memo
 
   accepts_nested_attributes_for :advisory_categories
+
+  scope :is_viewable, -> { where(is_viewable: true) }
 
   private
     def set_advisory_code

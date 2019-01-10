@@ -17,7 +17,9 @@
           <ul class="dropdown-menu">
             <li>
               <a href="#" onclick="redirect('/admin/<%= @head_controller %>')">Created <%= "#{@head_controller.pluralize.titleize}"%></a>
-              <a href="#" onclick="redirect('/admin/<%= @head_controller %>/new')">New <%= "#{@head_controller.titleize}"%></a>
+              <% unless @user.user_department_id == 8 %>
+                <a href="#" onclick="redirect('/admin/<%= @head_controller %>/new')">New <%= "#{@head_controller.titleize}"%></a>
+              <% end %>
             </li>
           </ul>
         </li>

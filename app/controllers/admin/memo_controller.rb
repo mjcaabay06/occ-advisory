@@ -9,8 +9,9 @@ class Admin::MemoController < Admin::ApplicationController
   end
   
   def inbox
-    @memos = Memo.filter_inbox(@user.id)
-              .order('created_at desc').decorate
+    @memos = Memo.filter_inbox(@user.user_department_id, @user.id)
+              .is_viewable
+              .order('sent_date desc, created_at desc').decorate
   end
 
   def edit
@@ -59,7 +60,7 @@ class Admin::MemoController < Admin::ApplicationController
 
   def send_memo
     memo = Memo.find_by_sid(params[:sid])
-    memo.update_attributes(is_viewable: true)
+    memo.update_attributes(is_viewable: true, sent_date: DateTime.now)
     redirect_to '/admin/memo'
   end
 
@@ -80,16 +81,17 @@ class Admin::MemoController < Admin::ApplicationController
     end
 
     if [8].include?(@user.user_department_id)
-      @memos = Memo.all
+      @memos = Memo.is_viewable
     else
-      @memos = Memo.filter_inbox(@user.id)
+      @memos = Memo.filter_inbox(@user.user_department_id, @user.id)
+                .is_viewable
     end
     
     if is_memo
       @memos = @memos.where(id: memo_ids)
     end
 
-    @memos = @memos.order('created_at desc').decorate
+    @memos = @memos.order('sent_date desc, created_at desc').decorate
     render partial: 'inbox_body'
   end
 

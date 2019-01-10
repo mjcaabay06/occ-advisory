@@ -78,12 +78,11 @@ function memo_filter() {
 }
 
 function memo_info(sid){
-  // $.get('admin/memo-info', { id: id })
-  // .done(function(result){
-  //   $(".panel-body.memo-info").html(result.partial);
-  //   $(".panel-heading.memo-title").html(result.title);
-  // });
   window.location.href = '/admin/memo/review-memo/' + sid;
+}
+
+function adv_info(sid){
+  window.location.href = '/admin/advisory/review-advisory/' + sid;
 }
 
 function select_category(id) {

@@ -1,0 +1,9 @@
+<% @advisory.each do |adv| %>
+  <div class="row">
+    <label><%= adv.title.html_safe %></label>
+    <label class="pull-right">
+      <%= adv.date_send %>
+      <button type="button" class="btn-link" onclick="adv_info('<%= adv.sid %>')"><span class="glyphicon glyphicon-chevron-right"></span></button>
+    </label>
+  </div>
+<% end %>
