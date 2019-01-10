@@ -1,14 +1,16 @@
 class Admin::AdvisoryController < Admin::ApplicationController
   def index
+    @advisory = Advisory.where(user_id: @user.id).order('sent_date desc, created_at desc').decorate
   end
 
   def inbox
-    @memos = Memo.all.order('created_at desc').decorate
+    @memos = Memo.is_viewable.order('sent_date desc, created_at desc').decorate
   end
 
   def new
     @advisory = Advisory.new
     @advisory.advisory_categories.build
+    @memo_id = Memo.find_by_sid(params[:sid]).try(:id)
   end
 
   def create
@@ -32,7 +34,7 @@ class Admin::AdvisoryController < Admin::ApplicationController
 
   def send_advisory
     advisory = Advisory.find_by_sid(params[:sid])
-    advisory.update_attributes(is_viewable: true)
+    advisory.update_attributes(is_viewable: true, sent_date: DateTime.now)
     redirect_to '/admin/advisory'
   end
 
@@ -45,6 +47,7 @@ class Admin::AdvisoryController < Admin::ApplicationController
 
       params.require(:advisory).permit(
           :user_id,
+          :memo_id,
           {:advisory_categories_attributes => [
             :flight_date, :flight_number, :route_origin,
             :route_destination, :ac_registry, :aircraft_type_id,

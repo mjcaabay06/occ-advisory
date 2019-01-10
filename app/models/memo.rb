@@ -12,7 +12,8 @@ class Memo < ApplicationRecord
 
   scope :by_recipients, -> (value) { where("'#{value}' = any (recipients)") }
   scope :by_incoordinate_with, -> (value) { where("'#{value}' = any (incoordinate_with)") }
-  scope :filter_inbox, -> (value) { by_recipients(value).or(by_incoordinate_with(value)) }
+  scope :filter_inbox, -> (dept_id, value) { by_recipients(dept_id).or(by_incoordinate_with(value)) }
+  scope :is_viewable, -> { where(is_viewable: true) }
 
   def self.filter_joins
     query = <<~HEREDOC.squish

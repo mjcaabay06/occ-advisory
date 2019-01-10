@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_01_09_154745) do
+ActiveRecord::Schema.define(version: 2019_01_10_031058) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -26,6 +26,9 @@ ActiveRecord::Schema.define(version: 2019_01_09_154745) do
     t.datetime "updated_at", null: false
     t.bigint "user_id"
     t.boolean "is_viewable", default: false
+    t.bigint "memo_id"
+    t.datetime "sent_date"
+    t.index ["memo_id"], name: "index_advisories_on_memo_id"
     t.index ["user_id"], name: "index_advisories_on_user_id"
   end
 
@@ -149,6 +152,7 @@ ActiveRecord::Schema.define(version: 2019_01_09_154745) do
     t.string "memo_code"
     t.string "sid"
     t.boolean "is_viewable", default: false
+    t.datetime "sent_date"
     t.index ["user_id"], name: "index_memos_on_user_id"
   end
 
@@ -212,6 +216,7 @@ ActiveRecord::Schema.define(version: 2019_01_09_154745) do
     t.index ["user_department_id"], name: "index_users_on_user_department_id"
   end
 
+  add_foreign_key "advisories", "memos"
   add_foreign_key "advisories", "users"
   add_foreign_key "advisory_categories", "advisories"
   add_foreign_key "advisory_categories", "aircraft_types"

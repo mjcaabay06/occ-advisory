@@ -6,6 +6,7 @@
     <%= render 'message' %>
     <div class="col-md-8 col-md-offset-2">
       <%= form_for @advisory, url: { controller: 'advisory', action: 'create' }, html: { method: :post, class: 'form-horizontal' } do |f| %>
+        <%= f.hidden_field :memo_id, value: @memo_id %>
         <div class="panel panel-default">
           <div class="panel-heading">
             Advisory Header

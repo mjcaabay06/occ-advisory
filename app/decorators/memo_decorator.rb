@@ -2,7 +2,7 @@ class MemoDecorator < Draper::Decorator
   delegate_all
 
   def date_send
-    created_at.strftime('%m-%d-%y %H%Mz')
+    sent_date.try(:strftime, '%m-%d-%y %H%Mz') || created_at.try(:strftime, '%m-%d-%y %H%Mz')
   end
 
   def memo_title
