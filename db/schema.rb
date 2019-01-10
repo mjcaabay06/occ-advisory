@@ -106,7 +106,7 @@ ActiveRecord::Schema.define(version: 2019_01_10_031058) do
     t.text "remarks"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "category_id"
+    t.bigint "category_id"
     t.date "effective_date"
     t.string "flight_number"
     t.string "apu_inoperative"
