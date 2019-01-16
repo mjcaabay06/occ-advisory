@@ -24,7 +24,7 @@ module AdvisoryConcern
     return [16,17] if ud_id == 2
     return [18..29] if ud_id == 9
     return [30] if ud_id == 5
-    return [26,27,30,31,32,33,34] if ud_id == 8
+    return [26,27,30,31,32,33] if ud_id == 8
   end
 
   def check_reason_ids(ud_id)

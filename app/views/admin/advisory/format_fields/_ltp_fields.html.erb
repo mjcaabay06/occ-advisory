@@ -15,7 +15,7 @@
       <% @ar.advisory_categories.where(category_id: c.id).order(:created_at).each do |mc| %>
         <tr>
           <td><%= c.category unless cnt > 0 %></td>
-          <td><%= mc.ac_registry || 'N/A' %></td>
+          <td><%= "RP-N#{mc.ac_registry}" || 'N/A' %></td>
           <td><%= mc.effective_date.try(:strftime, '%m-%d-%y (%a)') || 'N/A' %></td>
           <td><%= mc.flight_number || 'N/A' %></td>
           <td><%= mc.ac_status_datetime.try(:strftime, '%m-%d-%y (%a)') || 'N/A' %></td>

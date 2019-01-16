@@ -50,8 +50,33 @@ $(document).ready(function(){
     advisory_filter();
   });
 
+  $('#ac_registry').on('change', function(){
+    advisory_filter();
+  });
+
+  $('#flight_number').on('change', function(){
+    advisory_filter();
+  });
+
   $("#recipient-select, #incoordinate-select, #reason-select, #remarks-select, .frequency-select").select2({
     theme: 'bootstrap'
+  });
+
+  $("#remarks-select").on('change', function(){
+    var sel = $(this).val();
+    console.log(sel);
+    if (sel) {
+      if (sel.includes('34')) {
+        $("#other-remarks").show();
+        $("#other-remarks").find('input').removeAttr('disabled');
+      } else {
+        $("#other-remarks").hide();
+        $("#other-remarks").find('input').attr('disabled', 'disabled');
+      }
+    } else {
+      $("#other-remarks").hide();
+      $("#other-remarks").find('input').attr('disabled', 'disabled');
+    }
   });
 
   $('#created-flight-date').on('change', function(){
@@ -59,6 +84,14 @@ $(document).ready(function(){
   });
 
   $("#tb-created-search").on('keyup', function(){
+    created_filter();
+  });
+
+  $("#created-ac-registry").on('change', function(){
+    created_filter();
+  });
+
+  $("#created-flight-number").on('change', function(){
     created_filter();
   });
 
@@ -80,8 +113,9 @@ function advisory_filter() {
   var dept_id = $('select[name=user_department_id]').val();
   var flight_date = $('#flight_date').val();
   var txt = $("#tb-search").val();
-
-  $.get('/admin/advisory/filter', { dept_id: dept_id, flight_date: flight_date, val: txt })
+  var ac_registry = $("#ac_registry").val();
+  var flight_number = $("#flight_number").val();
+  $.get('/admin/advisory/filter', { dept_id: dept_id, flight_date: flight_date, val: txt, ac_registry: ac_registry, flight_number: flight_number })
     .done(function(result){
       $(".panel-body.memo-lists").html(result);
     });
@@ -90,7 +124,9 @@ function advisory_filter() {
 function created_filter(){
   var flight_date = $('#created-flight-date').val();
   var txt = $("#tb-created-search").val();
-  $.get('/admin/advisory/created-filter', { flight_date: flight_date, val: txt })
+  var ac_registry = $("#created-ac-registry").val();
+  var flight_number = $("#created-flight-number").val();
+  $.get('/admin/advisory/created-filter', { flight_date: flight_date, val: txt, ac_registry: ac_registry, flight_number: flight_number })
     .done(function(result){
       $(".panel-body.memo-lists").html(result);
     });

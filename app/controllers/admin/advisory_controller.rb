@@ -2,7 +2,7 @@ class Admin::AdvisoryController < Admin::ApplicationController
   include AdvisoryConcern
 
   def index
-    @advisory = Advisory.where(user_id: @user.id).order('sent_date desc, created_at desc').decorate
+    @advisory = Advisory.where(user_id: @user.id, is_viewable: true).order('created_at desc').decorate
   end
 
   def inbox
@@ -51,6 +51,10 @@ class Admin::AdvisoryController < Admin::ApplicationController
   end
 
   def review_advisory
+    unless request.env['HTTP_REFERER'].blank?
+      session[:last_page] = request.env['HTTP_REFERER']
+    end
+
     @reply = ReplyThread.new
     @advisory = Advisory.find_by(sid: params[:sid]).decorate
     @incoordination = User.where(id: @advisory.incoordinate_with).collect{ |u| "#{u.first_name}-#{u.user_department.code}" }.join(', ')
@@ -112,7 +116,7 @@ class Admin::AdvisoryController < Admin::ApplicationController
               recipient: u.id,
               sender: advisory.user_id,
               advisory_id: advisory.id,
-              priority: 3
+              priority: params[:priority].to_i
             }
           end
         end
@@ -134,9 +138,15 @@ class Admin::AdvisoryController < Admin::ApplicationController
     unless params[:flight_date].blank?
       adv = adv.filter_flight_date(params[:flight_date])
     end
+    unless params[:ac_registry].blank?
+      adv = adv.filter_ac_registry(params[:ac_registry])
+    end
+    unless params[:flight_number].blank?
+      adv = adv.filter_flight_number(params[:flight_number])
+    end
 
     @advisory = Advisory.where(id: adv.collect{ |a| a.advisory.id })
-                .where(user_id: @user.id).order('sent_date desc, created_at desc').decorate
+                .where(user_id: @user.id, is_viewable: true).order('created_at desc').decorate
     render partial: 'admin/advisory/created/body'
   end
 
@@ -152,6 +162,12 @@ class Admin::AdvisoryController < Admin::ApplicationController
     end
     unless params[:dept_id].blank?
       adv = adv.filter_department(params[:dept_id])
+    end
+    unless params[:ac_registry].blank?
+      adv = adv.filter_ac_registry(params[:ac_registry])
+    end
+    unless params[:flight_number].blank?
+      adv = adv.filter_flight_number(params[:flight_number])
     end
 
     @advisories = Inbox.where(advisory_id: adv.collect{ |a| a.advisory.id })
@@ -191,6 +207,7 @@ class Admin::AdvisoryController < Admin::ApplicationController
         :user_id,
         {:advisory_reasons_attributes => [
           :time_and_date,
+          :other_remarks,
           get_proper_params(dept_code),
           :reasons => [],
           :remarks => [],
@@ -205,6 +222,7 @@ class Admin::AdvisoryController < Admin::ApplicationController
       params[:advisory][:advisory_reasons_attributes]["0"][:remarks] = params[:advisory][:advisory_reasons_attributes]["0"][:remarks].reject { |c| c.empty? } if params[:advisory][:advisory_reasons_attributes]["0"][:remarks].present?
       params[:advisory][:advisory_reasons_attributes]["0"].permit(
         :time_and_date,
+        :other_remarks,
         occ_params,
         :reasons => [],
         :remarks => [],

@@ -10,8 +10,13 @@
       </div>
       <% unless @user.user_department_id == 4 %>
         <div class="col-sm-6">
-          <label class="form-label">Remarks:</label>
-          <%= ar.select :remarks, Remark.where(id: @remark_ids).order(:remark).collect { |r| [r.remark, r.id] }, {}, id: 'remarks-select', class: 'form-control', multiple: 'multiple', required: true %>
+          <div >
+            <label class="form-label">Remarks:</label>
+            <%= ar.select :remarks, Remark.where(id: @remark_ids << 34).order(:remark).collect { |r| [r.remark, r.id] }, {}, id: 'remarks-select', class: 'form-control', multiple: 'multiple', required: true %>
+          </div>
+          <div id="other-remarks" style="margin-top: 15px; display: none;">
+            <%= ar.text_field :other_remarks, class: 'form-control', placeholder: 'Other Remarks', required: true, disabled: true %>
+          </div>
         </div>
       <% end %>
     </div>

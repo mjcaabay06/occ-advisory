@@ -22,9 +22,10 @@ class AdvisoryReason < ApplicationRecord
     query = <<~HEREDOC.squish
       #{ search_by_reason(reason) } OR
       #{ search_by_remark(remark) } OR
+      ${ search_by_other_remarks(value) } OR
       #{ search_by_category(value) } OR
-      #{ search_by_ac_registry(value) } OR
-      #{ search_by_flight_number(value) }
+      #{ search_by_second_remarks(value) } OR
+      #{ search_by_route(value) }
     HEREDOC
     where(query)
   end
@@ -35,6 +36,14 @@ class AdvisoryReason < ApplicationRecord
 
   def self.filter_department value
     where("users.user_department_id = #{value}")
+  end
+
+  def self.filter_ac_registry value
+    where("advisory_categories.ac_registry = '#{value}'")
+  end
+
+  def self.filter_flight_number value
+    where("advisory_categories.flight_number = '#{value}'")
   end
 
   private
@@ -51,11 +60,15 @@ class AdvisoryReason < ApplicationRecord
       "categories.category ilike '%#{value.downcase}%'"
     end
 
-    def self.search_by_ac_registry value
-      "advisory_categories.ac_registry ilike '%#{value.downcase}%'"
+    def self.search_by_second_remarks value
+      "advisory_categories.remarks ilike '%#{value.downcase}%'"
     end
 
-    def self.search_by_flight_number value
-      "advisory_categories.flight_number ilike '%#{value.downcase}%'"
+    def self.search_by_route value
+      "advisory_categories.route_destination ilike '%#{value.downcase}%' OR advisory_categories.route_origin ilike '%#{value.downcase}%'"
+    end
+
+    def self.search_by_other_remarks value
+      "advisory_reasons.other_remarks ilike '%#{value.downcase}%'"
     end
 end

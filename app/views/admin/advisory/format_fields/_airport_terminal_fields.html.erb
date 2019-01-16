@@ -19,7 +19,7 @@
   <tbody>
     <% @ar.advisory_categories.order(:created_at).decorate.each do |mc| %>
       <tr>
-        <td><%= mc.ac_registry || 'N/A' %></td>
+        <td><%= "RP-N#{mc.ac_registry}" || 'N/A' %></td>
         <td><%= mc.tow_out.try(:strftime, '%k%Mz') || 'N/A'  %></td>
         <td><%= mc.tow_in.try(:strftime, '%k%Mz') || 'N/A'  %></td>
         <td><%= mc.blocked_in.try(:strftime, '%k%Mz') || 'N/A'  %></td>
