@@ -2,7 +2,7 @@
   <div class="page-header">
     <span><b>Issuer:</b> <%= @advisory.user.first_name %></span><br>
     <span><b>Issued Date:</b> <%= @advisory.created_at.strftime('%B %-d, %Y') %></span>
-    <span class="pull-right"><b>Advisory ID:</b> <%= @advisory.advisory_code %></h3>
+    <span class="pull-right"><b>Advisory ID:</b> <%= @advisory.advisory_code %></span>
   </div>
   <div class="view-memo">
     <div style="border: 1px solid #000; padding: 8px"><%= @advisory.user.user_department.description %></div>
@@ -59,8 +59,10 @@
       <% else %>
         <% if @advisory.user_id != @user.id %>
           <% if @user.user_department_id == 8 %>
-            <%= link_to 'Create Advisory', "javascript: window.location.href = '/admin/advisory/new?sid=#{@advisory.sid}'", class: 'btn btn-primary' %>
+            <%= link_to 'Create Advisory', "javascript: window.location.href = '/admin/advisory/print?sid=#{@advisory.sid}'", class: 'btn btn-primary' %>
           <% end %>
+          <%= link_to 'Print', "/admin/advisory/print/#{@advisory.sid}", class: 'btn btn-primary', target: '_blank' %>
+          <%= link_to 'Back', "javascript: window.location.href = '#{}'", class: 'btn btn-primary' %>
         <% end %>
       <% end %>
     </div>
