@@ -26,6 +26,7 @@ Rails.application.routes.draw do
         get :inbox_filter, path: '/filter'
         get :created_filter, path: '/created-filter'
         post :create_reply
+        get :print, path: '/print/:sid'
       end
     end
 

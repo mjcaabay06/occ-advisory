@@ -69,6 +69,12 @@ class Admin::AdvisoryController < Admin::ApplicationController
     redirect_to "/admin/advisory/review-advisory/#{params[:reply_thread][:advisory_sid]}"
   end
 
+  def print
+    @advisory = Advisory.find_by(sid: params[:sid]).decorate
+    @incoordination = User.where(id: @advisory.incoordinate_with).collect{ |u| "#{u.first_name}-#{u.user_department.code}" }.join(', ')
+    render layout: false
+  end
+
   def send_advisory
     advisory = Advisory.find_by(sid: params[:sid])
     unless advisory.blank?
