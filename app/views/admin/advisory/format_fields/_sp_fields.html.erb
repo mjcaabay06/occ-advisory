@@ -22,7 +22,7 @@
       <% @ar.advisory_categories.where(category_id: c.id).order(:created_at).decorate.each do |mc| %>
         <tr>
           <td><%= c.category unless cnt > 0 %></td>
-          <td><%= mc.ac_registry || 'N/A' %></td>
+          <td><%= "RP-N#{mc.ac_registry}" || 'N/A' %></td>
           <td><%= mc.flight_date.try(:strftime, '%m-%d-%y (%a)') || 'N/A' %></td>
           <td><%= mc.flight_number || 'N/A' %></td>
           <td><%= mc.route || 'N/A' %></td>

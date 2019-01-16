@@ -12,6 +12,12 @@
           </span>
         </div>
       </div>
+      <div class="col-sm-2">
+        <%= select(nil, nil, AdvisoryCategory.select('distinct(ac_registry)').where.not(ac_registry: nil).order(:ac_registry).collect { |a| [a.ac_registry, a.ac_registry] }, {include_blank: 'All AC Registry'}, class: 'form-control', id: 'created-ac-registry') %>
+      </div>
+      <div class="col-sm-2">
+        <%= select(nil, nil, AdvisoryCategory.select('distinct(flight_number)').where.not(flight_number: nil).order(:flight_number).collect { |a| [a.flight_number, a.flight_number] }, {include_blank: 'All Flight Number'}, class: 'form-control', id: 'created-flight-number') %>
+      </div>
     </div>
   </div>
   <div class="panel-body memo-lists">

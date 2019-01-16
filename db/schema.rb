@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_01_15_162146) do
+ActiveRecord::Schema.define(version: 2019_01_16_164711) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -80,6 +80,7 @@ ActiveRecord::Schema.define(version: 2019_01_15_162146) do
     t.bigint "advisory_reason_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.text "other_remarks"
     t.index ["advisory_reason_id"], name: "index_advisory_categories_on_advisory_reason_id"
     t.index ["aircraft_type_id"], name: "index_advisory_categories_on_aircraft_type_id"
     t.index ["category_id"], name: "index_advisory_categories_on_category_id"
@@ -92,6 +93,7 @@ ActiveRecord::Schema.define(version: 2019_01_15_162146) do
     t.bigint "advisory_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.text "other_remarks"
     t.index ["advisory_id"], name: "index_advisory_reasons_on_advisory_id"
   end
 

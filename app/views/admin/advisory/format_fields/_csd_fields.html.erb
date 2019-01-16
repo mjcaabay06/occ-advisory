@@ -12,7 +12,7 @@
   <tbody>
     <% @ar.advisory_categories.order(:created_at).decorate.each do |mc| %>
       <tr>
-        <td><%= mc.ac_registry || 'N/A' %></td>
+        <td><%= "RP-N#{mc.ac_registry}" || 'N/A' %></td>
         <td><%= mc.aircraft_type || 'N/A' %></td>
         <td><%= mc.flight_number || 'N/A' %></td>
         <td><%= mc.flight_date.try(:strftime, '%m-%d-%y (%a)') || 'N/A' %></td>

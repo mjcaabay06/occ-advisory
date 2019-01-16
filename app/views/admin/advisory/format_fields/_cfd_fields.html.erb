@@ -19,7 +19,7 @@
       <% @ar.advisory_categories.where(category_id: c.id).order(:created_at).decorate.each do |mc| %>
         <tr>
           <td><%= c.category unless cnt > 0 %></td>
-          <td><%= mc.ac_registry || 'N/A' %></td>
+          <td><%= "RP-N#{mc.ac_registry}" || 'N/A' %></td>
           <td><%= mc.route || 'N/A' %></td>
           <td><%= mc.ac_location || 'N/A' %></td>
           <td><%= mc.ac_status_datetime.try(:strftime, '%m-%d-%y (%a) %k%Mz')  || 'N/A' %></td>

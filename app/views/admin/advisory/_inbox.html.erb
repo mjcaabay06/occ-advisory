@@ -15,6 +15,12 @@
       <div class="col-sm-2">
         <%= select(nil, :user_department_id, UserDepartment.where.not('id in (1,8)').order(:description).collect { |a| [a.description, a.id] }, {selected: @dept_id, include_blank: 'All Departments'}, class: 'form-control') %>
       </div>
+      <div class="col-sm-2">
+        <%= select(nil, :ac_registry, AdvisoryCategory.select('distinct(ac_registry)').where.not(ac_registry: nil).order(:ac_registry).collect { |a| [a.ac_registry, a.ac_registry] }, {include_blank: 'All AC Registry'}, class: 'form-control') %>
+      </div>
+      <div class="col-sm-2">
+        <%= select(nil, :flight_number, AdvisoryCategory.select('distinct(flight_number)').where.not(flight_number: nil).order(:flight_number).collect { |a| [a.flight_number, a.flight_number] }, {selected: @dept_id, include_blank: 'All Flight Number'}, class: 'form-control') %>
+      </div>
     </div>
   </div>
   <div class="panel-body memo-lists">

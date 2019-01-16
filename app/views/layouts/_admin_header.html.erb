@@ -10,7 +10,7 @@
     </div>
     <div class="collapse navbar-collapse" id="myNavbar">
       <ul class="nav navbar-nav">
-        <% unless @user.user_department_id == 1%>
+        <% unless @user.user_department_id == 1 %>
           <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
               Advisory <span class="caret"></span>
@@ -18,9 +18,7 @@
             <ul class="dropdown-menu">
               <li>
                 <a href="#" onclick="redirect('/admin/advisory')">Created Advisories</a>
-                <% unless @user.user_department_id == 8 %>
-                  <a href="#" onclick="redirect('/admin/advisory/new')">New Advisory</a>
-                <% end %>
+                <a href="#" onclick="redirect('/admin/advisory/new')">New Advisory</a>
               </li>
             </ul>
           </li>

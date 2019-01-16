@@ -28,7 +28,7 @@
             <td>REMARKS</td>
             <% unless ar.remarks.blank? %>
               <% Remark.where(id: ar.remarks).each do |r| %>
-                <td><%= r.remark %></td>
+                <td><%= (ar.other_remarks if r.id == 34) || r.remark %></td>
               <% end %>
             <% end %>
           </tr>
@@ -59,10 +59,10 @@
       <% else %>
         <% if @advisory.user_id != @user.id %>
           <% if @user.user_department_id == 8 %>
-            <%= link_to 'Create Advisory', "javascript: window.location.href = '/admin/advisory/print?sid=#{@advisory.sid}'", class: 'btn btn-primary' %>
+            <%= link_to 'Create Advisory', "javascript: window.location.href = '/admin/advisory/new?sid=#{@advisory.sid}'", class: 'btn btn-primary' %>
           <% end %>
           <%= link_to 'Print', "/admin/advisory/print/#{@advisory.sid}", class: 'btn btn-primary', target: '_blank' %>
-          <%= link_to 'Back', "javascript: window.location.href = '#{}'", class: 'btn btn-primary' %>
+          <%= link_to 'Back', "javascript: window.location.href = '#{session[:last_page]}'", class: 'btn btn-primary' %>
         <% end %>
       <% end %>
     </div>
