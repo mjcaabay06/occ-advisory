@@ -1,0 +1,19 @@
+<div class="panel panel-default">
+  <div class="panel-heading">
+    Primary Reason
+  </div>
+  <div class="panel-body">
+    <div class="form-group">
+      <div class="col-sm-6">
+        <label class="form-label">Reason:</label>
+        <%= ar.select :reasons, Reason.where(id: @reason_ids).order(:reason).collect { |r| [r.reason, r.id] }, {}, id: 'reason-select', class: 'form-control', multiple: 'multiple', required: true %>
+      </div>
+      <% unless @user.user_department_id == 4 %>
+        <div class="col-sm-6">
+          <label class="form-label">Remarks:</label>
+          <%= ar.select :remarks, Remark.where(id: @remark_ids).order(:remark).collect { |r| [r.remark, r.id] }, {}, id: 'remarks-select', class: 'form-control', multiple: 'multiple', required: true %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,37 @@
+<% cnt = 0 %>
+<table class="table table-bordered category">
+  <thead>
+    <tr>
+      <th>CATEGORY</th>
+      <th>AIRCRAFT REGISTRY</th>
+      <th>ROUTE</th>
+      <th>AC LOC</th>
+      <th>DATE/TIME</th>
+      <th>LOCATION</th>
+      <th>MOVEMENT</th>
+      <th>MAX WIND</th>
+      <th>WTHR FRCST</th>
+      <th>REMARKS</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% Category.where(id: @category_ids).order(:category).each do |c| %>
+      <% @ar.advisory_categories.where(category_id: c.id).order(:created_at).decorate.each do |mc| %>
+        <tr>
+          <td><%= c.category unless cnt > 0 %></td>
+          <td><%= mc.ac_registry || 'N/A' %></td>
+          <td><%= mc.route || 'N/A' %></td>
+          <td><%= mc.ac_location || 'N/A' %></td>
+          <td><%= mc.ac_status_datetime.try(:strftime, '%m-%d-%y (%a) %k%Mz')  || 'N/A' %></td>
+          <td><%= mc.location || 'N/A' %></td>
+          <td><%= mc.movement || 'N/A' %></td>
+          <td><%= mc.max_wind || 'N/A' %></td>
+          <td><%= mc.weather_forecast || 'N/A' %></td>
+          <td><%= mc.remarks || 'N/A' %></td>
+        </tr>
+        <% cnt += 1 %>
+      <% end %>
+      <% cnt = 0 %>
+    <% end %>
+  </tbody>
+</table>

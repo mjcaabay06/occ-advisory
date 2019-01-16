@@ -6,7 +6,7 @@
           <label class="form-label">Category:</label>
         </div>
         <div class="col-sm-9">
-        <%= mc.select :category_id, Category.where(id: [4,5]).order(:category).collect { |c| [c.category, c.id] }, {}, id: 'select-category', class: 'form-control field', 'data-field': 'category_id', onchange: 'select_category(this)' %>
+        <%= mc.select :category_id, Category.where(id: [4,5]).order(:category).collect { |c| [c.category, c.id] }, { include_blank: true }, id: 'select-category', class: 'form-control field', 'data-field': 'category_id', onchange: 'select_category(this)' %>
         </div>
       </div>
     </div>

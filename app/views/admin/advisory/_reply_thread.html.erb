@@ -1,0 +1,43 @@
+<div class="col-md-12">
+  <div class="row">
+    <div class="col-md-6 reply-thread">
+      <div class="col-md-12 replies">
+        <% @replies.each do |r| %>
+          <div class="row">
+            <div class="panel panel-default">
+              <div class="panel-heading">
+                <span><strong><%= r.sender %></strong></span>
+                <span class="pull-right">
+                  <small><%= r.created_at.strftime('%m-%d-%y %k%Mz') %></small>
+                </span>
+                <div class="clearfix"></div>
+              </div>
+              <div class="panel-body">
+                <%= r.message %>
+              </div>
+            </div>
+          </div>
+        <% end %>
+      </div>
+      <div class="clearfix"></div>
+      <%= form_for @reply, url: { controller: 'advisory', action: 'create_reply' }, html: { method: :post, class: 'form-horizontal' } do |f| %>
+        <%= f.hidden_field :advisory_id, value: @advisory.id %>
+        <%= f.hidden_field :user_id, value: @user.id %>
+        <%= f.hidden_field :advisory_sid, value: @advisory.sid %>
+        <div class="page-header">
+          <h3>Your Reply</h3>
+        </div>
+        <div class="form-group">
+          <div class="col-md-12">
+            <%= f.text_area :message, class: 'form-control', required: true %>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="col-md-12">
+            <%= f.button 'Post Your Reply', class: 'btn btn-primary' %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

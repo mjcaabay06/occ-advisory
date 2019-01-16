@@ -6,7 +6,7 @@
           <label class="form-label">Category:</label>
         </div>
         <div class="col-sm-9">
-        <%= mc.select :category_id, Category.where(id: [6..12]).order(:category).collect { |c| [c.category, c.id] }, {}, id: 'select-category', class: 'form-control field', 'data-field': 'category_id', onchange: 'select_category(this)' %>
+        <%= mc.select :category_id, Category.where(id: [6..12]).order(:category).collect { |c| [c.category, c.id] }, { include_blank: true }, id: 'select-category', class: 'form-control field', 'data-field': 'category_id', onchange: 'select_category(this)' %>
         </div>
       </div>
     </div>
@@ -81,7 +81,7 @@
             <label class="form-label">ACT</label>
           </div>
           <div class="col-sm-9">
-            <%= mc.select :aircraft_type_id, AircraftType.all.order(:ac_type).collect { |l| [l.ac_type, l.id] }, {}, 'data-field': 'aircraft_type_id', class: 'form-control field' %>
+            <%= mc.select :aircraft_type_id, AircraftType.all.order(:ac_type).collect { |l| [l.ac_type, l.id] }, { include_blank: true }, 'data-field': 'aircraft_type_id', class: 'form-control field' %>
           </div>
         </div>
       </div>
@@ -223,7 +223,7 @@
             <label class="form-label">ACT</label>
           </div>
           <div class="col-sm-9">
-            <%= mc.select :aircraft_type_id, AircraftType.all.order(:ac_type).collect { |l| [l.ac_type, l.id] }, {}, 'data-field': 'aircraft_type_id', class: 'form-control field' %>
+            <%= mc.select :aircraft_type_id, AircraftType.all.order(:ac_type).collect { |l| [l.ac_type, l.id] }, { include_blank: true }, 'data-field': 'aircraft_type_id', class: 'form-control field' %>
           </div>
         </div>
       </div>
@@ -332,7 +332,7 @@
             <label class="form-label">ACT</label>
           </div>
           <div class="col-sm-9">
-            <%= mc.select :aircraft_type_id, AircraftType.all.order(:ac_type).collect { |l| [l.ac_type, l.id] }, {}, 'data-field': 'aircraft_type_id', class: 'form-control field' %>
+            <%= mc.select :aircraft_type_id, AircraftType.all.order(:ac_type).collect { |l| [l.ac_type, l.id] }, { include_blank: true }, 'data-field': 'aircraft_type_id', class: 'form-control field' %>
           </div>
         </div>
       </div>
@@ -474,7 +474,7 @@
             <label class="form-label">ACT</label>
           </div>
           <div class="col-sm-9">
-            <%= mc.select :aircraft_type_id, AircraftType.all.order(:ac_type).collect { |l| [l.ac_type, l.id] }, {}, 'data-field': 'aircraft_type_id', class: 'form-control field' %>
+            <%= mc.select :aircraft_type_id, AircraftType.all.order(:ac_type).collect { |l| [l.ac_type, l.id] }, { include_blank: true }, 'data-field': 'aircraft_type_id', class: 'form-control field' %>
           </div>
         </div>
       </div>
@@ -583,7 +583,7 @@
             <label class="form-label">ACT</label>
           </div>
           <div class="col-sm-9">
-            <%= mc.select :aircraft_type_id, AircraftType.all.order(:ac_type).collect { |l| [l.ac_type, l.id] }, {}, 'data-field': 'aircraft_type_id', class: 'form-control field' %>
+            <%= mc.select :aircraft_type_id, AircraftType.all.order(:ac_type).collect { |l| [l.ac_type, l.id] }, { include_blank: true }, 'data-field': 'aircraft_type_id', class: 'form-control field' %>
           </div>
         </div>
       </div>
@@ -725,7 +725,7 @@
             <label class="form-label">ACT</label>
           </div>
           <div class="col-sm-9">
-            <%= mc.select :aircraft_type_id, AircraftType.all.order(:ac_type).collect { |l| [l.ac_type, l.id] }, {}, 'data-field': 'aircraft_type_id', class: 'form-control field' %>
+            <%= mc.select :aircraft_type_id, AircraftType.all.order(:ac_type).collect { |l| [l.ac_type, l.id] }, { include_blank: true }, 'data-field': 'aircraft_type_id', class: 'form-control field' %>
           </div>
         </div>
       </div>
@@ -900,7 +900,7 @@
             <label class="form-label">ACT</label>
           </div>
           <div class="col-sm-9">
-            <%= mc.select :aircraft_type_id, AircraftType.all.order(:ac_type).collect { |l| [l.ac_type, l.id] }, {}, 'data-field': 'aircraft_type_id', class: 'form-control field' %>
+            <%= mc.select :aircraft_type_id, AircraftType.all.order(:ac_type).collect { |l| [l.ac_type, l.id] }, { include_blank: true }, 'data-field': 'aircraft_type_id', class: 'form-control field' %>
           </div>
         </div>
       </div>
