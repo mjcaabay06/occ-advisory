@@ -1,13 +1,8 @@
 class Admin::HomeController < Admin::ApplicationController
   def index
-    @memos = Memo.all.order('created_at desc').decorate
-    @memo = nil
-    @ac_id = nil;
-    @dept_id = nil;
   end
 
   def new
-    
   end
 
   def memo_filters
@@ -40,9 +35,9 @@ class Admin::HomeController < Admin::ApplicationController
       session[:user_id] = user.id
       url = '/admin/advisory/inbox'
       # url = '/admin/memo/inbox'
-      # if user.user_department_id == 8
-      #   url = '/admin/advisory/inbox'
-      # end
+      if user.user_department_id == 1
+        url = '/admin/users'
+      end
 
       redirect_to url
     else

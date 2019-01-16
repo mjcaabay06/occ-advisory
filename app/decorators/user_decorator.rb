@@ -5,4 +5,8 @@ class UserDecorator < Draper::Decorator
     user_department.code.try(:downcase).gsub(' ', '_')
   end
 
+  def name
+    "#{last_name}, #{first_name}"
+  end
+
 end

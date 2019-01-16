@@ -1,0 +1,36 @@
+<%= form_for @user_department, url: (admin_user_department_index_path(@user_department) if params[:action] == 'new') || (admin_user_department_path(@user_department)), html: { class: 'form-horizontal' } do |f|%>
+  <div class="form-group">
+    <div class="col-md-2">
+      <label class="form-label">Description</label>
+    </div>
+    <div class="col-md-10">
+      <%= f.text_field :description, class: 'form-control', required: true %>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <div class="col-md-2">
+      <label class="form-label">Code</label>
+    </div>
+    <div class="col-md-10">
+      <%= f.text_field :code, class: 'form-control', required: true %>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <div class="col-md-2">
+      <label class="form-label">Status</label>
+    </div>
+    <div class="col-md-4">
+      <%= f.select :status_id, Status.all.order(:description).collect { |s| [s.description, s.id] }, { include_blank: true }, class: 'form-control', required: true %>
+    </div>
+  </div>
+  <div class="form-group">
+    <div class="col-md-2">
+    </div>
+    <div class="col-md-4">
+      <%= f.button 'Submit', class: 'btn btn-primary' %>
+    </div>
+  </div>
+<% end %>
+  

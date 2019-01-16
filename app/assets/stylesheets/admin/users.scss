@@ -1,0 +1,37 @@
+.lists {
+  &-users {
+    label {
+      &.form-label {
+        margin: 7px 0;
+        font-weight: normal;
+      }
+    }
+    
+    .btn-add {
+      font-size: 25px;
+      width: 40px;
+      height: 40px;
+      padding: 0;
+      border-radius: 40px;
+      text-align: center;
+      font-weight: bold;
+      font-family: "Courier New", Courier, monospace;
+      line-height: 40px;
+      margin-top: -7px;
+    }
+
+    table {
+      td {
+        &.cell-control {
+          width: 1px;
+          white-space: nowrap;
+          background-color: #ddd;
+
+          a {
+            font-size: 12px;
+          }
+        }
+      }
+    }
+  }
+}

@@ -6,7 +6,7 @@ class ApplicationController < ActionController::Base
 
   private
     def check_login
-      redirect_to '/admin'
+      redirect_to '/admin/login'
       # redirect_to '/admin/login'
     end
 end
