@@ -49,7 +49,6 @@
           <% if @advisory.user_id == @user.id %>
             <% if @user.user_department_id == 8 %>
               <%= link_to 'Add Reason', "javascript: window.location.href = '/admin/advisory/new?sid=#{@advisory.sid}&add=true'", class: 'btn btn-primary', id: 'btn-add-avisory' %>
-              <%= button_tag 'Send', class: 'btn btn-primary', id: 'btn-send', type: 'button' %>
             <% end %>
           <% end %>
 
@@ -69,6 +68,6 @@
    
   </div>
 </div>
-<%= render 'reply_thread' %>
+<%= render 'reply_thread' if @advisory.is_viewable %>
 <%= hidden_field_tag 'hidden-sid', @advisory.sid %>
 <%= render 'modal_password' %>
