@@ -38,11 +38,11 @@ class Admin::HomeController < Admin::ApplicationController
 
     unless user.blank?
       session[:user_id] = user.id
-
-      url = '/admin/memo/inbox'
-      if user.user_department_id == 8
-        url = '/admin/advisory/inbox'
-      end
+      url = '/admin/advisory/inbox'
+      # url = '/admin/memo/inbox'
+      # if user.user_department_id == 8
+      #   url = '/admin/advisory/inbox'
+      # end
 
       redirect_to url
     else
@@ -55,6 +55,16 @@ class Admin::HomeController < Admin::ApplicationController
   def logout
     session[:user_id] = nil
     redirect_to '/admin/login'
+  end
+
+  def check_account
+    password = Digest::MD5.hexdigest(params[:password])
+    status = :invalid
+
+    if @user.password_digest == password
+      status = :valid
+    end
+    render json: status
   end
 
 end

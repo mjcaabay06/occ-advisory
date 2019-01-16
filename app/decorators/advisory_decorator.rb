@@ -4,7 +4,6 @@ class AdvisoryDecorator < Draper::Decorator
   def title
     <<~HEREDOC.squish
       #{advisory_code || "##{id}"}
-      [ <i><small>#{try(:memo).try(:memo_code)}</small></i> ]
     HEREDOC
   end
 

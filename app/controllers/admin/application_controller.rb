@@ -13,9 +13,9 @@ class Admin::ApplicationController < ActionController::Base
     end
 
     def check_head_access_url
-      @head_controller = 'memo'
-      if [8].include?(@user.user_department_id)
-        @head_controller = 'advisory'
-      end
+      # @head_controller = 'memo'
+      # if [8].include?(@user.user_department_id)
+      #   @head_controller = 'advisory'
+      # end
     end
 end

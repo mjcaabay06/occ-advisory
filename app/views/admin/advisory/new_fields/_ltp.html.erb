@@ -1,0 +1,117 @@
+<%= @ar.fields_for :advisory_categories do |ac|%>
+  <div class="form-group">
+    <div class="col-sm-6">
+      <div class="row">
+        <div class="col-sm-3 text-right">
+          <label class="form-label">Category:</label>
+        </div>
+        <div class="col-sm-9">
+        <%= ac.select :category_id, Category.where(id: [4,5]).order(:category).collect { |c| [c.category, c.id] }, { include_blank: true }, id: 'select-category', class: 'form-control field', 'data-field': 'category_id', onchange: 'select_category(this)' %>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="category-4" class="div-category">
+    <div class="form-group">
+      <div class="col-sm-6">
+        <div class="row">
+          <div class="col-sm-3 text-right">
+            <label class="form-label">Effective Date:</label>
+          </div>
+          <div class="col-sm-9">
+            <div class="input-group">
+              <%= ac.text_field :effective_date, class: 'form-control has-date-picker field', 'data-field': 'effective_date', required: true %>
+              <span class="input-group-addon">
+                <span class="glyphicon glyphicon-calendar"></span>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="col-sm-6">
+        <div class="row">
+          <div class="col-sm-3 text-right">
+            <label class="form-label">FN</label>
+          </div>
+          <div class="col-sm-9">
+            <%= ac.text_field :flight_number, class: 'form-control field', 'data-field': 'flight_number', required: true %>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6">
+        <div class="row">
+          <div class="col-sm-3 text-right">
+            <label class="form-label">ACR</label>
+          </div>
+          <div class="col-sm-9">
+            <div class="input-group">
+              <span class="input-group-addon">RP-N</span>
+              <%= ac.text_field :ac_registry, class: 'form-control field', 'data-field': 'ac_registry', required: true %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <div class="col-sm-6">
+        <div class="row">
+          <div class="col-sm-3 text-right">
+            <label class="form-label">Remarks</label>
+          </div>
+          <div class="col-sm-9">
+            <%= ac.text_area :remarks, class: 'form-control field', 'data-field': 'remarks' %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="category-5" class="hidden div-category">
+    <div class="form-group">
+      <div class="col-sm-6">
+        <div class="row">
+          <div class="col-sm-3 text-right">
+            <label class="form-label">ACR</label>
+          </div>
+          <div class="col-sm-9">
+            <div class="input-group">
+              <span class="input-group-addon">RP-N</span>
+              <%= ac.text_field :ac_registry, class: 'form-control field', 'data-field': 'ac_registry', required: true %>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6">
+        <div class="row">
+          <div class="col-sm-3 text-right">
+            <label class="form-label">Date</label>
+          </div>
+          <div class="col-sm-9">
+            <div class="input-group">
+              <%= ac.text_field :ac_status_datetime, class: 'form-control has-date-picker field', 'data-field': 'ac_status_datetime', required: true %>
+              <span class="input-group-addon">
+                <span class="glyphicon glyphicon-calendar"></span>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="col-sm-6">
+        <div class="row">
+          <div class="col-sm-3 text-right">
+            <label class="form-label">Remarks</label>
+          </div>
+          <div class="col-sm-9">
+            <%= ac.text_area :remarks, class: 'form-control field', 'data-field': 'remarks' %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %>

@@ -1,0 +1,23 @@
+<% cnt = 0 %>
+<table class="table table-bordered category">
+  <thead>
+    <tr>
+      <th>AIRCRAFT REGISTRY</th>
+      <th>EFFECTIVE DATE</th>
+      <th>FLIGHT NUMBER</th>
+      <th>LOAD</th>
+      <th>REMARKS</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @ar.advisory_categories.order(:created_at).decorate.each do |mc| %>
+      <tr>
+        <td><%= mc.ac_registry || 'N/A' %></td>
+        <td><%= mc.effective_date.try(:strftime, '%m-%d-%y (%a)') || 'N/A' %></td>
+        <td><%= mc.flight_number || 'N/A' %></td>
+        <td><%= mc.load_bpe || 'N/A' %></td>
+        <td><%= mc.remarks || 'N/A' %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

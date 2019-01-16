@@ -4,6 +4,7 @@ Reason.create!([
   { reason: 'Weather', status_id: 1 },
   { reason: 'Cancel', status_id: 1 },
   { reason: 'Delay', status_id: 1 },
+  { reason: 'Overbooking', status_id: 1 }
 ])
 
 Remark.create!([
@@ -36,6 +37,11 @@ Remark.create!([
   { remark: 'Flights will operate', status_id: 1 },
   { remark: 'APU/ASU/ACU inoperative', status_id: 1 },
   { remark: 'Awaiting replacement parts', status_id: 1 },
+  { remark: 'Cabin Crew Rest Requirement', status_id: 1 },
+  { remark: 'APU/ASU/ACU shutdown', status_id: 1 },
+  { remark: 'To avoid delay', status_id: 1 },
+  { remark: 'Rectification', status_id: 1 },
+  { remark: 'Other remarks', status_id: 1 },
 ])
 
 Category.create!([
@@ -51,6 +57,13 @@ Category.create!([
   { category: 'New Flight', status_id: 1 },
   { category: 'Change Timings', status_id: 1 },
   { category: 'Re-numbering', status_id: 1 },
+  { category: 'Aircraft Downgrade', status_id: 1 },
+  { category: 'Aircraft Upgrade', status_id: 1 },
+  { category: 'Cancellation', status_id: 1 },
+  { category: 'AC Registry Swap', status_id: 1 },
+  { category: 'Flight Replacement', status_id: 1 },
+  { category: 'Revised Turnaround Flight', status_id: 1 },
+  { category: 'Terminal Change', status_id: 1 },
 ])
 
 Location.create!([

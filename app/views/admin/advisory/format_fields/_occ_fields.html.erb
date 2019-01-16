@@ -1,0 +1,51 @@
+<% category_ids = @ar.advisory_categories.select('distinct(category_id)').order(:category_id).collect{|mc| mc.category_id} %>
+
+<% cnt = 0 %>
+<table class="table table-bordered category">
+  <thead>
+    <tr>
+      <th>CATEGORY</th>
+      <th>AIRCRAFT REGISTRY</th>
+      <th>AIRCRAFT TYPE</th>
+      <th>AIRCRAFT CONFIGURATION</th>
+      <th>FLIGHT DATE</th>
+      <th>FLIGHT NUMBER</th>
+      <th>ROUTE</th>
+      <th>ETD</th>
+      <th>ETA</th>
+      <th>NETD</th>
+      <th>NETA</th>
+      <th>DUR</th>
+      <th>DEP TER</th>
+      <th>ARR TER</th>
+      <th>PAX</th>
+      <th>REMARKS</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% Category.where(id: category_ids).order(:category).each do |c| %>
+      <% @ar.advisory_categories.where(category_id: c.id).order(:created_at).decorate.each do |mc| %>
+        <tr>
+          <td><%= c.category unless cnt > 0 %></td>
+          <td><%= mc.ac_registry || 'N/A' %></td>
+          <td><%= mc.try(:aircraft_type).try(:ac_type) || 'N/A' %></td>
+          <td><%= mc.ac_configuration || 'N/A' %></td>
+          <td><%= mc.flight_date.try(:strftime, '%m-%d-%y (%a)') || 'N/A' %></td>
+          <td><%= mc.flight_number || 'N/A' %></td>
+          <td><%= mc.route || 'N/A' %></td>
+          <td><%= mc.etd.try(:strftime, '%k%Mz') || 'N/A' %></td>
+          <td><%= mc.eta.try(:strftime, '%k%Mz') || 'N/A' %></td>
+          <td><%= mc.netd.try(:strftime, '%k%Mz') || 'N/A' %></td>
+          <td><%= mc.neta.try(:strftime, '%k%Mz') || 'N/A' %></td>
+          <td><%= mc.duration_of_delay.try(:strftime, '%k%Mz') || 'N/A' %></td>
+          <td><%= mc.dep_ter || 'N/A' %></td>
+          <td><%= mc.arr_ter || 'N/A' %></td>
+          <td><%= mc.pax || 'N/A' %></td>
+          <td><%= mc.remarks || 'N/A' %></td>
+        </tr>
+        <% cnt += 1 %>
+      <% end %>
+      <% cnt = 0 %>
+    <% end %>
+  </tbody>
+</table>

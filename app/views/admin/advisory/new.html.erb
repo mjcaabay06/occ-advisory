@@ -1,14 +1,13 @@
 <div class="content-memo">
   <div class="col-md-12">
     <div class="page-header">
-      <h3 class="">Operations Control Department</h3>
+      <h3 class=""><%= @user.user_department.description.titleize %></h3>
     </div>
     <%= render 'message' %>
     <div class="col-md-8 col-md-offset-2">
       <%= form_for @advisory, url: { controller: 'advisory', action: 'create' }, html: { method: :post, class: 'form-horizontal' } do |f| %>
-        <%= f.hidden_field :memo_id, value: @memo_id %>
-
-        <% if @adv.blank? %>
+        <% if params[:add].blank? %>
+          <%= f.hidden_field 'connect_adv_id', value: @adv %>
           <div class="panel panel-default">
             <div class="panel-heading">
               Advisory Header
@@ -26,46 +25,28 @@
               </div>
             </div>
           </div>
-        <% else %>
-          <%= f.hidden_field 'adv_sid', value: @adv.first.try(:sid) %>
-          <%= f.hidden_field 'adv_code', value: @adv.first.try(:advisory_code) %>
-          <%= f.hidden_field :recipients, value: @adv.first.try(:recipients) %>
-          <%= f.hidden_field :incoordinate_with, value: @adv.first.try(:incoordinate_with) %>
+        <% else%>
+          <%= f.hidden_field 'add_adv_id', value: @adv %>
+          <%= f.hidden_field 'adv_sid', value: params[:sid] %>
         <% end %>
+        <%= f.fields_for :advisory_reasons do |ar| %>
+          <%= render "admin/advisory/reasons/#{ @heading }", ar: ar %>
 
-        <div class="panel panel-default">
-          <div class="panel-heading">
-            <%= 'Additional ' unless @adv.blank? %>Primary Reason
-          </div>
-          <div class="panel-body">
-            <div class="form-group">
-              <div class="col-sm-6">
-                <label class="form-label">Reason:</label>
-                <%= f.select :reasons, Reason.all.order(:reason).collect { |r| [r.reason, r.id] }, {}, id: 'reason-select', class: 'form-control', multiple: 'multiple', required: true %>
+          <div id="panel-category">
+            <div class="panel panel-default" id="main-category">
+              <div class="panel-heading">
+                Category
+                <button type="button" onclick="add_category()" class="btn-link pull-right">
+                  <span class="glyphicon glyphicon-plus"></span>
+                </button>
               </div>
-              <% unless @user.user_department_id == 4 %>
-                <div class="col-sm-6">
-                  <label class="form-label">Remarks:</label>
-                  <%= f.select :remarks, Remark.where(id: [26,27,30,31,32,33,34]).order(:remark).collect { |r| [r.remark, r.id] }, {}, id: 'remarks-select', class: 'form-control', multiple: 'multiple', required: true %>
-                </div>
-              <% end %>
+              <div class="panel-body">
+                <% @ar = ar %>
+                <%= render "admin/advisory/new_fields/#{ @user.department_code }" %>
+              </div>
             </div>
           </div>
-        </div>
-
-        <div id="panel-category">
-          <div class="panel panel-default" id="main-category">
-            <div class="panel-heading">
-              Category
-              <button type="button" onclick="add_category()" class="btn-link pull-right">
-                <span class="glyphicon glyphicon-plus"></span>
-              </button>
-            </div>
-            <div class="panel-body">
-              <%= render 'category', f: f %>
-            </div>
-          </div>
-        </div>
+        <% end %>
 
         <div class="text-right" style="margin-bottom: 30px;">
           <%= f.button 'Submit', class: 'btn btn-primary' %>
@@ -77,23 +58,26 @@
             var category_count = $(".additional-category").length + 1;
             var html = '<div class="panel panel-default additional-category" id="additional-category'+id+'">'
                       + '<div class="panel-heading">'
-                      + '#'+(category_count + 1)+' Additional Category'
+                      + 'Additional Category'
                       + '<button onclick="delete_category('+id+')" class="btn-link pull-right">'
                       + '<span class="glyphicon glyphicon-trash"></span>'
                       + '</button>'
                       + '</div>'
                       + '<div class="panel-body" data-id="'+id+'">'
-                      + "<%= escape_javascript("#{ render 'category', f: f }").html_safe %>"
+                      + "<%= escape_javascript("#{ render "admin/advisory/new_fields/#{ @user.department_code }"}").html_safe %>"
                       + '</div></div></div>';
             $("#panel-category").append(html);
             init();
-            select_advisory_category($("#additional-category" + id).find("#select-adv-category"));
+            select_category($("#additional-category" + id).find("#select-category"));
+            $(".frequency-select").select2({
+              theme: 'bootstrap'
+            });
 
             $("#additional-category" + id).find('.field').each(function(){
               var field_name = $(this).data('field');
-              $(this).attr("name","advisory[advisory_categories_attributes]["+category_count+"]["+field_name+"]");
+              var add = field_name == 'frequencies' ? '[]' : '';
+              $(this).attr("name","advisory[advisory_reasons_attributes][0][advisory_categories_attributes]["+category_count+"]["+field_name+"]" + add);
             });
-
             $('html, body').animate({ scrollTop: $("#additional-category" + id).offset().top }, 50);
           }
 
@@ -101,8 +85,8 @@
             $("#additional-category" + id).remove();
           }
         </script>
-
       <% end %>
+
     </div>
   </div>
 </div>

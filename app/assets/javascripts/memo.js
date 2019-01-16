@@ -21,11 +21,12 @@ $(document).ready(function(){
     var type = $(this).data('id');
 
     $('.cs-loader').show();
-    $.get('/admin/memo/check-account?password=' + password)
+    $.get('/admin/check-account?password=' + password)
       .done(function(result){
         if (result == 'valid') {
           var sid = $('input[name=hidden-sid]').val();
-          window.location.href = '/admin/'+type+'/send-'+type+'/' + sid;
+          var priority = $('select[name=priority]').val()
+          window.location.href = '/admin/advisory/send-advisory/' + sid + '?priority=' + priority;
         } else {
           alert('You have entered invalid password.');
         }
@@ -38,15 +39,15 @@ $(document).ready(function(){
   // });
 
   $('select[name=user_department_id]').on('change', function(){
-    memo_filter();
+    advisory_filter();
   });
 
   $('#flight_date').on('change', function(){
-    memo_filter();
+    advisory_filter();
   });
 
   $("#tb-search").on('keyup', function(){
-    memo_filter();
+    advisory_filter();
   });
 
   $("#recipient-select, #incoordinate-select, #reason-select, #remarks-select, .frequency-select").select2({
@@ -54,11 +55,11 @@ $(document).ready(function(){
   });
 
   $('#created-flight-date').on('change', function(){
-    created_filter($(this).data('dept'));
+    created_filter();
   });
 
   $("#tb-created-search").on('keyup', function(){
-    created_filter($(this).data('dept'));
+    created_filter();
   });
 
 });
@@ -75,28 +76,24 @@ function init() {
   });
 }
 
-function memo_filter() {
+function advisory_filter() {
   var dept_id = $('select[name=user_department_id]').val();
   var flight_date = $('#flight_date').val();
   var txt = $("#tb-search").val();
 
-  $.get('../memo/filter', { dept_id: dept_id, flight_date: flight_date, val: txt })
+  $.get('/admin/advisory/filter', { dept_id: dept_id, flight_date: flight_date, val: txt })
     .done(function(result){
       $(".panel-body.memo-lists").html(result);
     });
 }
 
-function created_filter(dept){
+function created_filter(){
   var flight_date = $('#created-flight-date').val();
   var txt = $("#tb-created-search").val();
-  $.get('../admin/'+dept+'/created-filter', { flight_date: flight_date, val: txt })
+  $.get('/admin/advisory/created-filter', { flight_date: flight_date, val: txt })
     .done(function(result){
       $(".panel-body.memo-lists").html(result);
     });
-}
-
-function memo_info(sid){
-  window.location.href = '/admin/memo/review-memo/' + sid;
 }
 
 function adv_info(sid){
@@ -135,8 +132,10 @@ function select_advisory_category(elem) {
   } else {
     $('#main-category').find('.f').hide();
     $('#main-category').find('.f').find("input, select, textarea").attr('disabled','disabled');
-    $('#main-category').find('.f' + val).show();
-    $('#main-category').find('.f' + val).find("input, select, textarea").removeAttr('disabled');
+    if (val) {
+      $('#main-category').find('.f' + val).show();
+      $('#main-category').find('.f' + val).find("input, select, textarea").removeAttr('disabled'); 
+    }
   }
 }
 

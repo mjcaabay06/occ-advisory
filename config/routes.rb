@@ -5,6 +5,7 @@ Rails.application.routes.draw do
     get '/login' => 'home#login'
     post '/login-auth' => 'home#login_auth'
     get '/logout' => 'home#logout'
+    get '/check-account' => 'home#check_account'
     # resources :home, path: '/' do
     #   collection do
     #     get :login, path: '/login'
@@ -16,12 +17,15 @@ Rails.application.routes.draw do
     #   end
     # end
 
+
     resources :advisory do
       collection do
         get :review_advisory, path: '/review-advisory/:sid'
         get :send_advisory, path: '/send-advisory/:sid'
         get :inbox, path: '/inbox'
+        get :inbox_filter, path: '/filter'
         get :created_filter, path: '/created-filter'
+        post :create_reply
       end
     end
 
