@@ -10,24 +10,40 @@
     </div>
     <div class="collapse navbar-collapse" id="myNavbar">
       <ul class="nav navbar-nav">
-        <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-            Advisory <span class="caret"></span>
-          </a>
-          <ul class="dropdown-menu">
-            <li>
-              <a href="#" onclick="redirect('/admin/advisory')">Created Advisories</a>
-              <% unless @user.user_department_id == 8 %>
-                <a href="#" onclick="redirect('/admin/advisory/new')">New Advisory</a>
-              <% end %>
-            </li>
-          </ul>
-        </li>
-        <li>
-          <a href="#" onclick="redirect('/admin/advisory/inbox')">
-            Inbox
-          </a>
-        </li>
+        <% unless @user.user_department_id == 1%>
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+              Advisory <span class="caret"></span>
+            </a>
+            <ul class="dropdown-menu">
+              <li>
+                <a href="#" onclick="redirect('/admin/advisory')">Created Advisories</a>
+                <% unless @user.user_department_id == 8 %>
+                  <a href="#" onclick="redirect('/admin/advisory/new')">New Advisory</a>
+                <% end %>
+              </li>
+            </ul>
+          </li>
+          <li>
+            <a href="#" onclick="redirect('/admin/advisory/inbox')">
+              Inbox
+            </a>
+          </li>
+        <% else %>
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+              Maintenance <span class="caret"></span>
+            </a>
+            <ul class="dropdown-menu">
+              <li>
+                <a href="javascript: window.location.href = '/admin/users'">Users</a>
+                <% unless @user.user_department_id == 8 %>
+                  <a href="javascript: window.location.href = '/admin/departments'">Departments</a>
+                <% end %>
+              </li>
+            </ul>
+          </li>
+        <% end %>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li class="dropdown settings">

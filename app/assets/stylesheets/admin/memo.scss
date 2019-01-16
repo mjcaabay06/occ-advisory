@@ -48,6 +48,10 @@
       background-color: #2C1663;
       color: #fff;
       margin: 0;
+
+      & > tbody > tr > td {
+        white-space: nowrap;
+      }
     }
   }
 

@@ -1,22 +1,13 @@
 Rails.application.routes.draw do
   root :to => 'application#index'
   namespace :admin do
-    get '/' => 'home#index'
+    resources :users
+    resources :user_department, path: 'departments'
+
     get '/login' => 'home#login'
     post '/login-auth' => 'home#login_auth'
     get '/logout' => 'home#logout'
     get '/check-account' => 'home#check_account'
-    # resources :home, path: '/' do
-    #   collection do
-    #     get :login, path: '/login'
-    #     post :login_auth, path: '/login-auth'
-    #     get :logout
-    #     get :new, path: '/new-advisory'
-    #     get :memo_filters, path: '/memo-filters'
-    #     get :memo_info, path: '/memo-info'
-    #   end
-    # end
-
 
     resources :advisory do
       collection do

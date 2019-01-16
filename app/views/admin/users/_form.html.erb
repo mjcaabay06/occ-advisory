@@ -1,0 +1,63 @@
+<%= form_for [:admin, @users], html: { class: 'form-horizontal' } do |f|%>
+  <div class="form-group">
+    <div class="col-md-2">
+      <label class="form-label">Email</label>
+    </div>
+    <div class="col-md-10">
+      <%= f.text_field :email, class: 'form-control', required: true %>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <div class="col-md-2">
+      <label class="form-label">First Name</label>
+    </div>
+    <div class="col-md-10">
+      <%= f.text_field :first_name, class: 'form-control', required: true %>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <div class="col-md-2">
+      <label class="form-label">Last Name</label>
+    </div>
+    <div class="col-md-10">
+      <%= f.text_field :last_name, class: 'form-control', required: true %>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <div class="col-md-2">
+      <label class="form-label">Department</label>
+    </div>
+    <div class="col-md-10">
+      <%= f.select :user_department_id, UserDepartment.all.order(:description).collect { |ud| [ud.description, ud.id] }, { include_blank: true }, class: 'form-control', required: true %>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <div class="col-md-2">
+      <label class="form-label">Password</label>
+    </div>
+    <div class="col-md-10">
+      <%= f.password_field :password_digest, class: 'form-control', required: true %>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <div class="col-md-2">
+      <label class="form-label">Status</label>
+    </div>
+    <div class="col-md-4">
+      <%= f.select :status_id, Status.all.order(:description).collect { |s| [s.description, s.id] }, { include_blank: true }, class: 'form-control', required: true %>
+    </div>
+  </div>
+  <div class="form-group">
+    <div class="col-md-2">
+    </div>
+    <div class="col-md-4">
+      <%= f.button 'Submit', class: 'btn btn-primary' %>
+    </div>
+  </div>
+<% end %>
+  
