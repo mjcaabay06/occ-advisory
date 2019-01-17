@@ -24,7 +24,7 @@
           </li>
           <li>
             <a href="#" onclick="redirect('/admin/advisory/inbox')">
-              Inbox
+              Inbox&nbsp;<strong><small style="color: red" id="inbox-count" data-count='<%= @inbox_count %>'><%= ("( #{@inbox_count} )" unless @inbox_count == 0) unless @inbox_count.blank? %></small></strong>
             </a>
           </li>
         <% else %>
