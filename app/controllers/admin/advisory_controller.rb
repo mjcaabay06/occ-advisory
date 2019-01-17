@@ -58,6 +58,7 @@ class Admin::AdvisoryController < Admin::ApplicationController
     @reply = ReplyThread.new
     @advisory = Advisory.find_by(sid: params[:sid]).decorate
     @incoordination = User.where(id: @advisory.incoordinate_with).collect{ |u| "#{u.first_name}-#{u.user_department.code}" }.join(', ')
+    @recipients = User.where(user_department_id: @advisory.recipients).collect{ |u| "#{u.first_name}-#{u.user_department.code}" }.join(', ')
     @replies = ReplyThread.where(advisory_id: @advisory.id).order(:created_at).decorate
     if @advisory.user_id != @user.id
       inbox = Inbox.where(advisory_id: @advisory.id, sender: @advisory.user_id, recipient: @user.id).first
@@ -67,9 +68,25 @@ class Admin::AdvisoryController < Admin::ApplicationController
 
   def create_reply
     reply = ReplyThread.new(reply_thread_params)
+    user_arr = []
     unless reply.save
       puts "--------#{@advisory.errors.full_messages}"
+    else
+      advisory = Advisory.find(params[:reply_thread][:advisory_id])
+      recipients = Inbox.select('distinct(recipient)')
+                    .where(advisory_id: params[:reply_thread][:advisory_id])
+                    .collect{ |i| i.recipient }
+      sender = Inbox.find_by_advisory_id(params[:reply_thread][:advisory_id]).sender
+      user_arr = (recipients + sender.to_s.split('')).map(&:to_i)
+      user_arr = user_arr - @user.id.to_s.split('').map(&:to_i)
     end
+    User.broadcast_notification('web_notifications_channel',
+                                  { title: 'New reply to',
+                                    sid: "#{advisory.sid}",
+                                    message: "#{advisory.advisory_code}",
+                                    ids: user_arr,
+                                    action: 'reply'
+                                  })
     redirect_to "/admin/advisory/review-advisory/#{params[:reply_thread][:advisory_sid]}"
   end
 
@@ -125,11 +142,13 @@ class Admin::AdvisoryController < Admin::ApplicationController
 
       Inbox.create(data_arr)
       User.broadcast_notification('web_notifications_channel',
-                                  { sid: "#{advisory.sid}",
+                                  { title: 'New Advisory',
+                                    sid: "#{advisory.sid}",
                                     message: "#{advisory.advisory_code}",
                                     ids: user_arr,
                                     priority: params[:priority].to_i,
-                                    date_send: "#{advisory.decorate.date_send}"
+                                    date_send: "#{advisory.decorate.date_send}",
+                                    action: nil
                                   })
       advisory.update_attributes(is_viewable: true, sent_date: DateTime.now)
       redirect_to '/admin/advisory'
@@ -276,7 +295,7 @@ class Admin::AdvisoryController < Admin::ApplicationController
       {:advisory_categories_attributes => [
         :tow_out, :tow_in, :blocked_in, :ac_registry,
         :cockpit_crew_boarded, :cabin_crew_boarded, :general_boarding,
-        :baggage_cargo_loaded, :close_door, :push_back, :air_bourne, :remarks
+        :baggage_cargo_loaded, :close_door, :push_back, :touchdown, :air_bourne, :remarks
       ]}
     end
 
