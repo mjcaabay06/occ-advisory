@@ -12,6 +12,7 @@
       <th>BAGGAGE AND CARGO LOADED</th>
       <th>CLOSED DOOR</th>
       <th>PUSHBACK</th>
+      <th>TOUCHDOWN</th>
       <th>AIRBOURNE</th>
       <th>REMARKS</th>
     </tr>
@@ -29,6 +30,7 @@
         <td><%= mc.baggage_cargo_loaded.try(:strftime, '%k%Mz') || 'N/A'  %></td>
         <td><%= mc.close_door.try(:strftime, '%k%Mz') || 'N/A'  %></td>
         <td><%= mc.push_back.try(:strftime, '%k%Mz') || 'N/A'  %></td>
+        <td><%= mc.touchdown.try(:strftime, '%k%Mz') || 'N/A'  %></td>
         <td><%= mc.air_bourne.try(:strftime, '%k%Mz') || 'N/A' %></td>
         <td><%= mc.remarks %></td>
       </tr>

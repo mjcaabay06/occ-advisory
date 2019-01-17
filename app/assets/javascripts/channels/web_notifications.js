@@ -17,50 +17,56 @@ App.web_notifications = App.cable.subscriptions.create("WebNotificationsChannel"
     //   position: 'bottom-right' // default position is top-right see available options below
     // });
     // notification.show(data);
-    var html = '<div class="alert alert-success alert-dismissible fade in notif-alert" id="real-notification" data-notification="real-notification">'
+    var html = '<div class="alert alert-danger alert-dismissible fade in notif-alert" id="real-notification" data-notification="real-notification">'
             + '<button class="close" data-dismiss="alert" aria-label="close">&times;</button>'
-            + '<a href="/admin/advisory/review-advisory/'+ data.sid +'">'
-            + '<strong id="title">New Advisory&emsp;</strong>'
+            + '<a href="javascript: window.location.href = \'/admin/advisory/review-advisory/'+ data.sid +'\'">'
+            + '<strong id="title">'+ data.title +'&emsp;</strong>'
             + '<span id="message">'+ data.message +'</span></a></div>';
     var id = $('.notification-panel').data('id');
     if (data.ids.includes(id)){
-      var cnt = $('#inbox-count').data('count') + 1;
-      $('#inbox-count').data('count', cnt);
-      $('#inbox-count').html('( '+ cnt +' )');
+      switch (data.action) {
+        case 'reply':
+          break;
+        default:
+          var cnt = $('#inbox-count').data('count') + 1;
+          $('#inbox-count').data('count', cnt);
+          $('#inbox-count').html('( '+ cnt +' )');
+
+          if ($("#inbox-lists").length) {
+            var arrow = '';
+            var clr = '';
+            switch (data.priority) {
+              case 3:
+                arrow = 'up';
+                color = '#d20000';
+                break;
+              case 2:
+                arrow = 'up';
+                color = '#eb7f00';
+                break;
+              default:
+                arrow = 'down';
+                color = '#3fb358';
+                break;
+            }
+            var row = '<div class="row new">'
+                    + '<span class="glyphicon glyphicon-arrow-'+arrow+'" style="margin-right: 9px; color: '+color+'"></span>'
+                    + '<span class="glyphicon glyphicon-folder-close" style="margin-right: 9px"></span>'
+                    + '<label>'+ data.message +'</label>'
+                    + '<label class="pull-right">' + data.date_send
+                    + '<button type="button" class="btn-link" onclick="adv_info(\''+ data.sid +'\')">'
+                    + '<span class="glyphicon glyphicon-chevron-right"></span>'
+                    + '</button></label></div>';
+            $("#inbox-lists").prepend(row);
+          }
+          break;
+      }
 
       var index = $('.notif-alert').length;
       $('.notification-panel').append(html);
       $('.notif-alert:eq('+index+')').show()
                                     .delay(6000)
                                     .fadeOut();
-
-      if ($("#inbox-lists").length) {
-        var arrow = '';
-        var clr = '';
-        switch (data.priority) {
-          case 3:
-            arrow = 'up';
-            color = '#d20000';
-            break;
-          case 2:
-            arrow = 'up';
-            color = '#eb7f00';
-            break;
-          default:
-            arrow = 'down';
-            color = '#3fb358';
-            break;
-        }
-        var row = '<div class="row new">'
-                + '<span class="glyphicon glyphicon-arrow-'+arrow+'" style="margin-right: 9px; color: '+color+'"></span>'
-                + '<span class="glyphicon glyphicon-folder-close" style="margin-right: 9px"></span>'
-                + '<label>'+ data.message +'</label>'
-                + '<label class="pull-right">' + data.date_send
-                + '<button type="button" class="btn-link" onclick="adv_info(\''+ data.sid +'\')">'
-                + '<span class="glyphicon glyphicon-chevron-right"></span>'
-                + '</button></label></div>';
-        $("#inbox-lists").prepend(row);
-      }
     }
   }
 });

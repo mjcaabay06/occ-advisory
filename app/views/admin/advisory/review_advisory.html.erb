@@ -35,16 +35,33 @@
         <% end %>
 
       </table>
-      <%= render partial: "admin/advisory/format_fields/#{@advisory.user.decorate.department_code}_fields" %>
+      <div style="overflow: auto;">
+        <%= render partial: "admin/advisory/format_fields/#{@advisory.user.decorate.department_code}_fields" %>
+      </div>
     <% end %>
 
     
     <div style="margin-bottom: 10px;"></div>
-    <small>
-      In coordination with: <%= @incoordination %>
-    </small>
+    <div>
+      <small>
+        In coordination with: <%= @incoordination %>
+      </small>
+    </div>
+    <div>
+      <small>
+        Recipients: <%= @recipients %>
+      </small>
+    </div>
+    <% if @advisory.is_viewable %>
+      <div>
+        <small>
+          Date Sent: <%= @advisory.sent_date.strftime('%m/%d/%Y (%a) %k%Mz') %>
+        </small>
+      </div>
+    <% end %>
+    
 
-    <div class="pull-right below-btns" style="margin-bottom: 50px;">
+    <div class="pull-right below-btns">
       <% unless @advisory.is_viewable %>
           <% if @advisory.user_id == @user.id %>
             <% if @user.user_department_id == 8 %>
@@ -61,12 +78,12 @@
           <% if @user.user_department_id == 8 %>
             <%= link_to 'Create Advisory', "javascript: window.location.href = '/admin/advisory/new?sid=#{@advisory.sid}'", class: 'btn btn-primary' %>
           <% end %>
-          <%= link_to 'Print', "/admin/advisory/print/#{@advisory.sid}", class: 'btn btn-primary', target: '_blank' %>
-          <%= link_to 'Back', "javascript: window.location.href = '#{session[:last_page]}'", class: 'btn btn-primary' %>
         <% end %>
+        <%= link_to 'Print', "/admin/advisory/print/#{@advisory.sid}", class: 'btn btn-primary', target: '_blank' %>
+        <%= link_to 'Back', "javascript: window.location.href = '#{session[:last_page]}'", class: 'btn btn-primary' %>
       <% end %>
     </div>
-
+    <div class="clearfix"></div>
    
   </div>
 </div>
