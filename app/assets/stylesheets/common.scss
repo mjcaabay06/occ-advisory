@@ -173,3 +173,19 @@
   -webkit-animation: lol 3s 500ms infinite ease-in-out;
   animation: lol 3s 500ms infinite ease-in-out;
 }
+
+.notification-panel {
+  position: fixed;
+  bottom: 0;
+  right: 15px;
+  width: auto;
+  height: auto;
+
+  #real-notification {
+    position: initial;
+
+    a {
+      color: #3c763d;
+    }
+  }
+}

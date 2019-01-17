@@ -112,6 +112,7 @@ class Admin::AdvisoryController < Admin::ApplicationController
       unless @user.user_department_id == 8
         User.where(user_department_id: 8).each do |u|
           unless user_arr.include?(u.id)
+            user_arr << u.id.to_i
             data_arr << {
               recipient: u.id,
               sender: advisory.user_id,
@@ -123,6 +124,13 @@ class Admin::AdvisoryController < Admin::ApplicationController
       end
 
       Inbox.create(data_arr)
+      User.broadcast_notification('web_notifications_channel',
+                                  { sid: "#{advisory.sid}",
+                                    message: "#{advisory.advisory_code}",
+                                    ids: user_arr,
+                                    priority: params[:priority].to_i,
+                                    date_send: "#{advisory.decorate.date_send}"
+                                  })
       advisory.update_attributes(is_viewable: true, sent_date: DateTime.now)
       redirect_to '/admin/advisory'
     end
