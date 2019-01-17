@@ -54,16 +54,19 @@ class Admin::AdvisoryController < Admin::ApplicationController
     unless request.env['HTTP_REFERER'].blank?
       session[:last_page] = request.env['HTTP_REFERER']
     end
-
-    @reply = ReplyThread.new
     @advisory = Advisory.find_by(sid: params[:sid]).decorate
+    puts "-----------#{@advisory.user_id} :: #{@user.id}"
+
+    if @advisory.user_id != @user.id
+      inbox = Inbox.where(advisory_id: @advisory.id, sender: @advisory.user_id, recipient: @user.id).first
+      inbox.is_read = true
+      inbox.save
+    end
+
     @incoordination = User.where(id: @advisory.incoordinate_with).collect{ |u| "#{u.first_name}-#{u.user_department.code}" }.join(', ')
     @recipients = User.where(user_department_id: @advisory.recipients).collect{ |u| "#{u.first_name}-#{u.user_department.code}" }.join(', ')
     @replies = ReplyThread.where(advisory_id: @advisory.id).order(:created_at).decorate
-    if @advisory.user_id != @user.id
-      inbox = Inbox.where(advisory_id: @advisory.id, sender: @advisory.user_id, recipient: @user.id).first
-      inbox.update_attributes(is_read: true)
-    end
+    @reply = ReplyThread.new
   end
 
   def create_reply
