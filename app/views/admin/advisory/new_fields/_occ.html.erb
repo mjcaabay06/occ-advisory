@@ -13,10 +13,10 @@
   </div>
 
   <div class="form-group">
-    <div class="col-sm-6 mb-15">
+    <div class="col-sm-6 mb-15 f def">
       <div class="row">
         <div class="col-sm-3 text-right">
-          <label class="form-label">FD</label>
+          <label class="form-label">Flight Date</label>
         </div>
         <div class="col-sm-9">
           <div class="input-group">
@@ -28,18 +28,21 @@
         </div>
       </div>
     </div>
-    <div class="col-sm-6 mb-15">
+    <div class="col-sm-6 mb-15 f def">
       <div class="row">
         <div class="col-sm-3 text-right">
-          <label class="form-label">FN</label>
+          <label class="form-label">Flight Number</label>
         </div>
         <div class="col-sm-9">
-          <%= mc.text_field :flight_number, 'data-field': 'flight_number', class: 'form-control field' %>
+          <div class="input-group">
+            <span class="input-group-addon">X</span>
+            <%= mc.text_field :flight_number, 'data-field': 'flight_number', class: 'form-control field' %>
+          </div>
         </div>
       </div>
     </div>
 
-    <div class="col-sm-6 mb-15">
+    <div class="col-sm-6 mb-15 f def">
       <div class="row">
         <div class="col-sm-3 text-right">
           <label class="form-label">Route</label>
@@ -56,10 +59,10 @@
         </div>
       </div>
     </div>
-    <div class="col-sm-6 mb-15">
+    <div class="col-sm-6 mb-15 f def">
       <div class="row">
         <div class="col-sm-3 text-right">
-          <label class="form-label">ACR</label>
+          <label class="form-label">Aircraft Registry</label>
         </div>
         <div class="col-sm-9">
           <div class="input-group">
@@ -70,20 +73,20 @@
       </div>
     </div>
 
-    <div class="col-sm-6 mb-15">
+    <div class="col-sm-6 mb-15 f def">
       <div class="row">
         <div class="col-sm-3 text-right">
-          <label class="form-label">ACT</label>
+          <label class="form-label">Aircraft Type</label>
         </div>
         <div class="col-sm-9">
           <%= mc.select :aircraft_type_id, AircraftType.all.order(:ac_type).collect { |l| [l.ac_type, l.id] }, { include_blank: true }, 'data-field': 'aircraft_type_id', class: 'form-control field' %>
         </div>
       </div>
     </div>
-    <div class="col-sm-6 mb-15">
+    <div class="col-sm-6 mb-15 f def">
       <div class="row">
         <div class="col-sm-3 text-right">
-          <label class="form-label">ACC</label>
+          <label class="form-label">Aircraft Configuration</label>
         </div>
         <div class="col-sm-9">
           <%= mc.text_field :ac_configuration, 'data-field': 'ac_configuration', class: 'form-control field' %>
@@ -94,7 +97,7 @@
     <div class="col-sm-6 mb-15 f f17 f11 f12">
       <div class="row">
         <div class="col-sm-3 text-right">
-          <label class="form-label">ETD</label>
+          <label class="form-label">Estimated Time Departure</label>
         </div>
         <div class="col-sm-9">
           <div class="input-group">
@@ -110,7 +113,7 @@
     <div class="col-sm-6 mb-15 f f17 f11 f12">
       <div class="row">
         <div class="col-sm-3 text-right">
-          <label class="form-label">ETA</label>
+          <label class="form-label">Estimated Time Arrival</label>
         </div>
         <div class="col-sm-9">
           <div class="input-group">
@@ -126,7 +129,7 @@
     <div class="col-sm-6 mb-15 f f11">
       <div class="row">
         <div class="col-sm-3 text-right">
-          <label class="form-label">NETD</label>
+          <label class="form-label">New Estimated Time Departure</label>
         </div>
         <div class="col-sm-9">
           <div class="input-group">
@@ -142,7 +145,7 @@
     <div class="col-sm-6 mb-15 f f11">
       <div class="row">
         <div class="col-sm-3 text-right">
-          <label class="form-label">NETA</label>
+          <label class="form-label">New Estimated Time Arrival</label>
         </div>
         <div class="col-sm-9">
           <div class="input-group">
@@ -158,7 +161,7 @@
     <div class="col-sm-6 mb-15 f f11">
       <div class="row">
         <div class="col-sm-3 text-right">
-          <label class="form-label">DUR</label>
+          <label class="form-label">Duration Of Delay</label>
         </div>
         <div class="col-sm-9">
           <div class="input-group">
@@ -174,7 +177,7 @@
     <div class="col-sm-6 mb-15 f f19 f12">
       <div class="row">
         <div class="col-sm-3 text-right">
-          <label class="form-label">DEP TER</label>
+          <label class="form-label">Departure Terminal</label>
         </div>
         <div class="col-sm-9">
           <%= mc.select :departure_terminal, [['Terminal A', 'A'], ['Terminal B', 'B'], ['Terminal C', 'C']], { include_blank: 'Select Terminal'}, 'data-field': 'departure_terminal', class: 'form-control field', required: true  %>
@@ -185,7 +188,7 @@
     <div class="col-sm-6 mb-15 f f19 f12">
       <div class="row">
         <div class="col-sm-3 text-right">
-          <label class="form-label">ARR TER</label>
+          <label class="form-label">Arrival Terminal</label>
         </div>
         <div class="col-sm-9">
           <%= mc.select :arrival_terminal, [['Terminal A', 'A'], ['Terminal B', 'B'], ['Terminal C', 'C']], { include_blank: 'Select Terminal'}, 'data-field': 'arrival_terminal', class: 'form-control field', required: true  %>
@@ -196,7 +199,7 @@
     <div class="col-sm-6 mb-15 f f15 f11">
       <div class="row">
         <div class="col-sm-3 text-right">
-          <label class="form-label">Pax</label>
+          <label class="form-label">Number Of Passenger</label>
         </div>
         <div class="col-sm-9">
           <%= mc.text_field :pax, 'data-field': 'pax', class: 'form-control field', required: true %>
@@ -204,7 +207,7 @@
       </div>
     </div>
 
-    <div class="col-sm-6 mb-15">
+    <div class="col-sm-6 mb-15 f def">
       <div class="row">
         <div class="col-sm-3 text-right">
           <label class="form-label">Remarks</label>

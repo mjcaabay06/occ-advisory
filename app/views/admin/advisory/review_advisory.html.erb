@@ -2,7 +2,7 @@
   <div class="page-header">
     <span><b>Issuer:</b> <%= @advisory.user.first_name %></span><br>
     <span><b>Issued Date:</b> <%= @advisory.created_at.strftime('%B %-d, %Y') %></span>
-    <span class="pull-right"><b>Advisory ID:</b> <%= @advisory.advisory_code %></span>
+    <span class="pull-right"><b><%= @user.user_department_id == 8 ? 'Alert' : 'Advisory' %> ID:</b> <%= @advisory.advisory_code %></span>
   </div>
   <div class="view-memo">
     <div style="border: 1px solid #000; padding: 8px"><%= @advisory.user.user_department.description %></div>
@@ -20,7 +20,11 @@
               <td width="1%"><%= r.reason %></td>
             <% end %>
           <% end %>
-          <td></td>
+          <td class="text-right">
+            <a href="javascript: window.location.href = '/admin/advisory/<%= ar.id %>/edit'" style='color: #fff;'>
+              <span class="glyphicon glyphicon-pencil"></span> Edit
+            </a>&nbsp;
+          </td>
         </tr>
 
         <% unless ar.remarks.blank? %>
@@ -52,10 +56,10 @@
         Recipients: <%= @recipients %>
       </small>
     </div>
-    <% if @advisory.is_viewable %>
+    <% if @advisory.is_viewable && @advisory.user_id != @user.id %>
       <div>
         <small>
-          Date Sent: <%= @advisory.sent_date.strftime('%m/%d/%Y (%a) %k%Mz') %>
+          Recieved Date: <%= @advisory.sent_date.strftime('%m/%d/%Y (%a) %k%Mz') %>
         </small>
       </div>
     <% end %>
@@ -65,20 +69,21 @@
       <% unless @advisory.is_viewable %>
           <% if @advisory.user_id == @user.id %>
             <% if @user.user_department_id == 8 %>
-              <%= link_to 'Add Reason', "javascript: window.location.href = '/admin/advisory/new?sid=#{@advisory.sid}&add=true'", class: 'btn btn-primary', id: 'btn-add-avisory' %>
+              <%= link_to 'Add', "javascript: window.location.href = '/admin/advisory/new?sid=#{@advisory.sid}&add=true'", class: 'btn btn-primary', id: 'btn-add-avisory' %>
             <% end %>
           <% end %>
-
+          <%= button_tag 'Send', class: 'btn btn-primary', id: 'btn-send', type: 'button' %>
           <% if false %>
             <%= link_to 'Edit', "/admin/advisory/#{@advisory.sid}/edit", class: 'btn btn-primary', id: 'btn-edit', disabled: true %>
           <% end  %>
-          <%= button_tag 'Send', class: 'btn btn-primary', id: 'btn-send', type: 'button' %>
+          <%= link_to 'Cancel', "javascript: window.location.href = '/admin/advisory/inbox'", class: 'btn btn-primary'%>
       <% else %>
         <% if @advisory.user_id != @user.id %>
           <% if @user.user_department_id == 8 %>
             <%= link_to 'Create Advisory', "javascript: window.location.href = '/admin/advisory/new?sid=#{@advisory.sid}'", class: 'btn btn-primary' %>
           <% end %>
         <% end %>
+        <%= button_tag 'Forward', class: 'btn btn-primary', id: 'btn-forward', type: 'button' %>
         <%= link_to 'Print', "/admin/advisory/print/#{@advisory.sid}", class: 'btn btn-primary', target: '_blank' %>
         <%= link_to 'Back', "javascript: window.location.href = '#{session[:last_page]}'", class: 'btn btn-primary' %>
       <% end %>
@@ -90,3 +95,4 @@
 <%= render 'reply_thread' if @advisory.is_viewable %>
 <%= hidden_field_tag 'hidden-sid', @advisory.sid %>
 <%= render 'modal_password' %>
+<%= render 'modal_forward' %>

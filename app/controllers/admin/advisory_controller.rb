@@ -1,4 +1,5 @@
 class Admin::AdvisoryController < Admin::ApplicationController
+  before_action :set_advisory, only: [:edit, :update]
   include AdvisoryConcern
 
   def index
@@ -50,12 +51,20 @@ class Admin::AdvisoryController < Admin::ApplicationController
     end
   end
 
+  def edit
+    @heading = check_heading(@user.user_department_id)
+    @remark_ids = check_remarks_ids(@user.user_department_id)
+    @reason_ids = check_reason_ids(@user.user_department_id)
+  end
+
+  def update
+  end
+
   def review_advisory
     unless request.env['HTTP_REFERER'].blank?
       session[:last_page] = request.env['HTTP_REFERER']
     end
     @advisory = Advisory.find_by(sid: params[:sid]).decorate
-    puts "-----------#{@advisory.user_id} :: #{@user.id}"
 
     if @advisory.user_id != @user.id
       inbox = Inbox.where(advisory_id: @advisory.id, sender: @advisory.user_id, recipient: @user.id).first
@@ -205,7 +214,52 @@ class Admin::AdvisoryController < Admin::ApplicationController
     render partial: 'inbox_body'
   end
 
+  def forward
+    dept_ids = params[:dept_ids]
+    advisory = Advisory.find(params[:advisory_id]).decorate
+    advisory.recipients = advisory.recipients + dept_ids
+    status = :error
+    if advisory.save
+      data_arr = []
+      user_arr = []
+      priority = Inbox.where(advisory_id: advisory.id).first.try(:priority)
+      dept_ids.each do |id|
+        User.where(user_department_id: id.to_i).each do |user|
+          user_arr << user.id
+          data_arr << {
+            recipient: user.id,
+            sender: advisory.user_id,
+            advisory_id: advisory.id,
+            priority: priority || 1
+          }
+        end
+      end
+
+      Inbox.create(data_arr)
+      User.broadcast_notification('web_notifications_channel',
+                                  { title: 'New Advisory',
+                                    sid: "#{advisory.sid}",
+                                    message: "#{advisory.advisory_code}",
+                                    ids: user_arr,
+                                    priority: priority,
+                                    date_send: "#{advisory.date_send}",
+                                    action: nil
+                                  })
+
+      status = :ok
+    else
+      puts "--------#{advisory.errors.full_messages}"
+    end
+
+    render json: status
+  end
+
   private
+    def set_advisory
+      ar = AdvisoryReason.find(params[:id])
+      @advisory = Advisory.find(ar.advisory_id)
+    end
+
     def get_proper_params dept_code
       case dept_code.downcase
       when 'ltp'
@@ -230,7 +284,7 @@ class Admin::AdvisoryController < Admin::ApplicationController
     def advisory_params dept_code
       params[:advisory][:recipients] = params[:advisory][:recipients].reject { |c| c.empty? }
       params[:advisory][:incoordinate_with] = params[:advisory][:incoordinate_with].reject { |c| c.empty? }
-      params[:advisory][:advisory_reasons_attributes]["0"][:reasons] = params[:advisory][:advisory_reasons_attributes]["0"][:reasons].reject { |c| c.empty? } if params[:advisory][:advisory_reasons_attributes]["0"][:reasons].present?
+      params[:advisory][:advisory_reasons_attributes]["0"][:reasons] = params[:advisory][:advisory_reasons_attributes]["0"][:reasons].to_s.split('') if params[:advisory][:advisory_reasons_attributes]["0"][:reasons].present?
       params[:advisory][:advisory_reasons_attributes]["0"][:remarks] = params[:advisory][:advisory_reasons_attributes]["0"][:remarks].reject { |c| c.empty? } if params[:advisory][:advisory_reasons_attributes]["0"][:remarks].present?
 
       params.require(:advisory).permit(

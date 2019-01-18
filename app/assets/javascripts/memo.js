@@ -16,6 +16,32 @@ $(document).ready(function(){
     $("#modal-insert-password").modal('show');
   });
 
+  $("#btn-forward").on('click', function(){
+    $("#modal-forward").modal('show');
+  });
+
+  $("#modal-forward").on('shown.bs.modal', function(){
+    $("#modal-ok").hide();
+    $("#modal-error").hide();
+    $("#recipient-select-forward").select2({ theme: 'bootstrap' });
+  });
+
+  $("#btn-check-forward").on('click', function(){
+    var dept_ids = $("#recipient-select-forward").val();
+    var advisory_id = $(this).data('id');
+    $('.cs-loader').show();
+    $.get('/admin/advisory/forward', { dept_ids: dept_ids, advisory_id: advisory_id })
+      .done(function(result){
+        if (result == 'ok') {
+          $("#modal-ok").show();
+          $("#modal-forward").modal('hide');
+        } else {
+          $("#modal-error").show();
+        }
+        $('.cs-loader').hide();
+      });
+  });
+
   $("#btn-check-password").on('click', function(){
     var password = $('input[name=check-password]').val();
     var type = $(this).data('id');
@@ -50,11 +76,11 @@ $(document).ready(function(){
     advisory_filter();
   });
 
-  $('#ac_registry').on('change', function(){
+  $('#tb-ac_registry').on('keyup', function(){
     advisory_filter();
   });
 
-  $('#flight_number').on('change', function(){
+  $('#tb-flight_number').on('keyup', function(){
     advisory_filter();
   });
 
@@ -87,11 +113,11 @@ $(document).ready(function(){
     created_filter();
   });
 
-  $("#created-ac-registry").on('change', function(){
+  $("#created-ac_registry").on('keyup', function(){
     created_filter();
   });
 
-  $("#created-flight-number").on('change', function(){
+  $("#created-flight_number").on('keyup', function(){
     created_filter();
   });
 
@@ -113,8 +139,8 @@ function advisory_filter() {
   var dept_id = $('select[name=user_department_id]').val();
   var flight_date = $('#flight_date').val();
   var txt = $("#tb-search").val();
-  var ac_registry = $("#ac_registry").val();
-  var flight_number = $("#flight_number").val();
+  var ac_registry = $("#tb-ac_registry").val();
+  var flight_number = $("#tb-flight_number").val();
   $.get('/admin/advisory/filter', { dept_id: dept_id, flight_date: flight_date, val: txt, ac_registry: ac_registry, flight_number: flight_number })
     .done(function(result){
       $(".panel-body.memo-lists").html(result);
@@ -124,8 +150,8 @@ function advisory_filter() {
 function created_filter(){
   var flight_date = $('#created-flight-date').val();
   var txt = $("#tb-created-search").val();
-  var ac_registry = $("#created-ac-registry").val();
-  var flight_number = $("#created-flight-number").val();
+  var ac_registry = $("#created-ac_registry").val();
+  var flight_number = $("#created-flight_number").val();
   $.get('/admin/advisory/created-filter', { flight_date: flight_date, val: txt, ac_registry: ac_registry, flight_number: flight_number })
     .done(function(result){
       $(".panel-body.memo-lists").html(result);
@@ -159,18 +185,17 @@ function select_category(id) {
 function select_advisory_category(elem) {
   var val = $(elem).val();
   var id = $(elem).closest('.panel-body').data('id');
-
   if (id) {
     $('#additional-category' + id).find('.f').hide();
     $('#additional-category' + id).find('.f').find("input, select, textarea").attr('disabled','disabled');
-    $('#additional-category' + id).find('.f' + val).show();
-    $('#additional-category' + id).find('.f' + val).find("input, select, textarea").removeAttr('disabled');
+    $('#additional-category' + id).find('.f.def, .f' + val).show();
+    $('#additional-category' + id).find('.f.def, .f' + val).find("input, select, textarea").removeAttr('disabled');
   } else {
     $('#main-category').find('.f').hide();
     $('#main-category').find('.f').find("input, select, textarea").attr('disabled','disabled');
     if (val) {
-      $('#main-category').find('.f' + val).show();
-      $('#main-category').find('.f' + val).find("input, select, textarea").removeAttr('disabled'); 
+      $('#main-category').find('.f.def, .f' + val).show();
+      $('#main-category').find('.f.def, .f' + val).find("input, select, textarea").removeAttr('disabled');
     }
   }
 }
