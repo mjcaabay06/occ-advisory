@@ -1,0 +1,23 @@
+<div class="modal fade" tabindex="1" role="dialog" data-backdrop="static" data-keyboard="false" id="modal-forward">
+  <div class="modal-dialog modal-sm" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title pull-left">Forward advisory.</h5>
+        <button type="button" class="close pull-right" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span> 
+        </button>
+      </div>
+      <div class="modal-body">  
+        <div class="form-group">
+          <label style="font-weight: normal; margin: 0;">Recipients</label>
+          <%= select('', 'recipients', options_for_select(UserDepartment.where.not(id: [1] + @advisory.recipients.map(&:to_i)).order(:code).collect { |u| [u[:code], u[:id]] }), {}, id: 'recipient-select-forward', class: 'form-control', multiple: 'multiple', required: true) %>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <span id="modal-ok" class="glyphicon glyphicon-ok pull-left" style="font-size: 20px;line-height: 33px;color: #155724;display: none"></span>
+        <span id="modal-error" class="glyphicon glyphicon-remove pull-left" style="font-size: 20px;line-height: 33px;color: #721c24;display: none"></span>
+        <%= button_tag 'Send', class: 'btn btn-primary pull-right', id: 'btn-check-forward', 'data-id': @advisory.id %>
+      </div>
+    </div>
+  </div>
+</div>

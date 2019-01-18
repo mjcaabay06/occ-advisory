@@ -18,6 +18,7 @@ Rails.application.routes.draw do
         get :created_filter, path: '/created-filter'
         post :create_reply
         get :print, path: '/print/:sid'
+        get :forward, path: '/forward'
       end
     end
 

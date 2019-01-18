@@ -57,8 +57,16 @@
         <div class="text-right" style="margin-bottom: 30px;">
           <%= f.button 'Next', class: 'btn btn-primary' %>
         </div>
-
+        <input type="hidden" name="" id="memo_recipients" value="<%= @advisory.recipients.join(',') unless @advisory.blank? %>">
+        <input type="hidden" name="" id="memo_incoordinate_with" value="<%= @advisory.incoordinate_with.join(',') unless @advisory.blank? %>">
         <script type="text/javascript">
+          $(document).ready(function(){
+            var recipients = $("#memo_recipients").val().split(',');
+            var incoordinate_with = $("#memo_incoordinate_with").val().split(',');
+            $("#recipient-select").val(recipients).trigger('change');
+            $("#incoordinate-select").val(incoordinate_with).trigger('change');
+          });
+
           function add_category() {
             var id = Math.floor((Math.random() * 10000000) + 1);
             var category_count = $(".additional-category").length + 1;
@@ -74,8 +82,8 @@
                       + '</div></div></div>';
             $("#panel-category").append(html);
             init();
-            select_advisory_category($("#additional-category" + id).find("#select-adv-category"));
             select_category($("#additional-category" + id).find("#select-category"));
+            select_advisory_category($("#additional-category" + id).find("#select-adv-category"));
             $(".frequency-select").select2({
               theme: 'bootstrap'
             });

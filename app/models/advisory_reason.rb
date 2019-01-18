@@ -39,11 +39,11 @@ class AdvisoryReason < ApplicationRecord
   end
 
   def self.filter_ac_registry value
-    where("advisory_categories.ac_registry = '#{value}'")
+    where("advisory_categories.ac_registry ilike '%#{value}%'")
   end
 
   def self.filter_flight_number value
-    where("advisory_categories.flight_number = '#{value}'")
+    where("advisory_categories.flight_number ilike '%#{value}%'")
   end
 
   private

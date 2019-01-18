@@ -34,17 +34,20 @@
       <div class="col-sm-6">
         <div class="row">
           <div class="col-sm-3 text-right">
-            <label class="form-label">FN</label>
+            <label class="form-label">Flight Number</label>
           </div>
           <div class="col-sm-9">
-            <%= ac.text_field :flight_number, class: 'form-control field', 'data-field': 'flight_number', required: true %>
+            <div class="input-group">
+              <span class="input-group-addon">X</span>
+              <%= ac.text_field :flight_number, class: 'form-control field', 'data-field': 'flight_number', required: true %>
+            </div>
           </div>
         </div>
       </div>
       <div class="col-sm-6">
         <div class="row">
           <div class="col-sm-3 text-right">
-            <label class="form-label">ACR</label>
+            <label class="form-label">Aircraft Registry</label>
           </div>
           <div class="col-sm-9">
             <div class="input-group">
@@ -75,7 +78,7 @@
       <div class="col-sm-6">
         <div class="row">
           <div class="col-sm-3 text-right">
-            <label class="form-label">ACR</label>
+            <label class="form-label">Aircraft Registry</label>
           </div>
           <div class="col-sm-9">
             <div class="input-group">

@@ -1,25 +1,58 @@
 <div class="panel panel-default">
-  <div class="panel-heading">
+  <div class="panel-heading search-panel">
     <div class="row">
-      <div class="col-sm-4">
+      <div class="col-sm-4 mb15">
         <%= text_field_tag 'tb-search', nil, class: 'form-control', placeholder: 'Search' %>
       </div>
-      <div class="col-sm-2">
-        <div class="input-group">
-          <%= date_field_tag nil, nil, id: 'flight_date', class: 'form-control' %>
-          <span class="input-group-addon">
-            <span class="glyphicon glyphicon-calendar"></span>
-          </span>
+      <div class="col-sm-4 mb15">
+        <%= select(nil, :user_department_id, UserDepartment.where.not('id in (1)').order(:description).collect { |a| [a.description, a.id] }, {selected: @dept_id, include_blank: 'All Departments'}, class: 'form-control') %>
+      </div>
+      <div class="col-sm-4 mb15">
+        <div class="col-sm-3">
+          <div class="row">
+            <label class="form-label">Flight Date:</label>
+          </div>
+        </div>
+        <div class="col-sm-9">
+          <div class="row">
+            <div class="input-group">
+              <%= date_field_tag nil, nil, id: 'flight_date', class: 'form-control' %>
+              <span class="input-group-addon">
+                <span class="glyphicon glyphicon-calendar"></span>
+              </span>
+            </div>
+          </div>
         </div>
       </div>
-      <div class="col-sm-2">
-        <%= select(nil, :user_department_id, UserDepartment.where.not('id in (1,8)').order(:description).collect { |a| [a.description, a.id] }, {selected: @dept_id, include_blank: 'All Departments'}, class: 'form-control') %>
+      <div class="col-sm-4 mb15">
+        <div class="col-sm-5">
+          <div class="row">
+            <label class="form-label">Aircraft Plate No.:</label>
+          </div>
+        </div>
+        <div class="col-sm-7">
+          <div class="row">
+            <div class="input-group">
+              <span class="input-group-addon">RP-N</span>
+              <%= text_field_tag 'tb-ac_registry', nil, class: 'form-control' %>
+            </div>
+          </div>
+        </div>
       </div>
-      <div class="col-sm-2">
-        <%= select(nil, :ac_registry, AdvisoryCategory.select('distinct(ac_registry)').where.not(ac_registry: nil).order(:ac_registry).collect { |a| [a.ac_registry, a.ac_registry] }, {include_blank: 'All AC Registry'}, class: 'form-control') %>
-      </div>
-      <div class="col-sm-2">
-        <%= select(nil, :flight_number, AdvisoryCategory.select('distinct(flight_number)').where.not(flight_number: nil).order(:flight_number).collect { |a| [a.flight_number, a.flight_number] }, {selected: @dept_id, include_blank: 'All Flight Number'}, class: 'form-control') %>
+      <div class="col-sm-4 mb15">
+        <div class="col-sm-3">
+          <div class="row">
+            <label class="form-label">Flight No.:</label>
+          </div>
+        </div>
+        <div class="col-sm-9">
+          <div class="row">
+            <div class="input-group">
+              <span class="input-group-addon">X</span>
+              <%= text_field_tag 'tb-flight_number', nil, class: 'form-control' %>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>

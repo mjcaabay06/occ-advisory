@@ -23,7 +23,7 @@ default: &default
 
 development:
   <<: *default
-  database: occ_advisory_db
+  database: occ_adv_db
   username: postgres
   password: paramountdev
   host: localhost

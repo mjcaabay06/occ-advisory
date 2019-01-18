@@ -13,12 +13,12 @@
         <% unless @user.user_department_id == 1 %>
           <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-              Advisory <span class="caret"></span>
+              <%= @user.user_department_id == 8 ? 'Alert' : 'Advisory' %> <span class="caret"></span>
             </a>
             <ul class="dropdown-menu">
               <li>
-                <a href="#" onclick="redirect('/admin/advisory')">Created Advisories</a>
-                <a href="#" onclick="redirect('/admin/advisory/new')">New Advisory</a>
+                <a href="#" onclick="redirect('/admin/advisory')">Created <%= @user.user_department_id == 8 ? 'Alerts' : 'Advisories' %></a>
+                <a href="#" onclick="redirect('/admin/advisory/new')">New <%= @user.user_department_id == 8 ? 'Alert' : 'Advisory' %></a>
               </li>
             </ul>
           </li>
