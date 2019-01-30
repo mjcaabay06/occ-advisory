@@ -2,7 +2,7 @@ class Advisory < ApplicationRecord
   belongs_to :user
   has_many :advisory_reasons, dependent: :destroy
 
-  accepts_nested_attributes_for :advisory_reasons
+  accepts_nested_attributes_for :advisory_reasons, update_only: true
 
   before_validation :set_advisory_code
 

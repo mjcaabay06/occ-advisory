@@ -183,6 +183,7 @@ function select_category(id) {
 }
 
 function select_advisory_category(elem) {
+  console.log($(elem).closest('.panel-body').data('id'));
   var val = $(elem).val();
   var id = $(elem).closest('.panel-body').data('id');
   if (id) {

@@ -19,7 +19,7 @@ App.web_notifications = App.cable.subscriptions.create("WebNotificationsChannel"
     // notification.show(data);
     var html = '<div class="alert alert-danger alert-dismissible fade in notif-alert" id="real-notification" data-notification="real-notification">'
             + '<button class="close" data-dismiss="alert" aria-label="close">&times;</button>'
-            + '<a href="javascript: window.location.href = \'/admin/advisory/review-advisory/'+ data.sid +'\'">'
+            + '<a href="/admin/advisory/review-advisory/'+ data.sid +'">'
             + '<strong id="title">'+ data.title +'&emsp;</strong>'
             + '<span id="message">'+ data.message +'</span></a></div>';
     var id = $('.notification-panel').data('id');

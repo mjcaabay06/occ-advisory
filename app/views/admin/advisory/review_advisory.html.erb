@@ -20,13 +20,18 @@
               <td width="1%"><%= r.reason %></td>
             <% end %>
           <% end %>
+          
           <td class="text-right">
-            <% if false %>
-            <a href="javascript: window.location.href = '/admin/advisory/<%= ar.id %>/edit'" style='color: #fff;'>
-              <span class="glyphicon glyphicon-pencil"></span> Edit
-            </a>&nbsp;
+            <% unless @advisory.is_viewable %>
+              <a href="/admin/advisory/<%= ar.id %>/edit" style='color: #fff;'>
+                <span class="glyphicon glyphicon-pencil"></span> Edit
+              </a>&nbsp;|&nbsp;
+              <a href="/admin/advisory/delete-advisory-reason/<%= ar.id %>" style='color: #fff;'>
+                <span class="glyphicon glyphicon-trash"></span> Delete
+              </a>&nbsp;
             <% end %>
           </td>
+
         </tr>
 
         <% unless ar.remarks.blank? %>
@@ -71,23 +76,23 @@
       <% unless @advisory.is_viewable %>
           <% if @advisory.user_id == @user.id %>
             <% if @user.user_department_id == 8 %>
-              <%= link_to 'Add', "javascript: window.location.href = '/admin/advisory/new?sid=#{@advisory.sid}&add=true'", class: 'btn btn-primary', id: 'btn-add-avisory' %>
+              <%= link_to 'Add', "/admin/advisory/new?sid=#{@advisory.sid}&add=true", class: 'btn btn-primary', id: 'btn-add-avisory' %>
             <% end %>
           <% end %>
           <%= button_tag 'Send', class: 'btn btn-primary', id: 'btn-send', type: 'button' %>
           <% if false %>
             <%= link_to 'Edit', "/admin/advisory/#{@advisory.sid}/edit", class: 'btn btn-primary', id: 'btn-edit', disabled: true %>
           <% end  %>
-          <%= link_to 'Cancel', "javascript: window.location.href = '/admin/advisory/inbox'", class: 'btn btn-primary'%>
+          <%= link_to 'Cancel', "/admin/advisory/inbox", class: 'btn btn-primary'%>
       <% else %>
         <% if @advisory.user_id != @user.id %>
           <% if @user.user_department_id == 8 %>
-            <%= link_to 'Create Advisory', "javascript: window.location.href = '/admin/advisory/new?sid=#{@advisory.sid}'", class: 'btn btn-primary' %>
+            <%= link_to 'Create Advisory', "/admin/advisory/new?sid=#{@advisory.sid}", class: 'btn btn-primary' %>
           <% end %>
         <% end %>
         <%= button_tag 'Forward', class: 'btn btn-primary', id: 'btn-forward', type: 'button' %>
         <%= link_to 'Print', "/admin/advisory/print/#{@advisory.sid}", class: 'btn btn-primary', target: '_blank' %>
-        <%= link_to 'Back', "javascript: window.location.href = '#{session[:last_page]}'", class: 'btn btn-primary' %>
+        <%= link_to 'Back', :back, class: 'btn btn-primary' %>
       <% end %>
     </div>
     <div class="clearfix"></div>

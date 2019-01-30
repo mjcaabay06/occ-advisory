@@ -1,5 +1,5 @@
 class Admin::AdvisoryController < Admin::ApplicationController
-  before_action :set_advisory, only: [:edit, :update]
+  before_action :set_advisory, only: [:edit, :update, :delete_advisory_reason]
   include AdvisoryConcern
 
   def index
@@ -58,13 +58,92 @@ class Admin::AdvisoryController < Admin::ApplicationController
   end
 
   def update
+    ids = []
+    params[:advisory][:advisory_reasons_attributes].each do |k,v|
+      ar = AdvisoryReason.find(v['id'].to_i)
+      remarks = v['remarks'].blank? ? '' : v['remarks'].reject { |c| c.empty? }
+      ar.update_attributes(
+        reasons: v['reasons'].to_s.split(''),
+        remarks: remarks,
+        time_and_date: v['time_and_date'],
+        other_remarks: v['other_remarks'],
+      )
+
+      v['advisory_categories_attributes'].each do |k,v|
+        frequencies = v['frequencies'].blank? ? '' : v['frequencies'].reject { |c| c.empty? }
+        data = {
+          ac_configuration: v['ac_configuration'],
+          ac_location: v['ac_location'],
+          ac_on_ground: v['ac_on_ground'],
+          ac_registry: v['ac_registry'],
+          ac_status_datetime: v['ac_status_datetime'],
+          acu_problem: v['acu_problem'],
+          air_bourne: v['air_bourne'],
+          aircraft_type_id: v['aircraft_type_id'],
+          apu_inoperative: v['apu_inoperative'],
+          baggage_cargo_loaded: v['baggage_cargo_loaded'],
+          blocked_in: v['blocked_in'],
+          cabin_crew_boarded: v['cabin_crew_boarded'],
+          category_id: v['category_id'],
+          close_door: v['close_door'],
+          cockpit_crew_boarded: v['cockpit_crew_boarded'],
+          effective_date: v['effective_date'],
+          flight_date: v['flight_date'],
+          flight_number: v['flight_number'],
+          frequencies: frequencies,
+          general_boarding: v['general_boarding'],
+          load_b: v['load_b'],
+          load_e: v['load_e'],
+          load_p: v['load_p'],
+          location: v['location'],
+          max_wind: v['max_wind'],
+          movement: v['movement'],
+          no_avi: v['no_avi'],
+          nsta: v['nsta'],
+          nstd: v['nstd'],
+          push_back: v['push_back'],
+          remarks: v['remarks'],
+          restriction: v['restriction'],
+          route_destination: v['route_destination'],
+          route_origin: v['route_origin'],
+          seat_blocks: v['seat_blocks'],
+          sta: v['sta'],
+          std: v['std'],
+          tow_in: v['tow_in'],
+          tow_out: v['tow_out'],
+          weather_forecast: v['weather_forecast'],
+          arrival_terminal: v['arrival_terminal'],
+          departure_terminal: v['departure_terminal'],
+          duration_of_delay: v['duration_of_delay'],
+          eta: v['eta'],
+          etd: v['etd'],
+          neta: v['neta'],
+          netd: v['netd'],
+          pax: v['pax'],
+          other_remarks: v['other_remarks'],
+          touchdown: v['touchdown']
+        }
+        unless v['id'].blank?
+          ac = AdvisoryCategory.find(v['id'])
+          ac.update_attributes(data)
+          ids << v['id'].to_i
+        else
+          ac_id = AdvisoryCategory.new(data.merge(advisory_reason_id: ar.id))
+          ac_id.save
+          ids << ac_id.id
+        end
+      end
+    end
+    AdvisoryCategory.where(advisory_reason_id: params[:id].to_i).where.not(id: ids).destroy_all
+    redirect_to "/admin/advisory/review-advisory/#{@advisory.sid}"
   end
 
   def review_advisory
-    unless request.env['HTTP_REFERER'].blank?
-      session[:last_page] = request.env['HTTP_REFERER']
-    end
     @advisory = Advisory.find_by(sid: params[:sid]).decorate
+
+    unless @advisory.advisory_reasons.count > 0
+      redirect_to "/admin/advisory/new"
+    end
 
     if @advisory.user_id != @user.id
       inbox = Inbox.where(advisory_id: @advisory.id, sender: @advisory.user_id, recipient: @user.id).first
@@ -254,10 +333,15 @@ class Admin::AdvisoryController < Admin::ApplicationController
     render json: status
   end
 
+  def delete_advisory_reason
+    @advisory_reason.destroy
+    redirect_to "/admin/advisory/review-advisory/#{@advisory.sid}"
+  end
+
   private
     def set_advisory
-      ar = AdvisoryReason.find(params[:id])
-      @advisory = Advisory.find(ar.advisory_id)
+      @advisory_reason = AdvisoryReason.find(params[:id])
+      @advisory = Advisory.find(@advisory_reason.advisory_id)
     end
 
     def get_proper_params dept_code
@@ -302,7 +386,7 @@ class Admin::AdvisoryController < Admin::ApplicationController
     end
 
     def add_reason_params
-      params[:advisory][:advisory_reasons_attributes]["0"][:reasons] = params[:advisory][:advisory_reasons_attributes]["0"][:reasons].reject { |c| c.empty? } if params[:advisory][:advisory_reasons_attributes]["0"][:reasons].present?
+      params[:advisory][:advisory_reasons_attributes]["0"][:reasons] = params[:advisory][:advisory_reasons_attributes]["0"][:reasons].to_s.split('') if params[:advisory][:advisory_reasons_attributes]["0"][:reasons].present?
       params[:advisory][:advisory_reasons_attributes]["0"][:remarks] = params[:advisory][:advisory_reasons_attributes]["0"][:remarks].reject { |c| c.empty? } if params[:advisory][:advisory_reasons_attributes]["0"][:remarks].present?
       params[:advisory][:advisory_reasons_attributes]["0"].permit(
         :time_and_date,

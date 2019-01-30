@@ -3,7 +3,9 @@
     <div class="page-header">
       <h3 class=""><%= @user.user_department.description.titleize %></h3>
     </div>
-    <%= render 'message' %>
+    <% if false %>
+      <%= render 'message' %>
+    <% end %>
     <div class="col-md-8 col-md-offset-2">
       <%= form_for @advisory, url: { controller: 'advisory', action: 'create' }, html: { method: :post, class: 'form-horizontal' } do |f| %>
         <% if params[:add].blank? %>

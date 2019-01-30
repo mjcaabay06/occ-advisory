@@ -1,0 +1,222 @@
+<div class="form-group">
+  <div class="col-sm-6">
+    <div class="row">
+      <div class="col-sm-3 text-right">
+        <label class="form-label">Category:</label>
+      </div>
+      <div class="col-sm-9">
+      <%= select('','', Category.where(id: [11..19]).order(:category).collect { |c| [c.category, c.id] }, { include_blank: true }, id: 'select-adv-category', class: 'form-control field', 'data-field': 'category_id', onchange: 'select_advisory_category(this)', name: "advisory[advisory_reasons_attributes][0][advisory_categories_attributes][][category_id]") %>
+      
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="form-group">
+  <div class="col-sm-6 mb-15 f def">
+    <div class="row">
+      <div class="col-sm-3 text-right">
+        <label class="form-label">Flight Date</label>
+      </div>
+      <div class="col-sm-9">
+        <div class="input-group">
+          <%= text_field_tag nil, nil, class: 'form-control has-date-picker field', 'data-field': 'flight_date', required: true, name: "advisory[advisory_reasons_attributes][0][advisory_categories_attributes][][flight_date]" %>
+          <span class="input-group-addon">
+            <span class="glyphicon glyphicon-calendar"></span>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-6 mb-15 f def">
+    <div class="row">
+      <div class="col-sm-3 text-right">
+        <label class="form-label">Flight Number</label>
+      </div>
+      <div class="col-sm-9">
+        <div class="input-group">
+          <span class="input-group-addon">X</span>
+          <%= text_field_tag nil, nil, 'data-field': 'flight_number', class: 'form-control field', name: "advisory[advisory_reasons_attributes][0][advisory_categories_attributes][][flight_number]" %>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-sm-6 mb-15 f def">
+    <div class="row">
+      <div class="col-sm-3 text-right">
+        <label class="form-label">Route</label>
+      </div>
+      <div class="col-sm-9">
+        <div class="row">
+          <div class="col-sm-6">
+            <%= text_field_tag nil, nil, 'data-field': 'route_origin', class: 'form-control field', placeholder: 'Origin', name: "advisory[advisory_reasons_attributes][0][advisory_categories_attributes][][route_origin]" %>
+          </div>
+          <div class="col-sm-6">
+            <%= text_field_tag nil, nil, 'data-field': 'route_destination', class: 'form-control field', placeholder: 'Destination', name: "advisory[advisory_reasons_attributes][0][advisory_categories_attributes][][route_destination]" %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-6 mb-15 f def">
+    <div class="row">
+      <div class="col-sm-3 text-right">
+        <label class="form-label">Aircraft Registry</label>
+      </div>
+      <div class="col-sm-9">
+        <div class="input-group">
+          <span class="input-group-addon">RP-N</span>
+          <%= text_field_tag nil, nil, 'data-field': 'ac_registry', class: 'form-control field', name: "advisory[advisory_reasons_attributes][0][advisory_categories_attributes][][ac_registry]" %>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-sm-6 mb-15 f def">
+    <div class="row">
+      <div class="col-sm-3 text-right">
+        <label class="form-label">Aircraft Type</label>
+      </div>
+      <div class="col-sm-9">
+        <%= select(nil, nil, AircraftType.all.order(:ac_type).collect { |l| [l.ac_type, l.id] }, { include_blank: true }, 'data-field': 'aircraft_type_id', class: 'form-control field', name: "advisory[advisory_reasons_attributes][0][advisory_categories_attributes][][aircraft_type_id]") %>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-6 mb-15 f def">
+    <div class="row">
+      <div class="col-sm-3 text-right">
+        <label class="form-label">Aircraft Configuration</label>
+      </div>
+      <div class="col-sm-9">
+        <%= text_field_tag nil, nil, 'data-field': 'ac_configuration', class: 'form-control field', name: "advisory[advisory_reasons_attributes][0][advisory_categories_attributes][][ac_configuration]" %>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-sm-6 mb-15 f f17 f11 f12">
+    <div class="row">
+      <div class="col-sm-3 text-right">
+        <label class="form-label">Estimated Time Departure</label>
+      </div>
+      <div class="col-sm-9">
+        <div class="input-group">
+          <%= text_field_tag nil, nil, class: 'form-control has-time-picker field', 'data-field': 'etd', required: true, name: "advisory[advisory_reasons_attributes][0][advisory_categories_attributes][][etd]", disabled: false %>
+          <span class="input-group-addon">
+            <span class="glyphicon glyphicon-time"></span>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-sm-6 mb-15 f f17 f11 f12">
+    <div class="row">
+      <div class="col-sm-3 text-right">
+        <label class="form-label">Estimated Time Arrival</label>
+      </div>
+      <div class="col-sm-9">
+        <div class="input-group">
+          <%= text_field_tag nil, nil, class: 'form-control has-time-picker field', 'data-field': 'eta', required: true, name: "advisory[advisory_reasons_attributes][0][advisory_categories_attributes][][eta]", disabled: false %>
+          <span class="input-group-addon">
+            <span class="glyphicon glyphicon-time"></span>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-sm-6 mb-15 f f11">
+    <div class="row">
+      <div class="col-sm-3 text-right">
+        <label class="form-label">New Estimated Time Departure</label>
+      </div>
+      <div class="col-sm-9">
+        <div class="input-group">
+          <%= text_field_tag nil, nil, class: 'form-control has-time-picker field', 'data-field': 'netd', required: true, name: "advisory[advisory_reasons_attributes][0][advisory_categories_attributes][][netd]", disabled: false %>
+          <span class="input-group-addon">
+            <span class="glyphicon glyphicon-time"></span>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-sm-6 mb-15 f f11">
+    <div class="row">
+      <div class="col-sm-3 text-right">
+        <label class="form-label">New Estimated Time Arrival</label>
+      </div>
+      <div class="col-sm-9">
+        <div class="input-group">
+          <%= text_field_tag nil, nil, class: 'form-control has-time-picker field', 'data-field': 'neta', required: true, name: "advisory[advisory_reasons_attributes][0][advisory_categories_attributes][][neta]", disabled: false %>
+          <span class="input-group-addon">
+            <span class="glyphicon glyphicon-time"></span>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-sm-6 mb-15 f f11">
+    <div class="row">
+      <div class="col-sm-3 text-right">
+        <label class="form-label">Duration Of Delay</label>
+      </div>
+      <div class="col-sm-9">
+        <div class="input-group">
+          <%= text_field_tag nil, nil, class: 'form-control has-time-picker field', 'data-field': 'duration_of_delay', required: true, name: "advisory[advisory_reasons_attributes][0][advisory_categories_attributes][][duration_of_delay]", disabled: false %>
+          <span class="input-group-addon">
+            <span class="glyphicon glyphicon-time"></span>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-sm-6 mb-15 f f19 f12">
+    <div class="row">
+      <div class="col-sm-3 text-right">
+        <label class="form-label">Departure Terminal</label>
+      </div>
+      <div class="col-sm-9">
+        <%= select(nil, nil, [['Terminal A', 'A'], ['Terminal B', 'B'], ['Terminal C', 'C']], { include_blank: 'Select Terminal'}, 'data-field': 'departure_terminal', class: 'form-control field', required: true, name: "advisory[advisory_reasons_attributes][0][advisory_categories_attributes][][departure_terminal]", disabled: false ) %>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-sm-6 mb-15 f f19 f12">
+    <div class="row">
+      <div class="col-sm-3 text-right">
+        <label class="form-label">Arrival Terminal</label>
+      </div>
+      <div class="col-sm-9">
+        <%= select(nil, nil, [['Terminal A', 'A'], ['Terminal B', 'B'], ['Terminal C', 'C']], { include_blank: 'Select Terminal'}, 'data-field': 'arrival_terminal', class: 'form-control field', required: true, name: "advisory[advisory_reasons_attributes][0][advisory_categories_attributes][][arrival_terminal]", disabled: false)  %>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-sm-6 mb-15 f f15 f11">
+    <div class="row">
+      <div class="col-sm-3 text-right">
+        <label class="form-label">Number Of Passenger</label>
+      </div>
+      <div class="col-sm-9">
+        <%= text_field_tag nil, nil, 'data-field': 'pax', class: 'form-control field', required: true, name: "advisory[advisory_reasons_attributes][0][advisory_categories_attributes][][pax]", disabled: false %>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-sm-6 mb-15 f def">
+    <div class="row">
+      <div class="col-sm-3 text-right">
+        <label class="form-label">Remarks</label>
+      </div>
+      <div class="col-sm-9">
+        <%= text_area_tag nil, nil, 'data-field': 'remarks', class: 'form-control field', name: "advisory[advisory_reasons_attributes][0][advisory_categories_attributes][][remarks]" %>
+      </div>
+    </div>
+  </div>
+
+
+</div>
