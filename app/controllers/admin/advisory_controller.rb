@@ -63,7 +63,7 @@ class Admin::AdvisoryController < Admin::ApplicationController
       ar = AdvisoryReason.find(v['id'].to_i)
       remarks = v['remarks'].blank? ? '' : v['remarks'].reject { |c| c.empty? }
       ar.update_attributes(
-        reasons: v['reasons'].to_s.split(''),
+        reasons: v['reasons'].to_s.split('').reject { |c| c.empty? },
         remarks: remarks,
         time_and_date: v['time_and_date'],
         other_remarks: v['other_remarks'],
@@ -120,7 +120,6 @@ class Admin::AdvisoryController < Admin::ApplicationController
           neta: v['neta'],
           netd: v['netd'],
           pax: v['pax'],
-          other_remarks: v['other_remarks'],
           touchdown: v['touchdown']
         }
         unless v['id'].blank?
