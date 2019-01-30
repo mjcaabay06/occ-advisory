@@ -19,6 +19,7 @@ Rails.application.routes.draw do
         post :create_reply
         get :print, path: '/print/:sid'
         get :forward, path: '/forward'
+        get :delete_advisory_reason, path: '/delete-advisory-reason/:id'
       end
     end
 

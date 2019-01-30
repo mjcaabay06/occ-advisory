@@ -2,7 +2,7 @@ class AdvisoryReason < ApplicationRecord
   belongs_to :advisory
   has_many :advisory_categories, dependent: :destroy
 
-  accepts_nested_attributes_for :advisory_categories
+  accepts_nested_attributes_for :advisory_categories, update_only: true
 
   scope :by_reason_arr, -> (value) { where("reasons::int[] && '{#{value}}'::int[]") }
   scope :by_remark_arr, -> (value) { where("remarks::int[] && '{#{value}}'::int[]") }
@@ -20,9 +20,9 @@ class AdvisoryReason < ApplicationRecord
 
   def self.filter_remark_reason reason, remark, value
     query = <<~HEREDOC.squish
-      #{ search_by_reason(reason) } OR
-      #{ search_by_remark(remark) } OR
-      ${ search_by_other_remarks(value) } OR
+      #{ search_by_reason(reason) } 
+      #{ search_by_remark(remark) } 
+      #{ search_by_other_remarks(value) } OR
       #{ search_by_category(value) } OR
       #{ search_by_second_remarks(value) } OR
       #{ search_by_route(value) }
@@ -49,11 +49,11 @@ class AdvisoryReason < ApplicationRecord
   private
 
     def self.search_by_reason reason
-      "advisory_reasons.reasons::int[] && '{#{reason}}'::int[]"
+      "advisory_reasons.reasons::int[] && '{#{reason}}'::int[] OR" unless reason.blank?
     end
 
     def self.search_by_remark remark
-      "advisory_reasons.remarks::int[] && '{#{remark}}'::int[]"
+      "advisory_reasons.remarks::int[] && '{#{remark}}'::int[] OR" unless remark.blank?
     end
 
     def self.search_by_category value

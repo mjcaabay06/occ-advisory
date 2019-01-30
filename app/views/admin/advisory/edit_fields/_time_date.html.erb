@@ -1,0 +1,27 @@
+<div class="panel panel-default">
+  <div class="panel-heading">
+    Time Date
+  </div>
+  <div class="panel-body">
+    <div class="form-group">
+      <div class="col-sm-6">
+        <label class="form-label">Time and Date:</label>
+        <div class="input-group">
+          <%= text_field_tag nil, nil, class: 'form-control has-datetime-picker', required: true, name: 'advisory[advisory_reasons_attributes][0][time_and_date]', value: @advisory_reason.time_and_date %>
+          <span class="input-group-addon">
+            <span class="glyphicon glyphicon-calendar"></span>
+          </span>
+        </div>
+      </div>
+      <div class="col-sm-6">
+        <div >
+          <label class="form-label">Remarks:</label>
+          <%= select('', '', Remark.where(id: @remark_ids << 34).order(:remark).collect { |r| [r.remark, r.id] }, {selected: @advisory_reason.remarks}, id: 'remarks-select', class: 'form-control', multiple: 'multiple', required: true, name: 'advisory[advisory_reasons_attributes][0][remarks][]') %>
+        </div>
+        <div id="other-remarks" style="margin-top: 15px; display: none;">
+          <%= text_field_tag nil, nil, class: 'form-control', placeholder: 'Other Remarks', required: true, disabled: true, name: 'advisory[advisory_reasons_attributes][0][other_remarks]', value: @advisory_reason.other_remarks %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

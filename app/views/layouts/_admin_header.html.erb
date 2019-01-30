@@ -17,13 +17,13 @@
             </a>
             <ul class="dropdown-menu">
               <li>
-                <a href="#" onclick="redirect('/admin/advisory')">Created <%= @user.user_department_id == 8 ? 'Alerts' : 'Advisories' %></a>
-                <a href="#" onclick="redirect('/admin/advisory/new')">New <%= @user.user_department_id == 8 ? 'Alert' : 'Advisory' %></a>
+                <a href="/admin/advisory">Created <%= @user.user_department_id == 8 ? 'Alerts' : 'Advisories' %></a>
+                <a href="/admin/advisory/new">New <%= @user.user_department_id == 8 ? 'Alert' : 'Advisory' %></a>
               </li>
             </ul>
           </li>
           <li>
-            <a href="#" onclick="redirect('/admin/advisory/inbox')">
+            <a href="/admin/advisory/inbox">
               Inbox&nbsp;<strong><small style="color: red" id="inbox-count" data-count='<%= @inbox_count %>'><%= ("( #{@inbox_count} )" unless @inbox_count == 0) unless @inbox_count.blank? %></small></strong>
             </a>
           </li>
@@ -34,9 +34,9 @@
             </a>
             <ul class="dropdown-menu">
               <li>
-                <a href="javascript: window.location.href = '/admin/users'">Users</a>
+                <a href="/admin/users">Users</a>
                 <% unless @user.user_department_id == 8 %>
-                  <a href="javascript: window.location.href = '/admin/departments'">Departments</a>
+                  <a href="/admin/departments">Departments</a>
                 <% end %>
               </li>
             </ul>
@@ -63,8 +63,3 @@
     </div>
   </div>
 </nav>
-<script type="text/javascript">
-  function redirect(url) {
-    window.location.href = url;
-  }
-</script>

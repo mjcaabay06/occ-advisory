@@ -2,7 +2,7 @@
   <div class="page-header">
     <h3>
       <span class="glyphicon glyphicon-user"></span> User Lists
-      <a href="javascript: window.location.href = '/admin/users/new'" class="btn btn-primary pull-right btn-add">+</a>
+      <a href="/admin/users/new" class="btn btn-primary pull-right btn-add">+</a>
     </h3>
   </div>
   <div class="table-responsive">
@@ -24,7 +24,7 @@
             <td><%= u.status.description %></td>
             <td><%= u.user_department.description %></td>
             <td class="cell-control">
-              <a href="javascript: window.location.href = '/admin/users/<%= u.id %>/edit'">
+              <a href="/admin/users/<%= u.id %>/edit">
                 <span class="glyphicon glyphicon-pencil"></span> Edit
               </a>
             </td>
