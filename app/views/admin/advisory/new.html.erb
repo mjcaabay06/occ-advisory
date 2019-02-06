@@ -50,7 +50,7 @@
               </div>
               <div class="panel-body">
                 <% @ar = ar %>
-                <%= render "admin/advisory/new_fields/#{ @user.department_code }" %>
+                <%= render "admin/advisory/new_fields/advisory_category_fields" %>
               </div>
             </div>
           </div>
@@ -59,43 +59,46 @@
         <div class="text-right" style="margin-bottom: 30px;">
           <%= f.button 'Next', class: 'btn btn-primary' %>
         </div>
-
-        <script type="text/javascript">
-          function add_category() {
-            var id = Math.floor((Math.random() * 10000000) + 1);
-            var category_count = $(".additional-category").length + 1;
-            var html = '<div class="panel panel-default additional-category" id="additional-category'+id+'">'
-                      + '<div class="panel-heading">'
-                      + 'Additional Category'
-                      + '<button onclick="delete_category('+id+')" class="btn-link pull-right">'
-                      + '<span class="glyphicon glyphicon-trash"></span>'
-                      + '</button>'
-                      + '</div>'
-                      + '<div class="panel-body" data-id="'+id+'">'
-                      + "<%= escape_javascript("#{ render "admin/advisory/new_fields/#{ @user.department_code }"}").html_safe %>"
-                      + '</div></div></div>';
-            $("#panel-category").append(html);
-            init();
-            select_advisory_category($("#additional-category" + id).find("#select-adv-category"));
-            select_category($("#additional-category" + id).find("#select-category"));
-            $(".frequency-select").select2({
-              theme: 'bootstrap'
-            });
-
-            $("#additional-category" + id).find('.field').each(function(){
-              var field_name = $(this).data('field');
-              var add = field_name == 'frequencies' ? '[]' : '';
-              $(this).attr("name","advisory[advisory_reasons_attributes][0][advisory_categories_attributes]["+category_count+"]["+field_name+"]" + add);
-            });
-            $('html, body').animate({ scrollTop: $("#additional-category" + id).offset().top }, 50);
-          }
-
-          function delete_category(id) {
-            $("#additional-category" + id).remove();
-          }
-        </script>
       <% end %>
 
     </div>
   </div>
 </div>
+<% content_for :header do %>
+<script type="text/javascript">
+  function add_category() {
+    var id = Math.floor((Math.random() * 10000000) + 1);
+    var category_count = $(".additional-category").length + 1;
+    var html = '<div class="panel panel-default additional-category" id="additional-category'+id+'">'
+              + '<div class="panel-heading">'
+              + 'Additional Category'
+              + '<button onclick="delete_category('+id+')" class="btn-link pull-right">'
+              + '<span class="glyphicon glyphicon-trash"></span>'
+              + '</button>'
+              + '</div>'
+              + '<div class="panel-body" data-id="'+id+'">'
+              + "<%= escape_javascript("#{ render "admin/advisory/new_fields/advisory_category_fields"}").html_safe %>"
+              + '</div></div></div>';
+    $("#panel-category").append(html);
+    init(true);
+    
+    if ($("#select-category").length > 0) {
+      select_category_fields($("#additional-category" + id).find("#select-category"));
+      $("#additional-category" + id).find("#select-category").on('change', function(){
+        select_category_fields($(this));
+      });
+    }
+
+    $(".frequency-select").select2({
+      theme: 'bootstrap'
+    });
+
+    $("#additional-category" + id).find('.field').each(function(){
+      var field_name = $(this).data('field');
+      var add = field_name == 'frequencies' ? '[]' : '';
+      $(this).attr("name","advisory[advisory_reasons_attributes][0][advisory_categories_attributes]["+category_count+"]["+field_name+"]" + add);
+    });
+    $('html, body').animate({ scrollTop: $("#additional-category" + id).offset().top }, 50);
+  }
+</script>
+<% end %>

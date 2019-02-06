@@ -22,7 +22,8 @@ class AdvisoryCategoryDecorator < Draper::Decorator
   end
 
   def frequency
-    Frequency.where(id: frequencies).try(:frequency)
+    # Frequency.where(id: frequencies).try(:frequency)
+    (Frequency.where(id: frequencies).collect{|f| f.frequency }).join(', ')
   end
 
   def route

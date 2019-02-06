@@ -375,7 +375,7 @@ class Admin::AdvisoryController < Admin::ApplicationController
         {:advisory_reasons_attributes => [
           :time_and_date,
           :other_remarks,
-          get_proper_params(dept_code),
+          advisory_category_params,
           :reasons => [],
           :remarks => [],
         ]},
@@ -394,6 +394,21 @@ class Admin::AdvisoryController < Admin::ApplicationController
         :reasons => [],
         :remarks => [],
       )
+    end
+
+    def advisory_category_params
+      {
+        :advisory_categories_attributes => [
+          :ac_configuration, :ac_location, :ac_on_ground, :ac_registry, :ac_status_datetime,
+          :acu_problem, :air_bourne, :aircraft_type_id, :apu_inoperative, :baggage_cargo_loaded,
+          :blocked_in, :cabin_crew_boarded, :category_id, :close_door, :cockpit_crew_boarded, :effective_date,
+          :flight_date, :flight_number, :frequencies, :general_boarding, :load_b, :load_e, :load_p,
+          :location, :max_wind, :movement, :no_avi, :nsta, :nstd, :push_back, :remarks, :restriction,
+          :route_destination, :route_origin, :seat_blocks, :sta, :std, :tow_in, :tow_out, :weather_forecast,
+          :arrival_terminal, :departure_terminal, :duration_of_delay, :eta, :etd, :neta, :netd,
+          :pax, :touchdown
+        ]
+      }
     end
 
     def ltp_params

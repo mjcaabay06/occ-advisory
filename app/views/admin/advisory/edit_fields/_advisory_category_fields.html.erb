@@ -1,0 +1,25 @@
+<% cnt = 0 %>
+<% AdvisoryCategory.where(advisory_reason_id: params[:id]).order(:created_at).each do |ac| %>
+
+<div id="panel-category">
+  <div class="panel panel-default <%= 'additional-category' if cnt > 0 %>" id="<%= cnt > 0 ? "additional-category#{ac.id}" : 'main-category' %>">
+    <div class="panel-heading">
+      <%= hidden_field_tag nil, nil, name: "advisory[advisory_reasons_attributes][0][advisory_categories_attributes][#{cnt}][id]", value: ac.id  %>
+      <%= 'Additional' if cnt > 0 %> Category
+      <% if cnt > 0 %>
+        <button onclick="delete_category(<%= ac.id %>)" class="btn-link pull-right">
+          <span class="glyphicon glyphicon-trash"></span>
+        </button>
+      <% else %>
+        <button type="button" onclick="add_category()" class="btn-link pull-right">
+          <span class="glyphicon glyphicon-plus"></span>
+        </button>
+      <% end %>
+    </div>
+    <div class="panel-body" <%= "data-id=#{ac.id}" if cnt > 0 %>>
+      <%= render "admin/advisory/edit_fields/edit_advisory_category_fields", ac: ac, cnt: cnt %>
+    </div>
+  </div>
+</div>
+<% cnt += 1 %>
+<% end %>

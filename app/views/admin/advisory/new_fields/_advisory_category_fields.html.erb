@@ -1,0 +1,876 @@
+<%= @ar.fields_for :advisory_categories do |ac|%>
+  
+  <% if is_field :category_id %>
+    <div class="form-group">
+      <div class="col-sm-10 col-sm-offset-1">
+        <div class="row">
+          <div class="col-sm-4 text-right">
+            <label class="form-label">Category:</label>
+          </div>
+          <div class="col-sm-8">
+          <%= ac.select :category_id, Category.where(id: @user.user_department.category_fields).order(:category).collect { |c| [c.category, c.id] }, { include_blank: true }, id: 'select-category', class: 'form-control field', 'data-field': 'category_id', onchange: 'select_category(this)' %>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+
+  <% if is_field :effective_date %>
+    <div class="form-group f" data-ids="4">
+      <div class="col-sm-10 col-sm-offset-1">
+        <div class="row">
+          <div class="col-sm-4 text-right">
+            <label class="form-label">Effective Date:</label>
+          </div>
+          <div class="col-sm-8">
+            <div class="input-group">
+              <%= ac.text_field :effective_date, class: 'form-control has-date-picker field', 'data-field': 'effective_date', required: true %>
+              <span class="input-group-addon">
+                <span class="glyphicon glyphicon-calendar"></span>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+
+  <% if is_field :ac_registry %>
+    <div class="form-group f" data-ids="2,3,4,5,6,7,8,9,10,11,12,13,15,16,17,18,19">
+      <div class="col-sm-10 col-sm-offset-1">
+        <div class="row">
+          <div class="col-sm-4 text-right">
+            <label class="form-label">Aircraft Registry</label>
+          </div>
+          <div class="col-sm-8">
+            <div class="input-group">
+              <span class="input-group-addon">RP-N</span>
+              <%= ac.text_field :ac_registry, class: 'form-control field', 'data-field': 'ac_registry', required: true %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+
+  <% if is_field :flight_number %>
+    <div class="form-group f" data-ids="4,6,7,8,9,10,11,12,13,15,16,17,18,19">
+      <div class="col-sm-10 col-sm-offset-1">
+        <div class="row">
+          <div class="col-sm-4 text-right">
+            <label class="form-label">Flight Number</label>
+          </div>
+          <div class="col-sm-8">
+            <div class="input-group">
+              <span class="input-group-addon">X</span>
+              <%= ac.text_field :flight_number, 'data-field': 'flight_number', class: 'form-control field' %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+  
+  <% if is_field :flight_date %>
+    <div class="form-group f" data-ids="6,7,8,9,10,11,12,13,15,16,17,18,19">
+      <div class="col-sm-10 col-sm-offset-1">
+        <div class="row">
+          <div class="col-sm-4 text-right">
+            <label class="form-label">Flight Date</label>
+          </div>
+          <div class="col-sm-8">
+            <div class="input-group">
+              <%= ac.text_field :flight_date, class: 'form-control has-date-picker field', 'data-field': 'flight_date', required: true %>
+              <span class="input-group-addon">
+                <span class="glyphicon glyphicon-calendar"></span>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+
+  <% if is_field :location %>
+    <div class="form-group f" data-ids="1">
+      <div class="col-sm-10 col-sm-offset-1">
+        <div class="row">
+          <div class="col-sm-4 text-right">
+            <label class="form-label">Location</label>
+          </div>
+          <div class="col-sm-8">
+            <div class="row">
+              <%= ac.hidden_field :location, id: 'hidden-location', class: 'form-control field', 'data-field': 'location', required: true %>
+              <div class="col-sm-4">
+                <%= select(nil, 'loc-loc', Location.all.order(:location).collect { |l| [l.location, l.location] }, { include_blank: true }, class: 'form-control', onchange: 'flocation(this)' ) %>
+              </div>
+              <div class="col-sm-4">
+                <%= text_field_tag 'loc-f1', nil, class: 'form-control', required: true, onkeyup: 'flocation(this)' %>
+              </div>
+              <div class="col-sm-4 has-input-group">
+                <div class="input-group">
+                  <%= text_field_tag 'loc-f2', nil, class: 'form-control', required: true, onkeyup: 'flocation(this)' %>
+                  <span class="input-group-addon">nm</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+
+  <% if is_field :movement %>
+    <div class="form-group f" data-ids="1">
+      <div class="col-sm-10 col-sm-offset-1">
+        <div class="row">
+          <div class="col-sm-4 text-right">
+            <label class="form-label">Movement</label>
+          </div>
+          <div class="col-sm-8">
+            <div class="row">
+              <%= ac.hidden_field :movement, id: 'hidden-movement', class: 'form-control field', 'data-field': 'movement', required: true %>
+              <div class="col-sm-4">
+                <%= select(nil, 'mvnt-loc', Location.all.order(:location).collect { |l| [l.location, l.location] }, { include_blank: true }, class: 'form-control', onchange: 'fmovement(this)' ) %>
+              </div>
+              <div class="col-sm-4 has-input-group">
+                <div class="input-group">
+                  <%= text_field_tag 'mvnt-f1', nil, class: 'form-control', required: true, onkeyup: 'fmovement(this)' %>
+                  <span class="input-group-addon">kts</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+
+  <% if is_field :max_wind %>
+    <div class="form-group f" data-ids="1">
+      <div class="col-sm-10 col-sm-offset-1">
+        <div class="row">
+          <div class="col-sm-4 text-right">
+            <label class="form-label">Max Wind</label>
+          </div>
+          <div class="col-sm-8">
+            <div class="row">
+              <%= ac.hidden_field :max_wind, id: 'hidden-max-wind', class: 'form-control field', 'data-field': 'max_wind', required: true %>
+              <div class="col-sm-4 has-input-group">
+                <div class="input-group">
+                  <%= text_field_tag 'mxwnd-f1', nil, class: 'form-control', required: true, onkeyup: 'fmaxwnd(this)' %>
+                  <span class="input-group-addon">kts</span>
+                </div>
+              </div>
+              <div class="col-sm-4">
+                <%= text_field_tag 'mxwnd-f2', nil, class: 'form-control', required: true, onkeyup: 'fmaxwnd(this)' %>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+
+  <% if is_field :weather_forecast %>
+    <div class="form-group f" data-ids="1">
+      <div class="col-sm-10 col-sm-offset-1">
+        <div class="row">
+          <div class="col-sm-4 text-right">
+            <label class="form-label">Weather Forecast</label>
+          </div>
+          <div class="col-sm-8">
+            <%= ac.text_field :weather_forecast, class: 'form-control field', 'data-field': 'weather_forecast', required: true %>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+
+  <% if (is_field :route_origin)|| (is_field :route_destination) %>
+    <div class="form-group f" data-ids="2,6,7,8,9,10,11,12,13,15,16,17,18,19">
+      <div class="col-sm-10 col-sm-offset-1">
+        <div class="row">
+          <div class="col-sm-4 text-right">
+            <label class="form-label">Route</label>
+          </div>
+          <div class="col-sm-8">
+            <div class="row">
+              <div class="col-sm-6">
+                <%= ac.text_field :route_origin, class: 'form-control field', 'data-field': 'route_origin', placeholder: 'Origin', required: true %>
+              </div>
+              <div class="col-sm-6">
+                <%= ac.text_field :route_destination, class: 'form-control field', 'data-field': 'route_destination', placeholder: 'Destination', required: true %>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+
+  <% if is_field :ac_location %>
+    <div class="form-group f" data-ids="2">
+      <div class="col-sm-10 col-sm-offset-1">
+        <div class="row">
+          <div class="col-sm-4 text-right">
+            <label class="form-label">Aircraft Location</label>
+          </div>
+          <div class="col-sm-8">
+            <%= ac.text_field :ac_location, class: 'form-control field', 'data-field': 'ac_location', required: true %>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+
+  <% if is_field :tow_out %>
+    <div class="form-group">
+      <div class="col-sm-10 col-sm-offset-1">
+        <div class="row">
+          <div class="col-sm-4 text-right">
+            <label class="form-label">Tow Out</label>
+          </div>
+          <div class="col-sm-8">
+            <div class="input-group">
+              <%= ac.text_field :tow_out, class: 'form-control has-time-picker field', 'data-field': 'tow_out', required: true %>
+              <span class="input-group-addon">
+                <span class="glyphicon glyphicon-time"></span>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+
+  <% if is_field :tow_in %>
+    <div class="form-group">
+      <div class="col-sm-10 col-sm-offset-1">
+        <div class="row">
+          <div class="col-sm-4 text-right">
+            <label class="form-label">Towing In</label>
+          </div>
+          <div class="col-sm-8">
+            <div class="input-group">
+              <%= ac.text_field :tow_in, class: 'form-control has-time-picker field', 'data-field': 'tow_in', required: true %>
+              <span class="input-group-addon">
+                <span class="glyphicon glyphicon-time"></span>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+
+  <% if is_field :blocked_in %>
+    <div class="form-group">
+      <div class="col-sm-10 col-sm-offset-1">
+        <div class="row">
+          <div class="col-sm-4 text-right">
+            <label class="form-label">Block In</label>
+          </div>
+          <div class="col-sm-8">
+            <div class="input-group">
+              <%= ac.text_field :blocked_in, class: 'form-control has-time-picker field', 'data-field': 'blocked_in', required: true %>
+              <span class="input-group-addon">
+                <span class="glyphicon glyphicon-time"></span>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+
+  <% if is_field :aircraft_type_id %>
+    <div class="form-group f" data-ids="6,7,8,9,10,11,12,15,16,17,18,19,13">
+      <div class="col-sm-10 col-sm-offset-1">
+        <div class="row">
+          <div class="col-sm-4 text-right">
+            <label class="form-label">Aircraft Type</label>
+          </div>
+          <div class="col-sm-8">
+            <%= ac.select :aircraft_type_id, AircraftType.all.order(:ac_type).collect { |l| [l.ac_type, l.id] }, { include_blank: true }, 'data-field': 'aircraft_type_id', class: 'form-control field' %>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+
+  <% if is_field :ac_configuration %>
+    <div class="form-group f" data-ids="6,7,8,9,10,11,12,13,15,16,17,18,19">
+      <div class="col-sm-10 col-sm-offset-1">
+        <div class="row">
+          <div class="col-sm-4 text-right">
+            <label class="form-label">Aircraft Configuration</label>
+          </div>
+          <div class="col-sm-8">
+            <%= ac.text_field :ac_configuration, 'data-field': 'ac_configuration', class: 'form-control field' %>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+
+  <% if is_field :ac_status_datetime %>
+    <div class="form-group f" data-ids="2,5">
+      <div class="col-sm-10 col-sm-offset-1">
+        <div class="row">
+          <div class="col-sm-4 text-right">
+            <label class="form-label">Date/Time</label>
+          </div>
+          <div class="col-sm-8">
+            <div class="input-group">
+              <%= ac.text_field :ac_status_datetime, class: 'form-control field has-datetime-picker', 'data-field': 'ac_status_datetime', required: true %>
+              <span class="input-group-addon">
+                <span class="glyphicon glyphicon-calendar"></span>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+
+  <% if (is_field :load_b) || (is_field :load_p) || (is_field :load_e) %>
+    <div class="form-group">
+      <div class="col-sm-10 col-sm-offset-1">
+        <div class="row">
+          <div class="col-sm-4 text-right">
+            <label class="form-label">Load</label>
+          </div>
+          <div class="col-sm-8">
+            <div class="row">
+              <div class="col-sm-4 has-input-group">
+                <div class="input-group">
+                  <span class="input-group-addon">B:</span>
+                  <%= ac.text_field :load_b, class: 'form-control field', 'data-field': 'load_b', required: true %>
+                </div>
+              </div>
+              <div class="col-sm-4 has-input-group">
+                <div class="input-group">
+                  <span class="input-group-addon">P:</span>
+                  <%= ac.text_field :load_p, class: 'form-control field', 'data-field': 'load_p', required: true %>
+                </div>
+              </div>
+              <div class="col-sm-4 has-input-group">
+                <div class="input-group">
+                  <span class="input-group-addon">E:</span>
+                  <%= ac.text_field :load_e, class: 'form-control field', 'data-field': 'load_e', required: true %>
+                </div>
+              </div>  
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+
+  <% if is_field :std %>
+    <div class="form-group f" data-ids="6,8,10,11">
+      <div class="col-sm-10 col-sm-offset-1">
+        <div class="row">
+          <div class="col-sm-4 text-right">
+            <label class="form-label">Standard Time Departure</label>
+          </div>
+          <div class="col-sm-8">
+            <div class="input-group">
+              <%= ac.text_field :std, 'data-field': 'std', class: 'form-control field has-time-picker', required: true %>
+              <span class="input-group-addon">
+                <span class="glyphicon glyphicon-time"></span>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+
+  <% if is_field :sta %>
+    <div class="form-group f" data-ids="6,8,10,11">
+      <div class="col-sm-10 col-sm-offset-1">
+        <div class="row">
+          <div class="col-sm-4 text-right">
+            <label class="form-label">Standard Time Arrival</label>
+          </div>
+          <div class="col-sm-8">
+            <div class="input-group">
+              <%= ac.text_field :sta, 'data-field': 'sta', class: 'form-control field has-time-picker', required: true %>
+              <span class="input-group-addon">
+                <span class="glyphicon glyphicon-time"></span>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+
+  <% if is_field :nstd %>
+    <div class="form-group f" data-ids="11">
+      <div class="col-sm-10 col-sm-offset-1">
+        <div class="row">
+          <div class="col-sm-4 text-right">
+            <label class="form-label">New Standard Time Departure</label>
+          </div>
+          <div class="col-sm-8">
+            <div class="input-group">
+              <%= ac.text_field :nstd, 'data-field': 'nstd', class: 'form-control field has-time-picker', required: true %>
+              <span class="input-group-addon">
+                <span class="glyphicon glyphicon-time"></span>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+
+  <% if is_field :nsta %>
+    <div class="form-group f" data-ids="11">
+      <div class="col-sm-10 col-sm-offset-1">
+        <div class="row">
+          <div class="col-sm-4 text-right">
+            <label class="form-label">New Standard Time Arrival</label>
+          </div>
+          <div class="col-sm-8">
+            <div class="input-group">
+              <%= ac.text_field :nsta, 'data-field': 'nsta', class: 'form-control field has-time-picker', required: true %>
+              <span class="input-group-addon">
+                <span class="glyphicon glyphicon-time"></span>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+
+  <% if is_field :frequencies %>
+    <div class="form-group f" data-ids="6,7,8,9,10,11,12">
+      <div class="col-sm-10 col-sm-offset-1">
+        <div class="row">
+          <div class="col-sm-4 text-right">
+            <label class="form-label">Frequency</label>
+          </div>
+          <div class="col-sm-8">
+            <%= ac.select :frequencies, Frequency.all.order(:id).collect { |l| [l.frequency, l.id] }, {}, 'data-field': 'frequencies', class: 'form-control field frequency-select', multiple: 'multiple', required: true %>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+
+  <% if is_field :cockpit_crew_boarded %>
+    <div class="form-group">
+      <div class="col-sm-10 col-sm-offset-1">
+        <div class="row">
+          <div class="col-sm-4 text-right">
+            <label class="form-label">Cockpit Crew Boarded</label>
+          </div>
+          <div class="col-sm-8">
+            <div class="input-group">
+              <%= ac.text_field :cockpit_crew_boarded, class: 'form-control has-time-picker field', 'data-field': 'cockpit_crew_boarded', required: true %>
+              <span class="input-group-addon">
+                <span class="glyphicon glyphicon-time"></span>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+
+  <% if is_field :cabin_crew_boarded %>
+    <div class="form-group">
+      <div class="col-sm-10 col-sm-offset-1">
+        <div class="row">
+          <div class="col-sm-4 text-right">
+            <label class="form-label">Cabin Crew Boarded</label>
+          </div>
+          <div class="col-sm-8">
+            <div class="input-group">
+              <%= ac.text_field :cabin_crew_boarded, class: 'form-control has-time-picker field', 'data-field': 'cabin_crew_boarded', required: true %>
+              <span class="input-group-addon">
+                <span class="glyphicon glyphicon-time"></span>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+
+  <% if is_field :general_boarding %>
+    <div class="form-group">
+      <div class="col-sm-10 col-sm-offset-1">
+        <div class="row">
+          <div class="col-sm-4 text-right">
+            <label class="form-label">General Boarding</label>
+          </div>
+          <div class="col-sm-8">
+            <div class="input-group">
+              <%= ac.text_field :general_boarding, class: 'form-control has-time-picker field', 'data-field': 'general_boarding', required: true %>
+              <span class="input-group-addon">
+                <span class="glyphicon glyphicon-time"></span>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+
+  <% if is_field :baggage_cargo_loaded %>
+    <div class="form-group">
+      <div class="col-sm-10 col-sm-offset-1">
+        <div class="row">
+          <div class="col-sm-4 text-right">
+            <label class="form-label">Baggage and Cargo Loaded</label>
+          </div>
+          <div class="col-sm-8">
+            <div class="input-group">
+              <%= ac.text_field :baggage_cargo_loaded, class: 'form-control has-time-picker field', 'data-field': 'baggage_cargo_loaded', required: true %>
+              <span class="input-group-addon">
+                <span class="glyphicon glyphicon-time"></span>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+
+  <% if is_field :close_door %>
+    <div class="form-group">
+      <div class="col-sm-10 col-sm-offset-1">
+        <div class="row">
+          <div class="col-sm-4 text-right">
+            <label class="form-label">Closed Door</label>
+          </div>
+          <div class="col-sm-8">
+            <div class="input-group">
+              <%= ac.text_field :close_door, class: 'form-control has-time-picker field', 'data-field': 'close_door', required: true %>
+              <span class="input-group-addon">
+                <span class="glyphicon glyphicon-time"></span>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+
+  <% if is_field :push_back %>
+    <div class="form-group">
+      <div class="col-sm-10 col-sm-offset-1">
+        <div class="row">
+          <div class="col-sm-4 text-right">
+            <label class="form-label">Pushback</label>
+          </div>
+          <div class="col-sm-8">
+            <div class="input-group">
+              <%= ac.text_field :push_back, class: 'form-control has-time-picker field', 'data-field': 'push_back', required: true %>
+              <span class="input-group-addon">
+                <span class="glyphicon glyphicon-time"></span>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+
+  <% if is_field :touchdown %>
+    <div class="form-group">
+      <div class="col-sm-10 col-sm-offset-1">
+        <div class="row">
+          <div class="col-sm-4 text-right">
+            <label class="form-label">Touchdown</label>
+          </div>
+          <div class="col-sm-8">
+            <div class="input-group">
+              <%= ac.text_field :touchdown, class: 'form-control has-time-picker field', 'data-field': 'touchdown', required: true %>
+              <span class="input-group-addon">
+                <span class="glyphicon glyphicon-time"></span>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+
+  <% if is_field :air_bourne %>
+    <div class="form-group">
+      <div class="col-sm-10 col-sm-offset-1">
+        <div class="row">
+          <div class="col-sm-4 text-right">
+            <label class="form-label">Airbourne</label>
+          </div>
+          <div class="col-sm-8">
+            <div class="input-group">
+              <%= ac.text_field :air_bourne, class: 'form-control has-time-picker field', 'data-field': 'air_bourne', required: true %>
+              <span class="input-group-addon">
+                <span class="glyphicon glyphicon-time"></span>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+
+  <% if is_field :apu_inoperative %>
+    <div class="form-group">
+      <div class="col-sm-10 col-sm-offset-1">
+        <div class="row">
+          <div class="col-sm-4 text-right">
+            <label class="form-label">Aircraft Power Unit Inoperative</label>
+          </div>
+          <div class="col-sm-8">
+            <%= ac.text_field :apu_inoperative, class: 'form-control field', required: true, 'data-field': 'apu_inoperative' %>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+
+  <% if is_field :seat_blocks %>
+    <div class="form-group">
+      <div class="col-sm-10 col-sm-offset-1">
+        <div class="row">
+          <div class="col-sm-4 text-right">
+            <label class="form-label">Seat Blocks</label>
+          </div>
+          <div class="col-sm-8">
+            <%= ac.text_field :seat_blocks, class: 'form-control field', required: true, 'data-field': 'seat_blocks' %>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+
+  <% if is_field :no_avi %>
+    <div class="form-group">
+      <div class="col-sm-10 col-sm-offset-1">
+        <div class="row">
+          <div class="col-sm-4 text-right">
+            <label class="form-label">No Alive Animals</label>
+          </div>
+          <div class="col-sm-8">
+            <%= ac.text_field :no_avi, class: 'form-control field', required: true, 'data-field': 'no_avi' %>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+
+  <% if is_field :restriction %>
+    <div class="form-group">
+      <div class="col-sm-10 col-sm-offset-1">
+        <div class="row">
+          <div class="col-sm-4 text-right">
+            <label class="form-label">Restriction</label>
+          </div>
+          <div class="col-sm-8">
+            <%= ac.text_field :restriction, class: 'form-control field', required: true, 'data-field': 'restriction' %>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+
+  <% if is_field :acu_problem %>
+    <div class="form-group">
+      <div class="col-sm-10 col-sm-offset-1">
+        <div class="row">
+          <div class="col-sm-4 text-right">
+            <label class="form-label">Aircon Problem</label>
+          </div>
+          <div class="col-sm-8">
+            <%= ac.text_field :acu_problem, class: 'form-control field', required: true, 'data-field': 'acu_problem' %>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+
+  <% if is_field :ac_on_ground %>
+    <div class="form-group">
+      <div class="col-sm-10 col-sm-offset-1">
+        <div class="row">
+          <div class="col-sm-4 text-right">
+            <label class="form-label">Aircraft On Ground</label>
+          </div>
+          <div class="col-sm-8">
+            <%= ac.text_field :ac_on_ground, class: 'form-control field', required: true, 'data-field': 'ac_on_ground' %>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+
+  <% if is_field :etd %>
+    <div class="form-group f" data-ids="17,11,12">
+      <div class="col-sm-10 col-sm-offset-1">
+        <div class="row">
+          <div class="col-sm-4 text-right">
+            <label class="form-label">Estimated Time Departure</label>
+          </div>
+          <div class="col-sm-8">
+            <div class="input-group">
+              <%= ac.text_field :etd, class: 'form-control has-time-picker field', 'data-field': 'etd', required: true %>
+              <span class="input-group-addon">
+                <span class="glyphicon glyphicon-time"></span>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+
+  <% if is_field :eta %>
+    <div class="form-group f" data-ids="17,11,12">
+      <div class="col-sm-10 col-sm-offset-1">
+        <div class="row">
+          <div class="col-sm-4 text-right">
+            <label class="form-label">Estimated Time Arrival</label>
+          </div>
+          <div class="col-sm-8">
+            <div class="input-group">
+              <%= ac.text_field :eta, class: 'form-control has-time-picker field', 'data-field': 'eta', required: true %>
+              <span class="input-group-addon">
+                <span class="glyphicon glyphicon-time"></span>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+
+  <% if is_field :netd %>
+    <div class="form-group f" data-ids="11">
+      <div class="col-sm-10 col-sm-offset-1">
+        <div class="row">
+          <div class="col-sm-4 text-right">
+            <label class="form-label">New Estimated Time Departure</label>
+          </div>
+          <div class="col-sm-8">
+            <div class="input-group">
+              <%= ac.text_field :netd, class: 'form-control has-time-picker field', 'data-field': 'netd', required: true %>
+              <span class="input-group-addon">
+                <span class="glyphicon glyphicon-time"></span>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+
+  <% if is_field :neta %>
+    <div class="form-group f" data-ids="11">
+      <div class="col-sm-10 col-sm-offset-1">
+        <div class="row">
+          <div class="col-sm-4 text-right">
+            <label class="form-label">New Estimated Time Arrival</label>
+          </div>
+          <div class="col-sm-8">
+            <div class="input-group">
+              <%= ac.text_field :neta, class: 'form-control has-time-picker field', 'data-field': 'neta', required: true %>
+              <span class="input-group-addon">
+                <span class="glyphicon glyphicon-time"></span>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+
+  <% if is_field :duration_of_delay %>
+    <div class="form-group f" data-ids="11">
+      <div class="col-sm-10 col-sm-offset-1">
+        <div class="row">
+          <div class="col-sm-4 text-right">
+            <label class="form-label">Duration Of Delay</label>
+          </div>
+          <div class="col-sm-8">
+            <div class="input-group">
+              <%= ac.text_field :duration_of_delay, class: 'form-control has-time-picker field', 'data-field': 'duration_of_delay', required: true %>
+              <span class="input-group-addon">
+                <span class="glyphicon glyphicon-time"></span>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+
+  <% if is_field :departure_terminal %>
+    <div class="form-group f" data-ids="19,12">
+      <div class="col-sm-10 col-sm-offset-1">
+        <div class="row">
+          <div class="col-sm-4 text-right">
+            <label class="form-label">Departure Terminal</label>
+          </div>
+          <div class="col-sm-8">
+            <%= ac.select :departure_terminal, [['Terminal A', 'A'], ['Terminal B', 'B'], ['Terminal C', 'C']], { include_blank: 'Select Terminal'}, 'data-field': 'departure_terminal', class: 'form-control field', required: true  %>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+
+  <% if is_field :arrival_terminal %>
+    <div class="form-group f" data-ids="19,12">
+      <div class="col-sm-10 col-sm-offset-1">
+        <div class="row">
+          <div class="col-sm-4 text-right">
+            <label class="form-label">Arrival Terminal</label>
+          </div>
+          <div class="col-sm-8">
+            <%= ac.select :arrival_terminal, [['Terminal A', 'A'], ['Terminal B', 'B'], ['Terminal C', 'C']], { include_blank: 'Select Terminal'}, 'data-field': 'arrival_terminal', class: 'form-control field', required: true  %>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+
+  <% if is_field :pax %>
+    <div class="form-group f" data-ids="15,11">
+      <div class="col-sm-10 col-sm-offset-1">
+        <div class="row">
+          <div class="col-sm-4 text-right">
+            <label class="form-label">Number Of Passenger</label>
+          </div>
+          <div class="col-sm-8">
+            <%= ac.text_field :pax, 'data-field': 'pax', class: 'form-control field', required: true %>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+
+  <% if is_field :remarks %>
+    <div class="form-group f" data-ids="2,3,4,5,6,7,8,9,10,11,12,13,15,16,17,18,19">
+      <div class="col-sm-10 col-sm-offset-1">
+        <div class="row">
+          <div class="col-sm-4 text-right">
+            <label class="form-label">Remarks</label>
+          </div>
+          <div class="col-sm-8">
+            <%= ac.text_area :remarks, class: 'form-control field', 'data-field': 'remarks' %>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+
+<% end %>

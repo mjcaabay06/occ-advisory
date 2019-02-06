@@ -1,0 +1,347 @@
+<% category_ids = @ar.advisory_categories.select('distinct(category_id)').order(:category_id).collect{|ac| ac.category_id} %>
+<% cnt = 0 %>
+<table class="table table-bordered category">
+  <thead>
+    <tr>
+      <% if is_field_format :category_id %><th>CATEGORY</th><% end %>
+      <% if is_field_format :ac_registry %><th>AIRCRAFT REGISTRY</th><% end %>
+      <% if is_field_format :aircraft_type_id %><th>AIRCRAFT TYPE</th><% end %>
+      <% if is_field_format :ac_configuration %><th>AIRCRAFT CONFIGURATION</th><% end %>
+      <% if is_field_format :flight_date %><th>FLIGHT DATE</th><% end %>
+      <% if is_field_format :flight_number %><th>FLIGHT NUMBER</th><% end %>
+      <% if (is_field_format :route_origin)|| (is_field_format :route_destination) %><th>ROUTE</th><% end %>
+      <% if is_field_format :etd %><th>ETD</th><% end %>
+      <% if is_field_format :eta %><th>ETA</th><% end %>
+      <% if is_field_format :netd %><th>NETD</th><% end %>
+      <% if is_field_format :neta %><th>NETA</th><% end %>
+      <% if is_field_format :duration_of_delay %><th>DUR</th><% end %>
+      <% if is_field_format :departure_terminal %><th>DEP TER</th><% end %>
+      <% if is_field_format :arrival_terminal %><th>ARR TER</th><% end %>
+      <% if is_field_format :pax %><th>PAX</th><% end %>
+      <% if is_field_format :frequencies %><th>FREQUENCY</th><% end %>
+      <% if is_field_format :std %><th>STD</th><% end %>
+      <% if is_field_format :sta %><th>STA</th><% end %>
+      <% if is_field_format :nstd %><th>NSTD</th><% end %>
+      <% if is_field_format :nsta %><th>NSTA</th><% end %>
+      <% if (is_field_format :load_b) || (is_field_format :load_p) || (is_field_format :load_e) %><th>LOAD</th><% end %>
+      <% if is_field_format :effective_date %><th>EFFECTIVE DATE</th><% end %>
+      <% if is_field_format :apu_inoperative %><th>APU INOP</th><% end %>
+      <% if is_field_format :seat_blocks %><th>SEAT BLKS</th><% end %>
+      <% if is_field_format :no_avi %><th>NO AVI</th><% end %>
+      <% if is_field_format :restriction %><th>RESTRICTION</th><% end %>
+      <% if is_field_format :acu_problem %><th>ACU PROB</th><% end %>
+      <% if is_field_format :ac_on_ground %><th>AOG</th><% end %>
+      <% if is_field_format :tow_out %><th>TOW OUT</th><% end %>
+      <% if is_field_format :tow_in %><th>TOW IN</th><% end %>
+      <% if is_field_format :blocked_in %><th>BLOCKED IN</th><% end %>
+      <% if is_field_format :cockpit_crew_boarded %><th>COCKPIT CREW BOARDED</th><% end %>
+      <% if is_field_format :cabin_crew_boarded %><th>CABIN CREW BOARDED</th><% end %>
+      <% if is_field_format :general_boarding %><th>GENERAL BOARDING</th><% end %>
+      <% if is_field_format :baggage_cargo_loaded %><th>BAGGAGE AND CARGO LOADED</th><% end %>
+      <% if is_field_format :close_door %><th>CLOSED DOOR</th><% end %>
+      <% if is_field_format :push_back %><th>PUSHBACK</th><% end %>
+      <% if is_field_format :touchdown %><th>TOUCHDOWN</th><% end %>
+      <% if is_field_format :air_bourne %><th>AIRBOURNE</th><% end %>
+      <% if is_field_format :ac_location %><th>AC LOC</th><% end %>
+      <% if is_field_format :ac_status_datetime %><th>DATE/TIME</th><% end %>
+      <% if is_field_format :location %><th>LOCATION</th><% end %>
+      <% if is_field_format :movement %><th>MOVEMENT</th><% end %>
+      <% if is_field_format :max_wind %><th>MAX WIND</th><% end %>
+      <% if is_field_format :weather_forecast %><th>WTHR FRCST</th><% end %>
+      <% if is_field_format :remarks %><th>REMARKS</th><% end %>
+    </tr>
+  </thead>
+  <tbody>
+      <% unless category_ids.all? &:blank? %>
+        <% Category.where(id: category_ids).order(:category).each do |c| %>
+          <% @ar.advisory_categories.where(category_id: c.id).order(:created_at).decorate.each do |ac| %>
+            <tr>
+              <% if is_field_format :category_id %>
+                <td><%= c.category unless cnt > 0 %></td>
+              <% end %>
+              <% if is_field_format :ac_registry %>
+                <td><%= 'RP-N' unless ac.ac_registry.blank? %><%= check_value ac.ac_registry %></td>
+              <% end %>
+              <% if is_field_format :aircraft_type_id %>
+                <td><%= check_value ac.aircraft_type %></td>
+              <% end %>
+              <% if is_field_format :ac_configuration %>
+                <td><%= check_value ac.ac_configuration %></td>
+              <% end %>
+              <% if is_field_format :flight_date %>
+                <td><%= check_value ac.flight_date.try(:strftime, '%m-%d-%y (%a)') %></td>
+              <% end %>
+              <% if is_field_format :flight_number %>
+                <td><%= 'X' unless ac.flight_number.blank? %><%= check_value ac.flight_number %></td>
+              <% end %>
+              <% if (is_field_format :route_origin)|| (is_field_format :route_destination) %>
+                <td><%= check_value ac.route %></td>
+              <% end %>
+              <% if is_field_format :etd %>
+                <td><%= check_value ac.etd.try(:strftime, '%k%Mh') %></td>
+              <% end %>
+              <% if is_field_format :eta %>
+                <td><%= check_value ac.eta.try(:strftime, '%k%Mh') %></td>
+              <% end %>
+              <% if is_field_format :netd %>
+                <td><%= check_value ac.netd.try(:strftime, '%k%Mh') %></td>
+              <% end %>
+              <% if is_field_format :neta %>
+                <td><%= check_value ac.neta.try(:strftime, '%k%Mh') %></td>
+              <% end %>
+              <% if is_field_format :duration_of_delay %>
+                <td><%= check_value ac.duration_of_delay.try(:strftime, '%k%Mh') %></td>
+              <% end %>
+              <% if is_field_format :departure_terminal %>
+                <td><%= check_value ac.dep_ter %></td>
+              <% end %>
+              <% if is_field_format :arrival_terminal %>
+                <td><%= check_value ac.arr_ter %></td>
+              <% end %>
+              <% if is_field_format :pax %>
+                <td><%= check_value ac.pax %></td>
+              <% end %>
+              <% if is_field_format :frequencies %>
+                <td><%= check_value ac.frequency %></td>
+              <% end %>
+              <% if is_field_format :std %>
+                <td><%= check_value ac.std.try(:strftime, '%k%Mh') %></td>
+              <% end %>
+              <% if is_field_format :sta %>
+                <td><%= check_value ac.sta.try(:strftime, '%k%Mh') %></td>
+              <% end %>
+              <% if is_field_format :nstd %>
+                <td><%= check_value ac.nstd.try(:strftime, '%k%Mh') %></td>
+              <% end %>
+              <% if is_field_format :nsta %>
+                <td><%= check_value ac.nsta.try(:strftime, '%k%Mh') %></td>
+              <% end %>
+              <% if (is_field_format :load_b) || (is_field_format :load_p) || (is_field_format :load_e) %>
+                <td><%= check_value ac.load_bpe %></td>
+              <% end %>
+              <% if is_field_format :effective_date %>
+                <td><%= check_value ac.effective_date.try(:strftime, '%m-%d-%y (%a)') %></td>
+              <% end %>
+              <% if is_field_format :apu_inoperative %>
+                <td><%= check_value ac.apu_inoperative %></td>
+              <% end %>
+              <% if is_field_format :seat_blocks %>
+                <td><%= check_value ac.seat_blocks %></td>
+              <% end %>
+              <% if is_field_format :no_avi %>
+                <td><%= check_value ac.no_avi %></td>
+              <% end %>
+              <% if is_field_format :restriction %>
+                <td><%= check_value ac.restriction %></td>
+              <% end %>
+              <% if is_field_format :acu_problem %>
+                <td><%= check_value ac.acu_problem %></td>
+              <% end %>
+              <% if is_field_format :ac_on_ground %>
+                <td><%= check_value ac.ac_on_ground %></td>
+              <% end %>
+              <% if is_field_format :tow_out %>
+                <td><%= check_value ac.tow_out.try(:strftime, '%k%Mh') %></td>
+              <% end %>
+              <% if is_field_format :tow_in %>
+                <td><%= check_value ac.tow_in.try(:strftime, '%k%Mh') %></td>
+              <% end %>
+              <% if is_field_format :blocked_in %>
+                <td><%= check_value ac.blocked_in.try(:strftime, '%k%Mh') %></td>
+              <% end %>
+              <% if is_field_format :cockpit_crew_boarded %>
+                <td><%= check_value ac.cockpit_crew_boarded.try(:strftime, '%k%Mh') %></td>
+              <% end %>
+              <% if is_field_format :cabin_crew_boarded %>
+                <td><%= check_value ac.cabin_crew_boarded.try(:strftime, '%k%Mh') %></td>
+              <% end %>
+              <% if is_field_format :general_boarding %>
+                <td><%= check_value ac.general_boarding.try(:strftime, '%k%Mh') %></td>
+              <% end %>
+              <% if is_field_format :baggage_cargo_loaded %>
+                <td><%= check_value ac.baggage_cargo_loaded.try(:strftime, '%k%Mh') %></td>
+              <% end %>
+              <% if is_field_format :close_door %>
+                <td><%= check_value ac.close_door.try(:strftime, '%k%Mh') %></td>
+              <% end %>
+              <% if is_field_format :push_back %>
+                <td><%= check_value ac.push_back.try(:strftime, '%k%Mh') %></td>
+              <% end %>
+              <% if is_field_format :touchdown %>
+                <td><%= check_value ac.touchdown.try(:strftime, '%k%Mh') %></td>
+              <% end %>
+              <% if is_field_format :air_bourne %>
+                <td><%= check_value ac.air_bourne.try(:strftime, '%k%Mh') %></td>
+              <% end %>
+              <% if is_field_format :ac_location %>
+                <td><%= check_value ac.ac_location %></td>
+              <% end %>
+              <% if is_field_format :ac_status_datetime %>
+                <td><%= check_value ac.ac_status_datetime.try(:strftime, '%m-%d-%y (%a) %k%Mh') %></td>
+              <% end %>
+              <% if is_field_format :location %>
+                <td><%= check_value ac.location %></td>
+              <% end %>
+              <% if is_field_format :movement %>
+                <td><%= check_value ac.movement %></td>
+              <% end %>
+              <% if is_field_format :max_wind %>
+                <td><%= check_value ac.max_wind %></td>
+              <% end %>
+              <% if is_field_format :weather_forecast %>
+                <td><%= check_value ac.weather_forecast %></td>
+              <% end %>
+              <% if is_field_format :remarks %>
+                <td><%= check_value ac.remarks %></td>
+              <% end %>
+            </tr>
+            <% cnt += 1 %>
+          <% end %>
+          <% cnt = 0 %>
+        <% end %>
+      <% else %>
+        <% @ar.advisory_categories.order(:created_at).decorate.each do |ac| %>
+          <tr>
+            <% if is_field_format :category_id %>
+              <td></td>
+            <% end %>
+            <% if is_field_format :ac_registry %>
+              <td><%= 'RP-N' unless ac.ac_registry.blank? %><%= check_value ac.ac_registry %></td>
+            <% end %>
+            <% if is_field_format :aircraft_type_id %>
+              <td><%= check_value ac.aircraft_type %></td>
+            <% end %>
+            <% if is_field_format :ac_configuration %>
+              <td><%= check_value ac.ac_configuration %></td>
+            <% end %>
+            <% if is_field_format :flight_date %>
+              <td><%= check_value ac.flight_date.try(:strftime, '%m-%d-%y (%a)') %></td>
+            <% end %>
+            <% if is_field_format :flight_number %>
+              <td><%= 'X' unless ac.flight_number.blank? %><%= check_value ac.flight_number %></td>
+            <% end %>
+            <% if (is_field_format :route_origin)|| (is_field_format :route_destination) %>
+              <td><%= check_value ac.route %></td>
+            <% end %>
+            <% if is_field_format :etd %>
+              <td><%= check_value ac.etd.try(:strftime, '%k%Mh') %></td>
+            <% end %>
+            <% if is_field_format :eta %>
+              <td><%= check_value ac.eta.try(:strftime, '%k%Mh') %></td>
+            <% end %>
+            <% if is_field_format :netd %>
+              <td><%= check_value ac.netd.try(:strftime, '%k%Mh') %></td>
+            <% end %>
+            <% if is_field_format :neta %>
+              <td><%= check_value ac.neta.try(:strftime, '%k%Mh') %></td>
+            <% end %>
+            <% if is_field_format :duration_of_delay %>
+              <td><%= check_value ac.duration_of_delay.try(:strftime, '%k%Mh') %></td>
+            <% end %>
+            <% if is_field_format :departure_terminal %>
+              <td><%= check_value ac.dep_ter %></td>
+            <% end %>
+            <% if is_field_format :arrival_terminal %>
+              <td><%= check_value ac.arr_ter %></td>
+            <% end %>
+            <% if is_field_format :pax %>
+              <td><%= check_value ac.pax %></td>
+            <% end %>
+            <% if is_field_format :frequencies %>
+              <td><%= check_value ac.frequency %></td>
+            <% end %>
+            <% if is_field_format :std %>
+              <td><%= check_value ac.std.try(:strftime, '%k%Mh') %></td>
+            <% end %>
+            <% if is_field_format :sta %>
+              <td><%= check_value ac.sta.try(:strftime, '%k%Mh') %></td>
+            <% end %>
+            <% if is_field_format :nstd %>
+              <td><%= check_value ac.nstd.try(:strftime, '%k%Mh') %></td>
+            <% end %>
+            <% if is_field_format :nsta %>
+              <td><%= check_value ac.nsta.try(:strftime, '%k%Mh') %></td>
+            <% end %>
+            <% if (is_field_format :load_b) || (is_field_format :load_p) || (is_field_format :load_e) %>
+              <td><%= check_value ac.load_bpe %></td>
+            <% end %>
+            <% if is_field_format :effective_date %>
+              <td><%= check_value ac.effective_date.try(:strftime, '%m-%d-%y (%a)') %></td>
+            <% end %>
+            <% if is_field_format :apu_inoperative %>
+              <td><%= check_value ac.apu_inoperative %></td>
+            <% end %>
+            <% if is_field_format :seat_blocks %>
+              <td><%= check_value ac.seat_blocks %></td>
+            <% end %>
+            <% if is_field_format :no_avi %>
+              <td><%= check_value ac.no_avi %></td>
+            <% end %>
+            <% if is_field_format :restriction %>
+              <td><%= check_value ac.restriction %></td>
+            <% end %>
+            <% if is_field_format :acu_problem %>
+              <td><%= check_value ac.acu_problem %></td>
+            <% end %>
+            <% if is_field_format :ac_on_ground %>
+              <td><%= check_value ac.ac_on_ground %></td>
+            <% end %>
+            <% if is_field_format :tow_out %>
+              <td><%= check_value ac.tow_out.try(:strftime, '%k%Mh') %></td>
+            <% end %>
+            <% if is_field_format :tow_in %>
+              <td><%= check_value ac.tow_in.try(:strftime, '%k%Mh') %></td>
+            <% end %>
+            <% if is_field_format :blocked_in %>
+              <td><%= check_value ac.blocked_in.try(:strftime, '%k%Mh') %></td>
+            <% end %>
+            <% if is_field_format :cockpit_crew_boarded %>
+              <td><%= check_value ac.cockpit_crew_boarded.try(:strftime, '%k%Mh') %></td>
+            <% end %>
+            <% if is_field_format :cabin_crew_boarded %>
+              <td><%= check_value ac.cabin_crew_boarded.try(:strftime, '%k%Mh') %></td>
+            <% end %>
+            <% if is_field_format :general_boarding %>
+              <td><%= check_value ac.general_boarding.try(:strftime, '%k%Mh') %></td>
+            <% end %>
+            <% if is_field_format :baggage_cargo_loaded %>
+              <td><%= check_value ac.baggage_cargo_loaded.try(:strftime, '%k%Mh') %></td>
+            <% end %>
+            <% if is_field_format :close_door %>
+              <td><%= check_value ac.close_door.try(:strftime, '%k%Mh') %></td>
+            <% end %>
+            <% if is_field_format :push_back %>
+              <td><%= check_value ac.push_back.try(:strftime, '%k%Mh') %></td>
+            <% end %>
+            <% if is_field_format :touchdown %>
+              <td><%= check_value ac.touchdown.try(:strftime, '%k%Mh') %></td>
+            <% end %>
+            <% if is_field_format :air_bourne %>
+              <td><%= check_value ac.air_bourne.try(:strftime, '%k%Mh') %></td>
+            <% end %>
+            <% if is_field_format :ac_location %>
+              <td><%= check_value ac.ac_location %></td>
+            <% end %>
+            <% if is_field_format :ac_status_datetime %>
+              <td><%= check_value ac.ac_status_datetime.try(:strftime, '%m-%d-%y (%a) %k%Mh') %></td>
+            <% end %>
+            <% if is_field_format :location %>
+              <td><%= check_value ac.location %></td>
+            <% end %>
+            <% if is_field_format :movement %>
+              <td><%= check_value ac.movement %></td>
+            <% end %>
+            <% if is_field_format :max_wind %>
+              <td><%= check_value ac.max_wind %></td>
+            <% end %>
+            <% if is_field_format :weather_forecast %>
+              <td><%= check_value ac.weather_forecast %></td>
+            <% end %>
+            <% if is_field_format :remarks %>
+              <td><%= check_value ac.remarks %></td>
+            <% end %>
+          </tr>
+        <% end %>
+      <% end %>
+  </tbody>
+</table>

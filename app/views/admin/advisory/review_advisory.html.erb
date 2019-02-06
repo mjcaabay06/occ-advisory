@@ -20,6 +20,9 @@
               <td width="1%"><%= r.reason %></td>
             <% end %>
           <% end %>
+          <% unless ar.time_and_date.blank? %>
+            <td width="1%"><%= ar.time_and_date.strftime('%m-%d-%Y %k%Mh') %></td>
+          <% end %>
           
           <td class="text-right">
             <% unless @advisory.is_viewable %>
@@ -47,7 +50,7 @@
 
       </table>
       <div style="overflow: auto;">
-        <%= render partial: "admin/advisory/format_fields/#{@advisory.user.decorate.department_code}_fields" %>
+        <%= render partial: "admin/advisory/format_fields/advisory_category_fields" %>
       </div>
     <% end %>
 
