@@ -35,6 +35,10 @@ class Admin::UserDepartmentController < Admin::ApplicationController
     end
 
     def user_department_params
-      params.require(:user_department).permit(:description, :code, :status_id)
+      params[:user_department][:advisory_category_fields] = params[:user_department][:advisory_category_fields].reject { |c| c.empty? } if params[:user_department][:advisory_category_fields].present?
+      params[:user_department][:category_fields] = params[:user_department][:category_fields].reject { |c| c.empty? } if params[:user_department][:category_fields].present?
+      params[:user_department][:reason_options] = params[:user_department][:reason_options].reject { |c| c.empty? } if params[:user_department][:reason_options].present?
+      params[:user_department][:remark_options] = params[:user_department][:remark_options].reject { |c| c.empty? } if params[:user_department][:remark_options].present?
+      params.require(:user_department).permit(:description, :code, :status_id, :advisory_category_fields => [], :category_fields => [], :reason_options => [], :remark_options => [])
     end
 end

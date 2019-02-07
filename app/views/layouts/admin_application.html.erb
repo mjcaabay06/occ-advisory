@@ -12,6 +12,38 @@
      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
      <script src="/assets/placeholders.js"></script>
     <![endif]-->
+    <script type="text/javascript">
+      <% if @user.password_digest == Digest::MD5.hexdigest('P@ssword') %>
+        $(document).ready(function(){
+          $("#modal-default-password").modal('show');
+
+          $("#btn-view-password").on('click', function(){
+            if ($(this).find('span').hasClass('glyphicon-eye-close')) {
+              $('input[name=check-default-password]').attr('type', 'text');
+              $(this).find('span').removeClass('glyphicon-eye-close').addClass('glyphicon-eye-open');
+            } else {
+              $('input[name=check-default-password]').attr('type', 'password');
+              $(this).find('span').removeClass('glyphicon-eye-open').addClass('glyphicon-eye-close');
+            }
+          });
+
+          $("#btn-check-default-password").on('click', function(){
+            var password = $('input[name=check-default-password]').val();
+            $('.cs-loader').show();
+            $.get('/admin/change-default-password?password=' + password)
+              .done(function(result){
+                if (result == 'valid') {
+                  $("#modal-default-password").modal('hide');
+                  alert("Successfully changed password.");
+                } else {
+                  alert("Don't use the default password.");
+                }
+                $('.cs-loader').hide();
+              });
+          });
+        });
+      <% end %>
+    </script>
   </head>
 
   <body>
@@ -32,6 +64,31 @@
       </div>
     </div>
     <div class="notification-panel" data-id="<%= @user.id %>">
+    </div>
+
+    <div class="modal fade" tabindex="1" role="dialog" data-backdrop="static" data-keyboard="false" id="modal-default-password">
+      <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title pull-left">Enter your new password.</h5>
+          </div>
+          <div class="modal-body">
+            <div class="form-group">
+              <div class="input-group">
+                <%= text_field_tag nil, nil, name: 'check-default-password', class: 'form-control', type: 'password', placeholder: 'Password' %>
+                <div class="input-group-addon" style="padding: 0">
+                  <button type="button" id="btn-view-password" class="btn btn-link" style="padding: 0 15px;" title="Show Masked">
+                    <span class="glyphicon glyphicon-eye-close"></span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <%= button_tag 'Save', class: 'btn btn-primary pull-right', id: 'btn-check-default-password' %>
+          </div>
+        </div>
+      </div>
     </div>
   </body>
 </html>

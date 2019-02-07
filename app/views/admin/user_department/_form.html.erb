@@ -16,6 +16,70 @@
       <%= f.text_field :code, class: 'form-control', required: true %>
     </div>
   </div>
+  <br>
+
+  <div class="form-group" style="margin-bottom: 0">
+    <div class="col-md-12">
+      <label class="form-label">Include reason options?</label>
+      &nbsp;&nbsp;
+      <input type="radio" name="reason-options" value="yes" style="vertical-align: middle; margin-top: -4px"  <%= 'checked="checked"' unless f.object[:reason_options].blank? %>> Yes
+      &nbsp;
+      <input type="radio" name="reason-options" value="no" style="vertical-align: middle; margin-top: -4px" <%= 'checked="checked"' if f.object[:reason_options].blank? %>> No
+    </div>
+  </div>
+
+  <div class="form-group" id="reason-options-panel">
+    <div class="col-md-12">
+      Reasons <br>
+      <%= f.select :reason_options, Reason.all.order(:reason).collect{ |r| [r.reason, r.id] }, {}, id: 'reason-options', class: 'form-control', multiple: 'multiple',required: true %>
+    </div>
+  </div>
+  <br>
+
+  <div class="form-group" style="margin-bottom: 0">
+    <div class="col-md-12">
+      <label class="form-label">Include remark options?</label>
+      &nbsp;&nbsp;
+      <input type="radio" name="remark-options" value="yes" style="vertical-align: middle; margin-top: -4px" <%= 'checked="checked"' unless f.object[:remark_options].blank? %>> Yes
+      &nbsp;
+      <input type="radio" name="remark-options" value="no" style="vertical-align: middle; margin-top: -4px" <%= 'checked="checked"' if f.object[:remark_options].blank? %>> No
+    </div>
+  </div>
+
+  <div class="form-group" id="remark-options-panel">
+    <div class="col-md-12">
+      Remarks <br>
+      <%= f.select :remark_options, Remark.all.order(:remark).collect{ |r| [r.remark, r.id] }, {}, id: 'remark-options', class: 'form-control', multiple: 'multiple',required: true %>
+    </div>
+  </div>
+  <br>
+
+  <div class="form-group" style="margin-bottom: 0">
+    <div class="col-md-12">
+      <label class="form-label">Include category options?</label>
+      &nbsp;&nbsp;
+      <input type="radio" name="category-options" value="yes" style="vertical-align: middle; margin-top: -4px" <%= 'checked="checked"' unless f.object[:category_fields].blank? %>> Yes
+      &nbsp;
+      <input type="radio" name="category-options" value="no" style="vertical-align: middle; margin-top: -4px" <%= 'checked="checked"' if f.object[:category_fields].blank? %>> No
+    </div>
+  </div>
+
+  <div class="form-group" id="category-options-panel">
+    <div class="col-md-12">
+      Categories <br>
+      <%= f.select :category_fields, Category.all.order(:category).collect{ |c| [c.category, c.id] }, {}, id: 'category-options', class: 'form-control', multiple: 'multiple',required: true %>
+    </div>
+  </div>
+  <br>
+
+  <div class="form-group">
+    <div class="col-md-2">
+      <label class="form-label">Advisory Fields</label>
+    </div>
+    <div class="col-md-10">
+      <%= f.select :advisory_category_fields, AdvisoryCategory::Fields.sort_by{|k,v| k}.collect{ |k, v| [k.to_s.gsub('_', ' ').titleize, v] }, {}, id: 'advisory-category-fields', class: 'form-control', multiple: 'multiple',required: true %>
+    </div>
+  </div>
 
   <div class="form-group">
     <div class="col-md-2">

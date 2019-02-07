@@ -8,6 +8,8 @@ Rails.application.routes.draw do
     post '/login-auth' => 'home#login_auth'
     get '/logout' => 'home#logout'
     get '/check-account' => 'home#check_account'
+    get '/change-default-password' => 'home#change_default_password'
+    get '/reset-password' => 'home#reset_password'
 
     resources :advisory do
       collection do

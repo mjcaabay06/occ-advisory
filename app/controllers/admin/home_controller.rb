@@ -62,4 +62,24 @@ class Admin::HomeController < Admin::ApplicationController
     render json: status
   end
 
+  def change_default_password
+    password = Digest::MD5.hexdigest(params[:password])
+    status = :invalid
+
+    unless @user.password_digest == password
+      @user.update(password_digest: password)
+      status = :valid
+    end
+    render json: status
+  end
+
+  def reset_password
+    user = User.find_by_id(params[:id])
+    status = :invalid
+    if user.update(password_digest: Digest::MD5.hexdigest('P@ssword'))
+      status = :valid
+    end
+    render json: status
+  end
+
 end
