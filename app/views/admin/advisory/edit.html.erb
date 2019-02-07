@@ -3,7 +3,9 @@
     <div class="page-header">
       <h3 class=""><%= @user.user_department.description.titleize %></h3>
     </div>
-    <%= render 'message' %>
+    <% if false %>
+      <%= render 'message' %>
+    <% end %>
     <div class="col-md-8 col-md-offset-2">
       <%= form_for @advisory, url: { controller: 'advisory', action: 'update' }, html: { class: 'form-horizontal' } do |f| %>
         <% if params[:add].blank? %>
@@ -16,11 +18,11 @@
               <div class="form-group">
                 <div class="col-sm-6">
                   <label class="form-label">Recipient:</label>
-                  <%= f.select :recipients, options_for_select(UserDepartment.where.not(id: [1]).order(:code).collect { |u| [u[:code], u[:id]] }), {}, id: 'recipient-select', class: 'form-control', multiple: 'multiple', required: true %>
+                  <%= f.select :recipients, options_for_select(UserDepartment.where(status_id: 1).where.not(id: [1]).order(:code).collect { |u| [u[:code], u[:id]] }), {}, id: 'recipient-select', class: 'form-control', multiple: 'multiple', required: true %>
                 </div>
                 <div class="col-sm-6">
                   <label class="form-label">Incoordination with:</label>
-                  <%= f.select :incoordinate_with, options_for_select(User.where.not(id: [@user.id]).order(:email).collect { |u| ["#{u.first_name}_#{u.user_department.code}", u[:id]] }), {}, id: 'incoordinate-select', class: 'form-control', multiple: 'multiple', required: true %>
+                  <%= f.select :incoordinate_with, options_for_select(User.where(status_id: 1).where.not(id: [@user.id]).order(:email).collect { |u| ["#{u.first_name}_#{u.user_department.code}", u[:id]] }), {}, id: 'incoordinate-select', class: 'form-control', multiple: 'multiple', required: true %>
                 </div>
                 <% if params[:sid].blank? && @user.user_department_id == 8 && false %>
                   <div class="col-sm-6">

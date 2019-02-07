@@ -6,13 +6,13 @@
     <div class="form-group">
       <div class="col-sm-6">
         <label class="form-label">Reason:</label>
-        <%= ar.select :reasons, Reason.where(id: @reason_ids).order(:reason).collect { |r| [r.reason, r.id] }, {}, id: 'reason-select', class: 'form-control', required: true %>
+        <%= ar.select :reasons, Reason.where(id: @user.user_department.reason_options).order(:reason).collect { |r| [r.reason, r.id] }, {}, id: 'reason-select', class: 'form-control', required: true %>
       </div>
       <% unless @user.user_department_id == 4 %>
         <div class="col-sm-6">
           <div >
             <label class="form-label">Remarks:</label>
-            <%= ar.select :remarks, Remark.where(id: @remark_ids << 34).order(:remark).collect { |r| [r.remark, r.id] }, {}, id: 'remarks-select', class: 'form-control', multiple: 'multiple', required: true %>
+            <%= ar.select :remarks, Remark.where(id: @user.user_department.remark_options << 34).order(:remark).collect { |r| [r.remark, r.id] }, {}, id: 'remarks-select', class: 'form-control', multiple: 'multiple', required: true %>
           </div>
           <div id="other-remarks" style="margin-top: 15px; display: none;">
             <%= ar.text_field :other_remarks, class: 'form-control', placeholder: 'Other Remarks', required: true, disabled: true %>

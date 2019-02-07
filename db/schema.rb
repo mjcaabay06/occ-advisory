@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_02_01_134341) do
+ActiveRecord::Schema.define(version: 2019_02_07_141808) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -198,6 +198,8 @@ ActiveRecord::Schema.define(version: 2019_02_01_134341) do
     t.string "code"
     t.string "advisory_category_fields", default: [], array: true
     t.string "category_fields", default: [], array: true
+    t.string "reason_options", default: [], array: true
+    t.string "remark_options", default: [], array: true
     t.index ["status_id"], name: "index_user_departments_on_status_id"
   end
 
@@ -218,6 +220,7 @@ ActiveRecord::Schema.define(version: 2019_02_01_134341) do
     t.bigint "status_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "password_text"
     t.index ["status_id"], name: "index_users_on_status_id"
     t.index ["user_department_id"], name: "index_users_on_user_department_id"
   end
