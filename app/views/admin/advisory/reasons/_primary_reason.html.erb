@@ -4,11 +4,27 @@
   </div>
   <div class="panel-body">
     <div class="form-group">
-      <div class="col-sm-6">
-        <label class="form-label">Reason:</label>
-        <%= ar.select :reasons, Reason.where(id: @user.user_department.reason_options).order(:reason).collect { |r| [r.reason, r.id] }, {}, id: 'reason-select', class: 'form-control', required: true %>
-      </div>
-      <% unless @user.user_department_id == 4 %>
+
+      <% unless @user.user_department.reason_options.blank? %>
+        <div class="col-sm-6">
+          <label class="form-label">Reason:</label>
+          <%= ar.select :reasons, Reason.where(id: @user.user_department.reason_options).order(:reason).collect { |r| [r.reason, r.id] }, {}, id: 'reason-select', class: 'form-control', required: true %>
+        </div>
+      <% end %>
+
+      <% if @user.user_department.has_time_and_date %>
+        <div class="col-sm-6">
+          <label class="form-label">Time and Date:</label>
+          <div class="input-group">
+            <%= ar.text_field :time_and_date, class: 'form-control has-datetime-picker', required: true %>
+            <span class="input-group-addon">
+              <span class="glyphicon glyphicon-calendar"></span>
+            </span>
+          </div>
+        </div>
+      <% end %>
+
+      <% unless @user.user_department.remark_options.blank? %>
         <div class="col-sm-6">
           <div >
             <label class="form-label">Remarks:</label>
@@ -19,6 +35,7 @@
           </div>
         </div>
       <% end %>
+
     </div>
   </div>
 </div>

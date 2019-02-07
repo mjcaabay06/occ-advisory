@@ -4,11 +4,26 @@
   </div>
   <div class="panel-body">
     <div class="form-group">
-      <div class="col-sm-6">
-        <label class="form-label">Reason:</label>
-        <%= select('', '', Reason.where(id: @reason_ids).order(:reason).collect { |r| [r.reason, r.id] }, { selected: @advisory_reason.reasons }, id: 'reason-select', class: 'form-control', required: true, name: 'advisory[advisory_reasons_attributes][0][reasons][]') %>
-      </div>
-      <% unless @user.user_department_id == 4 %>
+      <% unless @user.user_department.reason_options.blank? %>
+        <div class="col-sm-6">
+          <label class="form-label">Reason:</label>
+          <%= select('', '', Reason.where(id: @reason_ids).order(:reason).collect { |r| [r.reason, r.id] }, { selected: @advisory_reason.reasons }, id: 'reason-select', class: 'form-control', required: true, name: 'advisory[advisory_reasons_attributes][0][reasons][]') %>
+        </div>
+      <% end %>
+
+      <% if @user.user_department.has_time_and_date %>
+        <div class="col-sm-6">
+          <label class="form-label">Time and Date:</label>
+          <div class="input-group">
+            <%= text_field_tag nil, nil, class: 'form-control has-datetime-picker', required: true, name: 'advisory[advisory_reasons_attributes][0][time_and_date]', value: @advisory_reason.time_and_date %>
+            <span class="input-group-addon">
+              <span class="glyphicon glyphicon-calendar"></span>
+            </span>
+          </div>
+        </div>
+      <% end %>
+
+      <% unless @user.user_department.remark_options.blank? %>
         <div class="col-sm-6">
           <div >
             <label class="form-label">Remarks:</label>

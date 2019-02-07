@@ -24,7 +24,7 @@
                   <label class="form-label">Incoordination with:</label>
                   <%= f.select :incoordinate_with, options_for_select(User.where(status_id: 1).where.not(id: [@user.id]).order(:email).collect { |u| ["#{u.first_name}_#{u.user_department.code}", u[:id]] }), {}, id: 'incoordinate-select', class: 'form-control', multiple: 'multiple', required: true %>
                 </div>
-                <% if params[:sid].blank? && @user.user_department_id == 8 %>
+                <% if params[:sid].blank? && @user.user_department.has_attach_advisory %>
                   <div class="col-sm-6">
                     <label class="form-label">Attach advisory:</label>
                     <%= select('','advisory[connect_adv_id]', options_for_select(Advisory.where.not("advisory_code ilike 'OCC%'").order(:advisory_code).collect { |a| [a.advisory_code, a.id] }), {}, id: 'incoordinate-select', class: 'form-control', required: true) %>
@@ -38,7 +38,7 @@
           <%= f.hidden_field 'adv_sid', value: params[:sid] %>
         <% end %>
         <%= f.fields_for :advisory_reasons do |ar| %>
-          <%= render "admin/advisory/reasons/#{ @heading }", ar: ar %>
+          <%= render "admin/advisory/reasons/primary_reason", ar: ar %>
 
           <div id="panel-category">
             <div class="panel panel-default" id="main-category">

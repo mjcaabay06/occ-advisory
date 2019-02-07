@@ -20,6 +20,17 @@
 
   <div class="form-group" style="margin-bottom: 0">
     <div class="col-md-12">
+      <label class="form-label">Include <strong>Attach Advisory</strong> in Advisory Header?</label>
+      &nbsp;&nbsp;
+      <input type="radio" name="user_department[has_attach_advisory]" value="1" style="vertical-align: middle; margin-top: -4px" <%= 'checked="checked"' if f.object[:has_attach_advisory] %>> Yes
+      &nbsp;
+      <input type="radio" name="user_department[has_attach_advisory]" value="0" style="vertical-align: middle; margin-top: -4px" <%= 'checked="checked"' unless f.object[:has_attach_advisory] %>> No
+    </div>
+  </div>
+  <br>
+
+  <div class="form-group" style="margin-bottom: 0">
+    <div class="col-md-12">
       <label class="form-label">Include reason options?</label>
       &nbsp;&nbsp;
       <input type="radio" name="reason-options" value="yes" style="vertical-align: middle; margin-top: -4px"  <%= 'checked="checked"' unless f.object[:reason_options].blank? %>> Yes
@@ -50,6 +61,17 @@
     <div class="col-md-12">
       Remarks <br>
       <%= f.select :remark_options, Remark.all.order(:remark).collect{ |r| [r.remark, r.id] }, {}, id: 'remark-options', class: 'form-control', multiple: 'multiple',required: true %>
+    </div>
+  </div>
+  <br>
+
+  <div class="form-group" style="margin-bottom: 0">
+    <div class="col-md-12">
+      <label class="form-label">Include <strong>Date and Time</strong> in Primary Reason?</label>
+      &nbsp;&nbsp;
+      <input type="radio" name="user_department[has_time_and_date]" value="1" style="vertical-align: middle; margin-top: -4px" <%= 'checked="checked"' if f.object[:has_time_and_date] %>> Yes
+      &nbsp;
+      <input type="radio" name="user_department[has_time_and_date]" value="0" style="vertical-align: middle; margin-top: -4px" <%= 'checked="checked"' unless f.object[:has_time_and_date] %>> No
     </div>
   </div>
   <br>

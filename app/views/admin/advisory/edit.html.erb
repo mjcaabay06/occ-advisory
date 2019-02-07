@@ -38,7 +38,7 @@
           <%= f.hidden_field 'adv_sid', value: params[:sid] %>
         <% end %>
         <%= hidden_field_tag nil, nil, name: 'advisory[advisory_reasons_attributes][0][id]', value: @advisory_reason.id %>
-        <%= render "admin/advisory/edit_fields/#{ @heading }" %>
+        <%= render "admin/advisory/edit_fields/primary_reason" %>
         <%= render "admin/advisory/edit_fields/advisory_category_fields" %>
         <div id="edit-additional"></div>
 
