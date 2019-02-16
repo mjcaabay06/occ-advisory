@@ -8,9 +8,24 @@
     <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
     <style type="text/css">
       #form-login{
-        margin-top: 60px;
+        margin-top: 45%;
+        box-shadow: 1px 1px 5px rgba(0,0,0,0.5);
+      }
+      body {
+        height: 100%;
+        width: 100%;
+        position: fixed;
+        background-image: url('/assets/bg.png');
+        background-repeat: no-repeat;
       }
     </style>
+    <script type="text/javascript">
+      $(document).ready(function(){
+        var size = $(document).width().toString() + 'px ' + $(document).height().toString() + 'px';
+        console.log(size);
+        $('body').css({ 'background-size': size });
+      });
+    </script>
   </head>
 
   <body>

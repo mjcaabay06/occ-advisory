@@ -1,4 +1,8 @@
 <div class="col-md-12">
+  <div style="margin: 20px 0">
+    <%= render 'message' %>
+    <div class="clearfix"></div>
+  </div>
   <div class="page-header">
     <span><b>Issuer:</b> <%= @advisory.user.first_name %></span><br>
     <span><b>Issued Date:</b> <%= @advisory.created_at.strftime('%B %-d, %Y') %></span>
@@ -24,7 +28,7 @@
             <td width="1%"><%= ar.time_and_date.strftime('%m-%d-%Y %k%Mh') %></td>
           <% end %>
           
-          <td class="text-right">
+          <td class="text-right" colspan="100">
             <% unless @advisory.is_viewable %>
               <a href="/admin/advisory/<%= ar.id %>/edit" style='color: #fff;'>
                 <span class="glyphicon glyphicon-pencil"></span> Edit
@@ -78,9 +82,7 @@
     <div class="pull-right below-btns">
       <% unless @advisory.is_viewable %>
           <% if @advisory.user_id == @user.id %>
-            <% if @user.user_department_id == 8 %>
-              <%= link_to 'Add', "/admin/advisory/new?sid=#{@advisory.sid}&add=true", class: 'btn btn-primary', id: 'btn-add-avisory' %>
-            <% end %>
+            <%= link_to 'Add', "/admin/advisory/new?sid=#{@advisory.sid}&add=true", class: 'btn btn-primary', id: 'btn-add-avisory' %>
           <% end %>
           <%= button_tag 'Send', class: 'btn btn-primary', id: 'btn-send', type: 'button' %>
           <% if false %>

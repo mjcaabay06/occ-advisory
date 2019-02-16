@@ -27,7 +27,7 @@
                 <% if params[:sid].blank? && @user.user_department_id == 8 && false %>
                   <div class="col-sm-6">
                     <label class="form-label">Attach advisory:</label>
-                    <%= select('','advisory[connect_adv_id]', options_for_select(Advisory.where.not("advisory_code ilike 'OCC%'").order(:advisory_code).collect { |a| [a.advisory_code, a.id] }), {}, id: 'incoordinate-select', class: 'form-control', required: true) %>
+                    <%= select('','advisory[connect_adv_id]', options_for_select(Advisory.where.not("advisory_code ilike 'OCC%'").order(:advisory_code).collect { |a| [a.advisory_code, a.id] }), {}, id: 'incoordinate-select', class: 'form-control') %>
                   </div>
                 <% end %>
               </div>

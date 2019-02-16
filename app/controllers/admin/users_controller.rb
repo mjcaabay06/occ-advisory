@@ -12,7 +12,8 @@ class Admin::UsersController < Admin::ApplicationController
     @users = User.new(user_params)
 
     if @users.save
-      redirect_to "/admin/users"
+      flash[:notice] = 'User successfully added.'
+      redirect_to new_admin_user_path
     else
       puts "--------#{@users.errors.full_messages}"
     end
@@ -23,7 +24,9 @@ class Admin::UsersController < Admin::ApplicationController
 
   def update
     if @users.update(user_params)
-      redirect_to "/admin/users"
+      # redirect_to "/admin/users"
+      flash[:notice] = 'User successfully updated.'
+      redirect_to edit_admin_user_path(@users.id)
     else
       puts "--------#{@users.errors.full_messages}"
     end

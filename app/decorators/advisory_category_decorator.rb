@@ -27,6 +27,23 @@ class AdvisoryCategoryDecorator < Draper::Decorator
   end
 
   def route
+    return '' if route_origin.blank? || route_destination.blank?
     "#{try(:route_origin)}-#{try(:route_destination)}"
+  end
+
+  def formatted_location
+    return '' if location.blank?
+    "#{location}nm"
+  end
+
+  def formatted_movement
+    return '' if movement.blank?
+    "#{movement}kts"
+  end
+
+  def formatted_max_wind
+    return '' if max_wind.blank?
+    mxw = max_wind.split(' ')
+    "#{mxw[0]}kts #{mxw[1]}"
   end
 end

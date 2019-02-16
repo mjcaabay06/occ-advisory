@@ -180,13 +180,13 @@
                 <td><%= check_value ac.ac_status_datetime.try(:strftime, '%m-%d-%y (%a) %k%Mh') %></td>
               <% end %>
               <% if is_field_format :location %>
-                <td><%= check_value ac.location %></td>
+                <td><%= check_value ac.formatted_location %></td>
               <% end %>
               <% if is_field_format :movement %>
-                <td><%= check_value ac.movement %></td>
+                <td><%= check_value ac.formatted_movement %></td>
               <% end %>
               <% if is_field_format :max_wind %>
-                <td><%= check_value ac.max_wind %></td>
+                <td><%= check_value ac.formatted_max_wind %></td>
               <% end %>
               <% if is_field_format :weather_forecast %>
                 <td><%= check_value ac.weather_forecast %></td>

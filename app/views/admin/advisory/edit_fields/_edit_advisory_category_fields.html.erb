@@ -454,7 +454,7 @@
             <label class="form-label">Frequency</label>
           </div>
           <div class="col-sm-8">
-            <%= select('', '', Frequency.all.order(:id).collect { |l| [l.frequency, l.id] }, {selected: ac.try(:frequencies).blank? ? nil : ac.frequencies}, 'data-field': 'frequencies', class: 'form-control field frequency-select', multiple: 'multiple', required: true, name: "advisory[advisory_reasons_attributes][0][advisory_categories_attributes][#{cnt}][frequencies]") %>
+            <%= select('', '', Frequency.all.order(:id).collect { |l| [l.frequency, l.id] }, {selected: ac.try(:frequencies).blank? ? nil : ac.frequencies}, 'data-field': 'frequencies', class: 'form-control field frequency-select', multiple: 'multiple', required: true, name: "advisory[advisory_reasons_attributes][0][advisory_categories_attributes][#{cnt}][frequencies][]") %>
           </div>
         </div>
       </div>
