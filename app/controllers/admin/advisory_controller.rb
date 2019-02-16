@@ -154,6 +154,10 @@ class Admin::AdvisoryController < Admin::ApplicationController
     @recipients = User.where(user_department_id: @advisory.recipients).collect{ |u| "#{u.first_name}-#{u.user_department.code}" }.join(', ')
     @replies = ReplyThread.where(advisory_id: @advisory.id).order(:created_at).decorate
     @reply = ReplyThread.new
+
+    if flash[:notice] == 'Successfully created new advisory.'
+      flash[:notice] = nil
+    end
   end
 
   def create_reply
@@ -177,6 +181,7 @@ class Admin::AdvisoryController < Admin::ApplicationController
                                     ids: user_arr,
                                     action: 'reply'
                                   })
+    flash[:notice] = 'Reply sent.'
     redirect_to "/admin/advisory/review-advisory/#{params[:reply_thread][:advisory_sid]}"
   end
 
@@ -205,7 +210,7 @@ class Admin::AdvisoryController < Admin::ApplicationController
       end
 
       advisory.incoordinate_with.each do |id|
-        unless user_arr.include?(id)
+        unless user_arr.include?(id.to_i)
           user_arr << id.to_i
           data_arr << {
             recipient: id.to_i,
@@ -219,7 +224,7 @@ class Admin::AdvisoryController < Admin::ApplicationController
       unless @user.user_department_id == 8
         User.where(user_department_id: 8).each do |u|
           unless user_arr.include?(u.id)
-            user_arr << u.id.to_i
+            user_arr << u.id
             data_arr << {
               recipient: u.id,
               sender: advisory.user_id,
@@ -241,7 +246,8 @@ class Admin::AdvisoryController < Admin::ApplicationController
                                     action: nil
                                   })
       advisory.update_attributes(is_viewable: true, sent_date: DateTime.now)
-      redirect_to '/admin/advisory'
+      flash[:notice] = 'Message sent.'
+      redirect_to "/admin/advisory/review-advisory/#{params[:sid]}"
     end
   end
 
@@ -402,11 +408,11 @@ class Admin::AdvisoryController < Admin::ApplicationController
           :ac_configuration, :ac_location, :ac_on_ground, :ac_registry, :ac_status_datetime,
           :acu_problem, :air_bourne, :aircraft_type_id, :apu_inoperative, :baggage_cargo_loaded,
           :blocked_in, :cabin_crew_boarded, :category_id, :close_door, :cockpit_crew_boarded, :effective_date,
-          :flight_date, :flight_number, :frequencies, :general_boarding, :load_b, :load_e, :load_p,
+          :flight_date, :flight_number, :general_boarding, :load_b, :load_e, :load_p,
           :location, :max_wind, :movement, :no_avi, :nsta, :nstd, :push_back, :remarks, :restriction,
           :route_destination, :route_origin, :seat_blocks, :sta, :std, :tow_in, :tow_out, :weather_forecast,
           :arrival_terminal, :departure_terminal, :duration_of_delay, :eta, :etd, :neta, :netd,
-          :pax, :touchdown
+          :pax, :touchdown, :frequencies => []
         ]
       }
     end

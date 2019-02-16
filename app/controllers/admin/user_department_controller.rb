@@ -12,7 +12,8 @@ class Admin::UserDepartmentController < Admin::ApplicationController
     @user_department = UserDepartment.new(user_department_params)
 
     if @user_department.save
-      redirect_to "/admin/departments"
+      flash[:notice] = 'Department successfully added.'
+      redirect_to new_admin_user_department_path
     else
       puts "--------#{@user_department.errors.full_messages}"
     end
@@ -23,7 +24,8 @@ class Admin::UserDepartmentController < Admin::ApplicationController
 
   def update
     if @user_department.update(user_department_params)
-      redirect_to "/admin/departments"
+      flash[:notice] = 'Department successfully updated.'
+      redirect_to edit_admin_user_department_path(@user_department.id)
     else
       puts "--------#{@user_department.errors.full_messages}"
     end

@@ -94,7 +94,6 @@ $(document).ready(function(){
 
   $("#remarks-select").on('change', function(){
     var sel = $(this).val();
-    console.log(sel);
     if (sel) {
       if (sel.includes('34')) {
         $("#other-remarks").show();

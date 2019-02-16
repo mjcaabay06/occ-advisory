@@ -1,6 +1,5 @@
 <% cnt = 0 %>
 <% AdvisoryCategory.where(advisory_reason_id: params[:id]).order(:created_at).each do |ac| %>
-
 <div id="panel-category">
   <div class="panel panel-default <%= 'additional-category' if cnt > 0 %>" id="<%= cnt > 0 ? "additional-category#{ac.id}" : 'main-category' %>">
     <div class="panel-heading">
