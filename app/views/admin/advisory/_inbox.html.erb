@@ -5,7 +5,7 @@
         <%= text_field_tag 'tb-search', nil, class: 'form-control', placeholder: 'Search' %>
       </div>
       <div class="col-sm-4 mb15">
-        <%= select(nil, :user_department_id, UserDepartment.where.not('id in (1)').order(:description).collect { |a| [a.description, a.id] }, {selected: @dept_id, include_blank: 'All Departments'}, class: 'form-control') %>
+        <%= select(nil, :user_department_id, UserDepartment.where.not(id: [1] << @user.user_department_id).order(:description).collect { |a| [a.description, a.id] }, {selected: @dept_id, include_blank: 'All Departments'}, class: 'form-control') %>
       </div>
       <div class="col-sm-4 mb15">
         <div class="col-sm-3">

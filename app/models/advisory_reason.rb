@@ -18,10 +18,11 @@ class AdvisoryReason < ApplicationRecord
     joins(query)
   end
 
-  def self.filter_remark_reason reason, remark, value
+  def self.filter_remark_reason reason, remark, value, frequencies
     query = <<~HEREDOC.squish
       #{ search_by_reason(reason) } 
-      #{ search_by_remark(remark) } 
+      #{ search_by_remark(remark) }
+      #{ search_by_frequency(frequencies) }
       #{ search_by_other_remarks(value) } OR
       #{ search_by_category(value) } OR
       #{ search_by_second_remarks(value) } OR
@@ -54,6 +55,10 @@ class AdvisoryReason < ApplicationRecord
 
     def self.search_by_remark remark
       "advisory_reasons.remarks::int[] && '{#{remark}}'::int[] OR" unless remark.blank?
+    end
+
+    def self.search_by_frequency frequencies
+      "advisory_categories.frequencies::int[] && '{#{frequencies}}'::int[] OR" unless frequencies.blank?
     end
 
     def self.search_by_category value

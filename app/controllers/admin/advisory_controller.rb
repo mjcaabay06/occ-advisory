@@ -209,17 +209,17 @@ class Admin::AdvisoryController < Admin::ApplicationController
         
       end
 
-      advisory.incoordinate_with.each do |id|
-        unless user_arr.include?(id.to_i)
-          user_arr << id.to_i
-          data_arr << {
-            recipient: id.to_i,
-            sender: advisory.user_id,
-            advisory_id: advisory.id,
-            priority: params[:priority].to_i
-          }
-        end
-      end
+      # advisory.incoordinate_with.each do |id|
+      #   unless user_arr.include?(id.to_i)
+      #     user_arr << id.to_i
+      #     data_arr << {
+      #       recipient: id.to_i,
+      #       sender: advisory.user_id,
+      #       advisory_id: advisory.id,
+      #       priority: params[:priority].to_i
+      #     }
+      #   end
+      # end
 
       unless @user.user_department_id == 8
         User.where(user_department_id: 8).each do |u|
@@ -256,7 +256,8 @@ class Admin::AdvisoryController < Admin::ApplicationController
     unless params[:val].blank?
       reason_ids = Reason.by_reason(params[:val]).collect{ |r| r.id }
       remark_ids = Remark.by_remark(params[:val]).collect{ |r| r.id }
-      adv = adv.filter_remark_reason(reason_ids.join(','), remark_ids.join(','), params[:val])
+      frequency_ids = Frequency.by_frequency(params[:val]).collect{ |f| f.id }
+      adv = adv.filter_remark_reason(reason_ids.join(','), remark_ids.join(','), params[:val], frequency_ids.join(','))
     end
     unless params[:flight_date].blank?
       adv = adv.filter_flight_date(params[:flight_date])
@@ -278,7 +279,8 @@ class Admin::AdvisoryController < Admin::ApplicationController
     unless params[:val].blank?
       reason_ids = Reason.by_reason(params[:val]).collect{ |r| r.id }
       remark_ids = Remark.by_remark(params[:val]).collect{ |r| r.id }
-      adv = adv.filter_remark_reason(reason_ids.join(','), remark_ids.join(','), params[:val])
+      frequency_ids = Frequency.by_frequency(params[:val]).collect{ |f| f.id }
+      adv = adv.filter_remark_reason(reason_ids.join(','), remark_ids.join(','), params[:val], frequency_ids.join(','))
     end
     unless params[:flight_date].blank?
       adv = adv.filter_flight_date(params[:flight_date])

@@ -18,7 +18,7 @@ class AdvisoryCategoryDecorator < Draper::Decorator
   end
 
   def aircraft_type
-    AircraftType.find(aircraft_type_id).try(:ac_type)
+    AircraftType.find(aircraft_type_id).try(:ac_type) unless aircraft_type_id.blank?
   end
 
   def frequency
