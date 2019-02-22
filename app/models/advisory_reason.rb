@@ -47,6 +47,10 @@ class AdvisoryReason < ApplicationRecord
     where("advisory_categories.flight_number ilike '%#{value}%'")
   end
 
+  def self.filter_users value
+    where("advisories.user_id = #{value}")
+  end
+
   private
 
     def self.search_by_reason reason

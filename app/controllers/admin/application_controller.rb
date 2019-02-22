@@ -13,7 +13,7 @@ class Admin::ApplicationController < ActionController::Base
     end
 
     def check_inbox
-      @inbox_count = Inbox.where(recipient: @user.id, is_read: false).count
+      @inbox_count = Inbox.where(recipient: @user.id, is_read: false).where.not(sender: @user.id).count
     end
 
     def check_head_access_url

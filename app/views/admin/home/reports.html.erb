@@ -1,0 +1,87 @@
+<div class="col-md-12">
+  <div class="page-header">
+    <h3>Statistical Report (Canceled, Delayed)</h3>
+  </div>
+  <div class="col-md-12">
+    <div class="col-md-2">
+      <div>
+        <table class="table borderless">
+          <tr>
+            <td width="1" class="text-right"><strong><%= @adv_6_months_ago.count / 6 %></strong></td>
+            <td>average per month</td>
+          </tr>
+          <tr>
+            <td width="1" class="text-right"><strong><%= @adv.where("date_trunc('month',created_at) = date_trunc('month', ?::date)", (Date.today - 1.month).to_time).count %></strong></td>
+            <td>last month</td>
+          </tr>
+          <tr>
+            <td width="1" class="text-right"><strong><%= @adv.where("date_trunc('month',created_at) = date_trunc('month', ?::date)", Date.today.to_time).count %></strong></td>
+            <td>this month</td>
+          </tr>
+          <tr>
+            <td width="1" class="text-right"><strong><%= @adv.where("date_trunc('month',created_at) = date_trunc('month', ?::date)",(Date.today - 1.year).to_time).count %></strong></td>
+            <td>last year</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+    <div class="col-md-10">
+      <canvas id="reportchart" height="300" width="788" style="height: 394px; width: 788px; margin-bottom: 10px;"></canvas>
+      <div class="text-right" style="margin-bottom: 10px;">
+        <span class="label label-danger text-bold" style="background-color: #d0112b">CANCELED</span>
+        <span class="label label-danger text-bold" style="background-color: #21d211">DELAYED</span>
+        <div class="clearfix"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<% content_for :header do %>
+  <script type="text/javascript">    
+    $(document).ready(function(){
+      var dataPerMonth = {
+        labels: [<% @adv_per_month.each do |adv| %>
+                  '<%= adv.adv_month.strftime('%b') %> <%= adv.adv_month.year %>',
+                  <% end %>
+                ],
+        datasets: [
+          {
+            label: "Canceled",
+            fillColor: "rgba(255, 0, 0, 0.1)",
+            strokeColor: "rgba(255, 0, 0, 0.4)",
+            pointColor: "#d0112b",
+            pointStrokeColor: "#fff",
+            pointHighlightFill: "#fff",
+            pointHighlightStroke: "#d0112b",
+            data: [<% @adv_per_month.each do |adv| %>
+                      <%= AdvisoryReason.where("reasons::int[] && '{4}'::int[] AND date_trunc('month', created_at) = '#{adv.adv_month}'").count %>,
+                    <% end %>
+                  ]
+          },
+          {
+            label: "Delayed",
+            fillColor: "rgba(33, 210, 17, 0.3)",
+            strokeColor: "rgba(33, 210, 17, 0.4)",
+            pointColor: "#21d211",
+            pointStrokeColor: "#fff",
+            pointHighlightFill: "#fff",
+            pointHighlightStroke: "#21d211",
+            data: [<% @adv_per_month.each do |adv| %>
+                      <%= AdvisoryReason.where("reasons::int[] && '{5}'::int[] AND date_trunc('month', created_at) = '#{adv.adv_month}'").count %>,
+                    <% end %>
+                  ]
+          },
+        ],
+      };
+      var ctxAppPerMonth = $("#reportchart").get(0).getContext("2d");
+      var appPerMonthTrendChart = new Chart(ctxAppPerMonth).Line(dataPerMonth,
+      {
+        animation: true,
+        responsive: true,
+        datasetStrokeWidth : 3,
+        multiTooltipTemplate: "<%%= value %> (<%%= datasetLabel %>)"
+      });
+    });
+    
+  </script>
+<% end %>

@@ -7,7 +7,7 @@
       <% unless @user.user_department.reason_options.blank? %>
         <div class="col-sm-6">
           <label class="form-label">Reason:</label>
-          <%= select('', '', Reason.where(id: @reason_ids).order(:reason).collect { |r| [r.reason, r.id] }, { selected: @advisory_reason.reasons }, id: 'reason-select', class: 'form-control', required: true, name: 'advisory[advisory_reasons_attributes][0][reasons][]') %>
+          <%= select('', '', Reason.where(id: @reason_ids).order(:reason).collect { |r| [r.reason, r.id] }, { selected: @advisory_reason.reasons }, id: 'reason-select', class: 'form-control', required: true, name: 'advisory[advisory_reasons_attributes][0][reasons]') %>
         </div>
       <% end %>
 

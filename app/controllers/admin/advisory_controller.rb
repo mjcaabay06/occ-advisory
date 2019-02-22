@@ -7,7 +7,7 @@ class Admin::AdvisoryController < Admin::ApplicationController
   end
 
   def inbox
-    @advisories = Inbox.by_recipient(@user.id).order('created_at desc').decorate
+    @advisories = Inbox.by_recipient(@user.id).where.not(sender: @user.id).order('created_at desc').decorate
   end
 
   def new
@@ -294,9 +294,13 @@ class Admin::AdvisoryController < Admin::ApplicationController
     unless params[:flight_number].blank?
       adv = adv.filter_flight_number(params[:flight_number])
     end
+    unless params[:user_id].blank?
+      adv = adv.filter_users(params[:user_id])
+    end
 
     @advisories = Inbox.where(advisory_id: adv.collect{ |a| a.advisory.id })
-                        .by_recipient(@user.id).order('created_at desc').decorate
+                        .by_recipient(@user.id)
+                        .where.not(sender: @user.id).order('created_at desc').decorate
     render partial: 'inbox_body'
   end
 

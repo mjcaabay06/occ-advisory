@@ -65,7 +65,7 @@ App.web_notifications = App.cable.subscriptions.create("WebNotificationsChannel"
       var index = $('.notif-alert').length;
       $('.notification-panel').append(html);
       $('.notif-alert:eq('+index+')').show()
-                                    .delay(6000)
+                                    .delay(10000)
                                     .fadeOut();
     }
   }

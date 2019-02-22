@@ -10,6 +10,7 @@ Rails.application.routes.draw do
     get '/check-account' => 'home#check_account'
     get '/change-default-password' => 'home#change_default_password'
     get '/reset-password' => 'home#reset_password'
+    get '/reports' => 'home#reports'
 
     resources :advisory do
       collection do

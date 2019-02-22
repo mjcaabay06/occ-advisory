@@ -72,6 +72,10 @@ $(document).ready(function(){
     advisory_filter();
   });
 
+  $('select[name=user_id]').on('change', function(){
+    advisory_filter();
+  });
+
   $('#flight_date').on('change', function(){
     advisory_filter();
   });
@@ -180,7 +184,9 @@ function advisory_filter() {
   var txt = $("#tb-search").val();
   var ac_registry = $("#tb-ac_registry").val();
   var flight_number = $("#tb-flight_number").val();
-  $.get('/admin/advisory/filter', { dept_id: dept_id, flight_date: flight_date, val: txt, ac_registry: ac_registry, flight_number: flight_number })
+  var user_id = $('select[name=user_id]').val();
+
+  $.get('/admin/advisory/filter', { dept_id: dept_id, flight_date: flight_date, val: txt, ac_registry: ac_registry, flight_number: flight_number, user_id: user_id })
     .done(function(result){
       $(".panel-body.memo-lists").html(result);
     });

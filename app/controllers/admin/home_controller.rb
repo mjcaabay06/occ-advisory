@@ -21,6 +21,12 @@ class Admin::HomeController < Admin::ApplicationController
     }
   end
 
+  def reports
+    @adv = AdvisoryReason.where("reasons::int[] && '{4,5}'::int[]")
+    @adv_6_months_ago = @adv.where("created_at::date >= '#{ Date.today - 6.month }'")
+    @adv_per_month = @adv_6_months_ago.select("date_trunc('month', created_at) adv_month, count(id) adv_count").group('adv_month').reorder('adv_month')
+  end
+
   def login
     respond_to do |format|
       format.html { render layout: false }
@@ -33,7 +39,7 @@ class Admin::HomeController < Admin::ApplicationController
 
     unless user.blank?
       session[:user_id] = user.id
-      url = '/admin/advisory/inbox'
+      url = '/admin/reports'
       # url = '/admin/memo/inbox'
       if user.user_department_id == 1
         url = '/admin/users'

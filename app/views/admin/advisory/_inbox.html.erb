@@ -54,6 +54,19 @@
           </div>
         </div>
       </div>
+
+      <% if @user.user_department_id == 7 %>
+        <div class="col-sm-4 mb15">
+          <div class="col-sm-3">
+            <div class="row">
+              <label class="form-label">Issued By:</label>
+            </div>
+          </div>
+          <div class="col-sm-9">
+            <%= select(nil, :user_id, User.where(user_department_id: 7).where.not(id: @user.id).order(:first_name).collect { |a| [a.first_name, a.id] }, {selected: @dept_id, include_blank: ''}, class: 'form-control') %>
+          </div>
+        </div>
+      <% end %>
     </div>
   </div>
   <div class="panel-body memo-lists" id="inbox-lists">

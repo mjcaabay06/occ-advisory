@@ -189,3 +189,9 @@
     }
   }
 }
+
+.table.borderless {
+  td, th {
+    border: none;
+  }
+}
