@@ -6,7 +6,7 @@ class User < ApplicationRecord
   # before_update :set_update_password_encrypt
 
   def self.validate_login(email, password)
-    user = User.where("email = '#{email}'").first
+    user = User.where("email = '#{email}' and status_id = 1").first
     if user && user.password_digest == Digest::MD5.hexdigest(password) && user.is_enable
       user
     else
