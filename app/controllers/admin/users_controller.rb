@@ -1,7 +1,7 @@
 class Admin::UsersController < Admin::ApplicationController
   before_action :set_user, only: [:show, :edit, :update, :destroy]
   def index
-    @users = User.where(is_enable: true).order(:email).decorate
+    @users = User.where(is_enable: true).where.not(id: @user.id).order(:email).decorate
   end
 
   def new

@@ -1,8 +1,10 @@
 .panel-body {
   &.memo-lists {
-    & > .new {
-      & > label {
-        font-weight: bold !important;
+    & > a {
+      & > .new {
+        & > label {
+          font-weight: bold !important;
+        }
       }
     }
   }

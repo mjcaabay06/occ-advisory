@@ -39,7 +39,7 @@ class Admin::HomeController < Admin::ApplicationController
 
     unless user.blank?
       session[:user_id] = user.id
-      url = '/admin/reports'
+      url = '/admin/advisory/inbox'
       # url = '/admin/memo/inbox'
       if user.user_department_id == 1
         url = '/admin/users'

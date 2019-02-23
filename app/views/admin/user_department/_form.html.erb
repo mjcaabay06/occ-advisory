@@ -115,7 +115,7 @@
     <div class="col-md-2">
     </div>
     <div class="col-md-4">
-      <%= f.button 'Submit', class: 'btn btn-primary' %>
+      <%= f.button params[:action] == 'edit' ? 'Update' : 'Submit', class: 'btn btn-primary' %>
     </div>
   </div>
 <% end %>

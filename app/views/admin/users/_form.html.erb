@@ -31,7 +31,7 @@
       <label class="form-label">Department</label>
     </div>
     <div class="col-md-10">
-      <%= f.select :user_department_id, UserDepartment.where(is_enable: true).order(:description).collect { |ud| [ud.description, ud.id] }, { include_blank: true }, class: 'form-control', required: true %>
+      <%= f.select :user_department_id, UserDepartment.where(is_enable: true).where.not(id: [1]).order(:description).collect { |ud| [ud.description, ud.id] }, { include_blank: true }, class: 'form-control', required: true %>
     </div>
   </div>
 
@@ -71,7 +71,7 @@
     <div class="col-md-2">
     </div>
     <div class="col-md-4">
-      <%= f.button 'Submit', class: 'btn btn-primary' %>
+      <%= f.button params[:action] == 'edit' ? 'Update' : 'Submit', class: 'btn btn-primary' %>
       <a href='javascript: alert("Default password is P@ssword")' style="margin-left: 5px; font-size: 20px; vertical-align: middle; color: #a94442">
         <span class="glyphicon glyphicon-exclamation-sign"></span>
       </a>
