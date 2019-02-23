@@ -5,7 +5,7 @@
         
       </div>
       <div class="col-sm-4">
-        <%= select(nil, :user_department_id, UserDepartment.where.not('id in (1,8)').order(:description).collect { |a| [a.description, a.id] }, {selected: @dept_id, include_blank: 'All Departments'}, class: 'form-control') %>
+        <%= select(nil, :user_department_id, UserDepartment.where(is_enable: true).where.not('id in (1,8)').order(:description).collect { |a| [a.description, a.id] }, {selected: @dept_id, include_blank: 'All Departments'}, class: 'form-control') %>
       </div>
       <div class="col-sm-4">
         <div class="input-group">

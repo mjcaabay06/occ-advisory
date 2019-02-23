@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_02_07_175042) do
+ActiveRecord::Schema.define(version: 2019_02_23_011648) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -202,6 +202,7 @@ ActiveRecord::Schema.define(version: 2019_02_07_175042) do
     t.string "remark_options", default: [], array: true
     t.boolean "has_time_and_date", default: false
     t.boolean "has_attach_advisory", default: false
+    t.boolean "is_enable", default: true
     t.index ["status_id"], name: "index_user_departments_on_status_id"
   end
 
@@ -223,6 +224,7 @@ ActiveRecord::Schema.define(version: 2019_02_07_175042) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "password_text"
+    t.boolean "is_enable", default: true
     t.index ["status_id"], name: "index_users_on_status_id"
     t.index ["user_department_id"], name: "index_users_on_user_department_id"
   end

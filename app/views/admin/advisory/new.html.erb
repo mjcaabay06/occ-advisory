@@ -1,7 +1,10 @@
 <div class="content-memo">
   <div class="col-md-12">
     <div class="page-header">
-      <h3 class=""><%= @user.user_department.description.titleize %></h3>
+      <h3>
+        <%= link_to '<span class="glyphicon glyphicon-chevron-left"></span>'.html_safe, :back, title: 'Back' %>
+        <%= @user.user_department.description.titleize %>
+      </h3>
     </div>
     <% if false %>
       <%= render 'message' %>
@@ -18,11 +21,11 @@
               <div class="form-group">
                 <div class="col-sm-6">
                   <label class="form-label">Recipient:</label>
-                  <%= f.select :recipients, options_for_select(UserDepartment.where(status_id: 1).where.not(id: [1]).order(:code).collect { |u| [u[:code], u[:id]] }), {}, id: 'recipient-select', class: 'form-control', multiple: 'multiple', required: true %>
+                  <%= f.select :recipients, options_for_select(UserDepartment.where(status_id: 1, is_enable: true).where.not(id: [1]).order(:code).collect { |u| [u[:code], u[:id]] }), {}, id: 'recipient-select', class: 'form-control', multiple: 'multiple', required: true %>
                 </div>
                 <div class="col-sm-6">
                   <label class="form-label">Incoordination with:</label>
-                  <%= f.select :incoordinate_with, options_for_select(User.where(status_id: 1).where.not(id: [@user.id]).order(:email).collect { |u| ["#{u.first_name}_#{u.user_department.code}", u[:id]] }), {}, id: 'incoordinate-select', class: 'form-control', multiple: 'multiple', required: true %>
+                  <%= f.select :incoordinate_with, options_for_select(User.where(status_id: 1, is_enable: true).where.not(id: [@user.id]).order(:email).collect { |u| ["#{u.first_name}_#{u.user_department.code}", u[:id]] }), {}, id: 'incoordinate-select', class: 'form-control', multiple: 'multiple', required: true %>
                 </div>
                 <% if params[:sid].present? && @user.user_department.has_attach_advisory %>
                   <div class="col-sm-6">

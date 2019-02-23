@@ -9,8 +9,21 @@
   </div>
   <div class="page-header">
     <h3>
+      <a href="/admin/users" style="text-decoration: none">
+        <span class="glyphicon glyphicon-chevron-left"></span>
+      </a>
       <span class="glyphicon glyphicon-user"></span> New User
     </h3>
   </div>
   <%= render 'form' %>
 </div>
+
+<% content_for :header do %>
+  <script type="text/javascript">
+    $(document).ready(function(){
+      $("#new_user").submit(function(e){
+        alert('The default password is P@ssword');
+      });
+    });
+  </script>
+<% end %>

@@ -1,7 +1,7 @@
 class Admin::UserDepartmentController < Admin::ApplicationController
   before_action :set_user_department, only: [:show, :edit, :update, :destroy]
   def index
-    @user_department = UserDepartment.all.order(:description).decorate
+    @user_department = UserDepartment.where(is_enable: true).order(:description).decorate
   end
 
   def new
@@ -29,6 +29,13 @@ class Admin::UserDepartmentController < Admin::ApplicationController
     else
       puts "--------#{@user_department.errors.full_messages}"
     end
+  end
+
+  def delete_department
+    ud = UserDepartment.find(params[:id])
+    ud.update(is_enable: false)
+    flash[:notice] = 'Department successfully deleted.'
+    redirect_to '/admin/departments'
   end
 
   private

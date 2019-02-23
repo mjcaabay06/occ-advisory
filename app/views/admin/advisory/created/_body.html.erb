@@ -1,9 +1,11 @@
 <% @advisory.each do |adv| %>
-  <div class="row">
-    <label><%= "#{adv.title.html_safe} #{ reply_count(adv.id) }".html_safe %></label>
-    <label class="pull-right">
-      <%= adv.date_send %>
-      <button type="button" class="btn-link" onclick="adv_info('<%= adv.sid %>')"><span class="glyphicon glyphicon-chevron-right"></span></button>
-    </label>
-  </div>
+  <a href="/admin/advisory/review-advisory/<%= adv.sid %>" style='text-decoration: none; color: #333;'>
+    <div class="row">
+      <label><%= "#{adv.title.html_safe} #{ reply_count(adv.id) }".html_safe %></label>
+      <label class="pull-right">
+        <%= adv.date_send %>
+        <span class="glyphicon glyphicon-chevron-right" style="color: #337ab7"></span>
+      </label>
+    </div>
+  </a>
 <% end %>

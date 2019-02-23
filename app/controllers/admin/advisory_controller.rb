@@ -197,7 +197,7 @@ class Admin::AdvisoryController < Admin::ApplicationController
       data_arr = []
       user_arr = []
       advisory.recipients.each do |id|
-        User.where(user_department_id: id).each do |user|
+        User.where(user_department_id: id, is_enable: true).each do |user|
           user_arr << user.id
           data_arr << {
             recipient: user.id,
@@ -314,7 +314,7 @@ class Admin::AdvisoryController < Admin::ApplicationController
       user_arr = []
       priority = Inbox.where(advisory_id: advisory.id).first.try(:priority)
       dept_ids.each do |id|
-        User.where(user_department_id: id.to_i).each do |user|
+        User.where(user_department_id: id.to_i, is_enable: true).each do |user|
           user_arr << user.id
           data_arr << {
             recipient: user.id,

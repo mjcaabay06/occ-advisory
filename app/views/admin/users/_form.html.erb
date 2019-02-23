@@ -31,7 +31,7 @@
       <label class="form-label">Department</label>
     </div>
     <div class="col-md-10">
-      <%= f.select :user_department_id, UserDepartment.all.order(:description).collect { |ud| [ud.description, ud.id] }, { include_blank: true }, class: 'form-control', required: true %>
+      <%= f.select :user_department_id, UserDepartment.where(is_enable: true).order(:description).collect { |ud| [ud.description, ud.id] }, { include_blank: true }, class: 'form-control', required: true %>
     </div>
   </div>
 
