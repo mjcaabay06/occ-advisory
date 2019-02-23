@@ -1,7 +1,7 @@
 class Admin::UsersController < Admin::ApplicationController
   before_action :set_user, only: [:show, :edit, :update, :destroy]
   def index
-    @users = User.all.order(:email).decorate
+    @users = User.where(is_enable: true).order(:email).decorate
   end
 
   def new
@@ -30,6 +30,13 @@ class Admin::UsersController < Admin::ApplicationController
     else
       puts "--------#{@users.errors.full_messages}"
     end
+  end
+
+  def delete_user
+    u = User.find(params[:id])
+    u.update(is_enable: false)
+    flash[:notice] = 'User successfully deleted.'
+    redirect_to '/admin/users'
   end
 
   private

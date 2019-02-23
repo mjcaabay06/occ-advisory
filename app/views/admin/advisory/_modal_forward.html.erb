@@ -10,7 +10,7 @@
       <div class="modal-body">  
         <div class="form-group">
           <label style="font-weight: normal; margin: 0;">Recipients</label>
-          <%= select('', 'recipients', options_for_select(UserDepartment.where.not(id: [1] + @advisory.recipients.map(&:to_i)).order(:code).collect { |u| [u[:code], u[:id]] }), {}, id: 'recipient-select-forward', class: 'form-control', multiple: 'multiple', required: true) %>
+          <%= select('', 'recipients', options_for_select(UserDepartment.where(is_enable: true).where.not(id: [1] + @advisory.recipients.map(&:to_i)).order(:code).collect { |u| [u[:code], u[:id]] }), {}, id: 'recipient-select-forward', class: 'form-control', multiple: 'multiple', required: true) %>
         </div>
       </div>
       <div class="modal-footer">

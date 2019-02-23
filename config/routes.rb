@@ -1,8 +1,17 @@
 Rails.application.routes.draw do
   root :to => 'application#index'
   namespace :admin do
-    resources :users
-    resources :user_department, path: 'departments'
+    resources :users do
+      collection do
+        get :delete_user, path: '/:id/delete'
+      end
+    end
+
+    resources :user_department, path: 'departments'do
+      collection do
+        get :delete_department, path: '/:id/delete'
+      end
+    end
 
     get '/login' => 'home#login'
     post '/login-auth' => 'home#login_auth'

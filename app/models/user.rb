@@ -7,7 +7,7 @@ class User < ApplicationRecord
 
   def self.validate_login(email, password)
     user = User.where("email = '#{email}'").first
-    if user && user.password_digest == Digest::MD5.hexdigest(password)
+    if user && user.password_digest == Digest::MD5.hexdigest(password) && user.is_enable
       user
     else
       nil

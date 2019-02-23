@@ -1,12 +1,14 @@
 <% @advisories.each do |inbox| %>
   <% adv = inbox.advisory.decorate %>
-  <div class="row <%= 'new' unless inbox.is_read %>">
-    <span class="glyphicon glyphicon-arrow-<%= [3,2].include?(inbox.priority) ? 'up' : 'down' %>" style="margin-right: 5px; color: <%= ('#d20000' if inbox.priority == 3) || ('#eb7f00' if inbox.priority == 2) || ('#3fb358' if inbox.priority == 1) %>"></span>
-    <span class="glyphicon glyphicon-folder-<%= inbox.is_read ? 'open' : 'close' %>" style="margin-right: 5px"></span>
-    <label><%= "#{adv.title.html_safe} #{ reply_count(adv.id) }".html_safe %></label>
-    <label class="pull-right">
-      <%= adv.date_send %>
-      <button type="button" class="btn-link" onclick="adv_info('<%= adv.sid %>')"><span class="glyphicon glyphicon-chevron-right"></span></button>
-    </label>
-  </div>
+  <a href="/admin/advisory/review-advisory/<%= adv.sid %>" style='text-decoration: none; color: #333;'>
+    <div class="row <%= 'new' unless inbox.is_read %>">
+      <span class="glyphicon glyphicon-arrow-<%= [3,2].include?(inbox.priority) ? 'up' : 'down' %>" style="margin-right: 5px; color: <%= ('#d20000' if inbox.priority == 3) || ('#eb7f00' if inbox.priority == 2) || ('#3fb358' if inbox.priority == 1) %>"></span>
+      <span class="glyphicon glyphicon-folder-<%= inbox.is_read ? 'open' : 'close' %>" style="margin-right: 5px"></span>
+      <label><%= "#{adv.title.html_safe} #{ reply_count(adv.id) }".html_safe %></label>
+      <label class="pull-right">
+        <%= adv.date_send %>
+        <span class="glyphicon glyphicon-chevron-right" style="color: #337ab7"></span>
+      </label>
+    </div>
+  </a>
 <% end %>
